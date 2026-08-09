@@ -1,0 +1,188 @@
+name: Deploy zafu.pro
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+env:
+  CONTAINER_NAME_ZAFU: zafu-pro
+  CONTAINER_NAME_ZIGNER: zigner-zafu-pro
+  CONTAINER_PORT_ZAFU: 8108
+  CONTAINER_PORT_ZIGNER: 8109
+  PROJECT_DIR_ZAFU: zafu.pro
+  PROJECT_DIR_ZIGNER: zigner.zafu.pro
+  NODE_VERSION: "20"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build site
+        run: pnpm build
+
+      - name: Verify build
+        run: |
+          if [ ! -f dist/index.html ]; then
+            echo "Build failed: no index.html found"
+            exit 1
+          fi
+
+      - name: Package for deployment
+        run: tar czf site.tar.gz dist/
+
+      - name: Upload site
+        uses: appleboy/scp-action@v0.1.5
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          source: site.tar.gz
+          target: /home/${{ secrets.DEPLOY_USER }}/
+
+      - name: Deploy containers
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          script: |
+            set -e
+            cd /home/${{ secrets.DEPLOY_USER }}
+
+            # Create nginx config for zafu.pro SPA
+            cat > nginx-zafu.conf << 'NGINX_EOF'
+            server {
+                listen 80;
+                server_name localhost;
+                root /usr/share/nginx/html;
+                index index.html;
+
+                # gzip compression
+                gzip on;
+                gzip_vary on;
+                gzip_min_length 1024;
+                gzip_types text/plain text/css text/xml text/javascript application/javascript application/xml+rss application/json;
+
+                # cache static assets
+                location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
+                    expires 1y;
+                    add_header Cache-Control "public, immutable";
+                }
+
+                # index.html never cached
+                location = /index.html {
+                    add_header Cache-Control "no-cache, must-revalidate" always;
+                }
+
+                # SPA routing: try file, then directory, then fallback to index.html
+                location / {
+                    add_header Cache-Control "no-cache, must-revalidate" always;
+                    try_files $uri $uri/ /index.html;
+                }
+            }
+            NGINX_EOF
+
+            # Extract and deploy zafu.pro
+            tar xzf site.tar.gz
+            mkdir -p ${{ env.PROJECT_DIR_ZAFU }}
+            rm -rf ${{ env.PROJECT_DIR_ZAFU }}/*
+            mv dist/* ${{ env.PROJECT_DIR_ZAFU }}/
+
+            # Deploy zafu.pro container
+            podman stop ${{ env.CONTAINER_NAME_ZAFU }} 2>/dev/null || true
+            podman rm ${{ env.CONTAINER_NAME_ZAFU }} 2>/dev/null || true
+
+            podman run -d \
+              --name ${{ env.CONTAINER_NAME_ZAFU }} \
+              -p 127.0.0.1:${{ env.CONTAINER_PORT_ZAFU }}:80 \
+              -v /home/${{ secrets.DEPLOY_USER }}/${{ env.PROJECT_DIR_ZAFU }}:/usr/share/nginx/html:ro,Z \
+              -v /home/${{ secrets.DEPLOY_USER }}/nginx-zafu.conf:/etc/nginx/conf.d/default.conf:ro,Z \
+              --restart unless-stopped \
+              nginx:alpine
+
+            # Verify zafu.pro container
+            sleep 2
+            if ! podman ps | grep -q ${{ env.CONTAINER_NAME_ZAFU }}; then
+              echo "zafu.pro container failed to start"
+              podman logs ${{ env.CONTAINER_NAME_ZAFU }}
+              exit 1
+            fi
+
+            # Test zafu.pro
+            curl -f http://127.0.0.1:${{ env.CONTAINER_PORT_ZAFU }}/ > /dev/null || {
+              echo "zafu.pro not responding"
+              podman logs ${{ env.CONTAINER_NAME_ZAFU }}
+              exit 1
+            }
+
+            # For zigner.zafu.pro: same app, just route to /zigner
+            podman stop ${{ env.CONTAINER_NAME_ZIGNER }} 2>/dev/null || true
+            podman rm ${{ env.CONTAINER_NAME_ZIGNER }} 2>/dev/null || true
+
+            # Create nginx config for zigner redirect to /zigner path
+            cat > nginx-zigner.conf << 'NGINX_EOF'
+            server {
+                listen 80;
+                server_name localhost;
+
+                # Redirect root to /zigner on the main app
+                location = / {
+                    return 301 https://zafu.pro/zigner;
+                }
+
+                # Proxy everything to zafu.pro container
+                location / {
+                    proxy_pass http://127.0.0.1:8108;
+                    proxy_set_header Host $host;
+                    proxy_set_header X-Real-IP $remote_addr;
+                    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                    proxy_set_header X-Forwarded-Proto https;
+
+                    # Cache control
+                    add_header Cache-Control "no-cache, must-revalidate" always;
+                }
+
+                # Cache static assets
+                location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
+                    proxy_pass http://127.0.0.1:8108;
+                    expires 1y;
+                    add_header Cache-Control "public, immutable";
+                }
+            }
+            NGINX_EOF
+
+            # Deploy zigner.zafu.pro container (proxy to zafu.pro with /zigner redirect)
+            podman run -d \
+              --name ${{ env.CONTAINER_NAME_ZIGNER }} \
+              -p 127.0.0.1:${{ env.CONTAINER_PORT_ZIGNER }}:80 \
+              -v /home/${{ secrets.DEPLOY_USER }}/nginx-zigner.conf:/etc/nginx/conf.d/default.conf:ro,Z \
+              --restart unless-stopped \
+              nginx:alpine
+
+            # Verify zigner container
+            sleep 2
+            if ! podman ps | grep -q ${{ env.CONTAINER_NAME_ZIGNER }}; then
+              echo "zigner.zafu.pro container failed to start"
+              podman logs ${{ env.CONTAINER_NAME_ZIGNER }}
+              exit 1
+            fi
+
+            # Cleanup
+            rm -f site.tar.gz
+            rm -rf dist/
+
+            echo "Deployment successful: zafu.pro on :8108, zigner.zafu.pro on :8109"
