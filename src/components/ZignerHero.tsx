@@ -1,7 +1,6 @@
 export default function ZignerHero() {
   return (
     <section style={{
-      padding: "80px 0 72px",
       "border-bottom": "1px solid #1e1e2e",
       "border-top": "1px solid #1e1e2e",
       "max-width": "760px",

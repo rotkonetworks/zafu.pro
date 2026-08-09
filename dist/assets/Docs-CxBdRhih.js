@@ -1,0 +1,1 @@
+import{p as e}from"./index-CIqDLPPM.js";import{t}from"./ContentPage-8bKlDlfi.js";import{t as n}from"./zafu-o-venDCt.js";function r(){return e(t,{content:n})}export{r as default};

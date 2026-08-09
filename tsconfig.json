@@ -16,7 +16,8 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "jsx": "preserve",
-    "jsxImplicitNamespace": "h"
+    "jsxImportSource": "solid-js",
+    "types": ["vite/client"]
   },
   "include": ["src"],
   "exclude": ["dist", "node_modules"]

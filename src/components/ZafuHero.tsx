@@ -1,11 +1,10 @@
 export default function ZafuHero() {
   return (
     <section style={{
-      padding: "80px 0 72px",
       "border-bottom": "1px solid #1e1e2e",
       "max-width": "760px",
       margin: "0 auto",
-      padding: "0 24px",
+      padding: "80px 24px 72px",
     }}>
       <div style={{
         "font-family": "JetBrains Mono, monospace",

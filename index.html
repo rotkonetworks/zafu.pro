@@ -3,8 +3,59 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Zafu — Privacy Wallet for Zcash & Penumbra</title>
-    <meta name="description" content="Privacy-first Chrome extension wallet for Zcash and Penumbra. Air-gapped cold signing, FROST multisig, watch-only mode. Open source." />
+    <title>Zafu — Privacy Wallet &amp; Zigner Hardware Signer</title>
+    <meta name="description" content="Zafu: privacy-first wallet for Zcash and Penumbra. Zigner: air-gapped hardware signer. Cold signing, FROST multisig, watch-only mode. Open source." />
+    <style>
+      /* Keep the scrollbar gutter reserved so navigating between short and
+         tall pages never shifts the centered layout horizontally. */
+      html {
+        scrollbar-gutter: stable;
+      }
+
+      /* ==============================================================
+       * Motion language: extremely fast, frame-stepped.
+       * Transitions run in 3 discrete frames over ~90ms (steps(3)) —
+       * they read as instant state changes, terminal-style. Animation
+       * here is texture, never a curtain over latency.
+       * ============================================================== */
+      @media (prefers-reduced-motion: no-preference) {
+        /* clamp every utility transition to the fast stepped profile */
+        *,
+        *::before,
+        *::after {
+          transition-duration: 90ms !important;
+          transition-timing-function: steps(3, end) !important;
+          animation-timing-function: steps(3, end);
+        }
+
+        /* route/page entrance: 3 frames, 90ms, tiny rise */
+        .page-in {
+          animation: page-in 90ms steps(3, end);
+        }
+        @keyframes page-in {
+          from {
+            opacity: 0;
+            transform: translateY(4px);
+          }
+        }
+
+        /* pressed state lands on the very next frame */
+        a:active,
+        button:active {
+          transition: none !important;
+          transform: translateY(1px);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          transition-duration: 1ms !important;
+          animation-duration: 1ms !important;
+        }
+      }
+    </style>
     <script type="module" src="/src/index.tsx"></script>
   </head>
   <body>
