@@ -73,11 +73,6 @@ export default function Footer() {
                     </li>
                   )}
                 </For>
-                <li>
-                  <A href="/zafu/docs#support" class="text-muted hover:text-text transition-colors">
-                    all channels
-                  </A>
-                </li>
               </ul>
             </div>
           </div>

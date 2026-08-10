@@ -508,7 +508,7 @@ export const zafuDocs: PageContent = {
     {
       id: "support",
       title: "Support & Community",
-      lede: "Zafu bugs and feature requests belong on our issue tracker — that is the channel we watch. The Zcash and Penumbra Discords are upstream protocol communities: the right place for questions about the chains themselves, not about the wallet.",
+      lede: "Zafu bugs and feature requests belong on our issue tracker — that is the channel we watch — and we post progress in our Zcash forum development thread. The Zcash and Penumbra Discords are upstream protocol communities: the right place for questions about the chains themselves, not about the wallet.",
       blocks: [
         {
           kind: "links",
