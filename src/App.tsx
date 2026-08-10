@@ -1,5 +1,6 @@
 import { lazy } from "solid-js";
 import { Navigate, Route, Router } from "@solidjs/router";
+import Release from "./pages/Release";
 import Layout from "./components/Layout";
 
 // Zafu (wallet)
@@ -42,6 +43,7 @@ export default function App() {
       </Route>
 
       <Route path="/dashboard" component={Dashboard} />
+      <Route path="/release" component={Release} />
 
       <Route path="*404" component={NotFound} />
     </Router>
