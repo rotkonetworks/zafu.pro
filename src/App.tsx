@@ -1,6 +1,5 @@
 import { lazy } from "solid-js";
 import { Navigate, Route, Router } from "@solidjs/router";
-import Release from "./pages/Release";
 import Layout from "./components/Layout";
 
 // Zafu (wallet)
@@ -19,6 +18,10 @@ const ZignerRoadmap = lazy(() => import("./pages/zigner/Roadmap"));
 
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+
+// Lazy like every other route: Release pulls in the QR renderer, and importing
+// it eagerly put that ~23 kB in the entry chunk that every page loads.
+const Release = lazy(() => import("./pages/Release"));
 
 export default function App() {
   return (

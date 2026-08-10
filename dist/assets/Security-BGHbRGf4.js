@@ -1,0 +1,1 @@
+import{h as e}from"./index-C95o05WL.js";import{t}from"./ContentPage-BarRGzDM.js";import{r as n}from"./zafu-DSBmoYNi.js";function r(){return e(t,{content:n})}export{r as default};
