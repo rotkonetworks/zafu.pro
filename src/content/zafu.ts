@@ -131,7 +131,7 @@ export const zafuSecurity: PageContent = {
               title: "Honest limits",
               value: "partial, not trustless",
               description:
-                "Header proofs do not yet bind roots to consensus, and block omission by a single server is undetectable — which is why the backend badge says partial. Full trustlessness is an open design project.",
+                "The Ligerito header proof has no constraint system yet: the roots it proves are values the prover chose and absorbed into its own transcript, so nothing ties them to what consensus committed. That part is ours to fix. Block and action omission is separate and harder — a server can serve a valid header chain and still withhold data, and no amount of client-side verification detects it. Cross-endpoint comparison is wired as an advisory mitigation, not a proof. Hence partial.",
             },
             {
               title: "Self-hosting",
@@ -555,10 +555,16 @@ export const zafuRoadmap: PageContent = {
           kind: "specs",
           entries: [
             {
-              title: "Trustless backend",
-              value: "consensus-bound proofs",
+              title: "Constrained header proofs",
+              value: "prover-chosen → committed",
               description:
-                "Bind Ligerito header proofs to consensus so a single Zidecar cannot omit blocks undetectably — upgrading the backend badge from partial to trustless.",
+                "Give the Ligerito header proof a constraint system, so the roots it proves are the ones block headers already commit to rather than values the prover picked. Per-pool pinned roots are the precondition: a proof cannot bind to a root the server cannot name at a given height.",
+            },
+            {
+              title: "Block omission",
+              value: "needs consensus-layer DA",
+              description:
+                "A server can serve a valid header chain and still withhold blocks or actions. Detecting that needs data-availability commitments from block producers — a network change, not a wallet one. Listed here because it bounds how trustless a light client can honestly claim to be.",
             },
             {
               title: "Ledger shielded signing",
