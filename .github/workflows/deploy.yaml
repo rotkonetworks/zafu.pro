@@ -53,7 +53,13 @@ jobs:
           source: site.tar.gz
           target: /home/${{ secrets.DEPLOY_USER }}/
 
-      - name: Deploy containers
+      # The site is served by the root-owned containers zafu-landing (:8108) and
+      # zigner-landing (:8109), which haproxy routes zafu.pro / zigner.zafu.pro to.
+      # Both mount /opt/zafu.pro, now owned by the deploy user. So deploying is
+      # just replacing files in that directory -- nginx picks them up immediately.
+      # Do NOT bind :8108/:8109 here; those belong to the running containers.
+
+      - name: Deploy site
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.DEPLOY_HOST }}
@@ -63,164 +69,40 @@ jobs:
             bash -euo pipefail <<'REMOTE_EOF'
             cd /home/${{ secrets.DEPLOY_USER }}
 
-            # Create nginx config for zafu.pro SPA
-            cat > nginx-zafu.conf << 'NGINX_EOF'
-            server {
-                listen 80;
-                server_name localhost;
-                root /usr/share/nginx/html;
-                index index.html;
+            TARGET=/opt/zafu.pro
 
-                # gzip compression
-                gzip on;
-                gzip_vary on;
-                gzip_min_length 1024;
-                gzip_types text/plain text/css text/xml text/javascript application/javascript application/xml+rss application/json;
-
-                # cache static assets
-                location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
-                    expires 1y;
-                    add_header Cache-Control "public, immutable";
-                }
-
-                # index.html never cached
-                location = /index.html {
-                    add_header Cache-Control "no-cache, must-revalidate" always;
-                }
-
-                # SPA routing: try file, then directory, then fallback to index.html
-                location / {
-                    add_header Cache-Control "no-cache, must-revalidate" always;
-                    try_files $uri $uri/ /index.html;
-                }
-            }
-            NGINX_EOF
-
-            # Extract and deploy zafu.pro (no globs: unmatched globs are fatal in some shells)
+            # Unpack the build (no globs: an unmatched glob is fatal under zsh)
             rm -rf dist
             tar xzf site.tar.gz
             test -f dist/index.html || { echo "tarball has no dist/index.html"; exit 1; }
-            rm -rf ${{ env.PROJECT_DIR_ZAFU }}
-            mkdir -p ${{ env.PROJECT_DIR_ZAFU }}
-            cp -a dist/. ${{ env.PROJECT_DIR_ZAFU }}/
-            test -f ${{ env.PROJECT_DIR_ZAFU }}/index.html || { echo "copy failed"; exit 1; }
 
-            echo "=== containers before deploy ==="
-            podman ps -a --format '{{.Names}}\t{{.Ports}}\t{{.Status}}' || true
-            echo "=== listeners on 8108/8109 ==="
-            ss -ltnp 2>/dev/null | grep -E ':(8108|8109)' || echo "(none visible to this user)"
+            test -w "$TARGET" || { echo "$TARGET not writable by $(whoami)"; exit 1; }
 
-            # Reclaim a published port from ANY container holding it, whatever it
-            # is named. A previously-deployed container under a different name was
-            # squatting on 8108 and blocking every run.
-            free_port() {
-              podman ps -a --format '{{.Names}} {{.Ports}}' \
-                | awk -v p=":$1->" 'index($0, p) { print $1 }' \
-                | while read -r c; do
-                    echo "removing container '$c' holding port $1"
-                    podman rm -f "$c" || true
-                  done
-            }
+            # Stage beside the target, then swap contents in place. The containers
+            # mount $TARGET itself, so the directory must keep its identity.
+            rm -rf "$TARGET.new"
+            mkdir -p "$TARGET.new"
+            cp -a dist/. "$TARGET.new/"
+            test -f "$TARGET.new/index.html"
 
-            # Deploy zafu.pro container
-            podman stop ${{ env.CONTAINER_NAME_ZAFU }} 2>/dev/null || true
-            podman rm ${{ env.CONTAINER_NAME_ZAFU }} 2>/dev/null || true
-            free_port ${{ env.CONTAINER_PORT_ZAFU }}
+            find "$TARGET" -mindepth 1 -maxdepth 1 -exec rm -rf {} +
+            cp -a "$TARGET.new/." "$TARGET/"
+            rm -rf "$TARGET.new"
 
-            podman run -d \
-              --name ${{ env.CONTAINER_NAME_ZAFU }} \
-              -p 127.0.0.1:${{ env.CONTAINER_PORT_ZAFU }}:80 \
-              -v /home/${{ secrets.DEPLOY_USER }}/${{ env.PROJECT_DIR_ZAFU }}:/usr/share/nginx/html:ro,Z \
-              -v /home/${{ secrets.DEPLOY_USER }}/nginx-zafu.conf:/etc/nginx/conf.d/default.conf:ro,Z \
-              --restart unless-stopped \
-              nginx:alpine
+            test -f "$TARGET/index.html" || { echo "swap failed"; exit 1; }
 
-            # Verify zafu.pro container (exact name match: zafu-pro is a substring of zigner-zafu-pro)
-            sleep 2
-            if ! podman ps --format '{{.Names}}' | grep -qx '${{ env.CONTAINER_NAME_ZAFU }}'; then
-              echo "zafu.pro container failed to start"
-              podman logs ${{ env.CONTAINER_NAME_ZAFU }}
-              exit 1
-            fi
+            # Verify through the actual containers, exactly as haproxy reaches them
+            for check in "8108:/" "8108:/roadmap" "8109:/zigner"; do
+              port=${check%%:*}; path=${check#*:}
+              code=$(curl -s -o /dev/null -w '%{http_code}' "http://127.0.0.1:$port$path")
+              echo "$port$path -> $code"
+              [ "$code" = "200" ] || { echo "healthcheck failed"; exit 1; }
+            done
 
-            # Test zafu.pro
-            curl -f http://127.0.0.1:${{ env.CONTAINER_PORT_ZAFU }}/ > /dev/null || {
-              echo "zafu.pro not responding"
-              podman logs ${{ env.CONTAINER_NAME_ZAFU }}
-              exit 1
-            }
-
-            # For zigner.zafu.pro: same app, just route to /zigner
-            podman stop ${{ env.CONTAINER_NAME_ZIGNER }} 2>/dev/null || true
-            podman rm ${{ env.CONTAINER_NAME_ZIGNER }} 2>/dev/null || true
-            free_port ${{ env.CONTAINER_PORT_ZIGNER }}
-
-            # Create nginx config for zigner: serve the SAME files directly.
-            # Do NOT proxy to 127.0.0.1:8108 -- inside a container that is the
-            # container's own loopback, not the host, so it would always 502.
-            cat > nginx-zigner.conf << 'NGINX_EOF'
-            server {
-                listen 80;
-                server_name localhost;
-                root /usr/share/nginx/html;
-                index index.html;
-
-                gzip on;
-                gzip_vary on;
-                gzip_min_length 1024;
-                gzip_types text/plain text/css text/xml text/javascript application/javascript application/xml+rss application/json;
-
-                # Redirect root to /zigner on the main app
-                location = / {
-                    return 301 https://zafu.pro/zigner;
-                }
-
-                location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
-                    expires 1y;
-                    add_header Cache-Control "public, immutable";
-                }
-
-                location = /index.html {
-                    add_header Cache-Control "no-cache, must-revalidate" always;
-                }
-
-                location / {
-                    add_header Cache-Control "no-cache, must-revalidate" always;
-                    try_files $uri $uri/ /index.html;
-                }
-            }
-            NGINX_EOF
-
-            # Deploy zigner.zafu.pro container (same static root, / redirects to /zigner)
-            podman run -d \
-              --name ${{ env.CONTAINER_NAME_ZIGNER }} \
-              -p 127.0.0.1:${{ env.CONTAINER_PORT_ZIGNER }}:80 \
-              -v /home/${{ secrets.DEPLOY_USER }}/${{ env.PROJECT_DIR_ZAFU }}:/usr/share/nginx/html:ro,Z \
-              -v /home/${{ secrets.DEPLOY_USER }}/nginx-zigner.conf:/etc/nginx/conf.d/default.conf:ro,Z \
-              --restart unless-stopped \
-              nginx:alpine
-
-            # Verify zigner container
-            sleep 2
-            if ! podman ps --format '{{.Names}}' | grep -qx '${{ env.CONTAINER_NAME_ZIGNER }}'; then
-              echo "zigner.zafu.pro container failed to start"
-              podman logs ${{ env.CONTAINER_NAME_ZIGNER }}
-              exit 1
-            fi
-
-            # Test zigner (302 to /zigner on /, and the SPA on a real path)
-            curl -fsS -o /dev/null http://127.0.0.1:${{ env.CONTAINER_PORT_ZIGNER }}/zigner || {
-              echo "zigner.zafu.pro not responding"
-              podman logs ${{ env.CONTAINER_NAME_ZIGNER }}
-              exit 1
-            }
-
-            # Cleanup
             rm -f site.tar.gz
             rm -rf dist
 
-            echo "Deployed asset refs now on disk:"
-            grep -oE 'assets/[A-Za-z0-9_.-]+\.js' ${{ env.PROJECT_DIR_ZAFU }}/index.html | sort -u
-
-            echo "Deployment successful: zafu.pro on :8108, zigner.zafu.pro on :8109"
+            echo "Deployed asset refs:"
+            grep -oE 'assets/[A-Za-z0-9_.-]+\.js' "$TARGET/index.html" | sort -u
+            echo "Deployment successful"
             REMOTE_EOF
