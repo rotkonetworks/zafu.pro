@@ -105,9 +105,27 @@ jobs:
             cp -a dist/. ${{ env.PROJECT_DIR_ZAFU }}/
             test -f ${{ env.PROJECT_DIR_ZAFU }}/index.html || { echo "copy failed"; exit 1; }
 
+            echo "=== containers before deploy ==="
+            podman ps -a --format '{{.Names}}\t{{.Ports}}\t{{.Status}}' || true
+            echo "=== listeners on 8108/8109 ==="
+            ss -ltnp 2>/dev/null | grep -E ':(8108|8109)' || echo "(none visible to this user)"
+
+            # Reclaim a published port from ANY container holding it, whatever it
+            # is named. A previously-deployed container under a different name was
+            # squatting on 8108 and blocking every run.
+            free_port() {
+              podman ps -a --format '{{.Names}} {{.Ports}}' \
+                | awk -v p=":$1->" 'index($0, p) { print $1 }' \
+                | while read -r c; do
+                    echo "removing container '$c' holding port $1"
+                    podman rm -f "$c" || true
+                  done
+            }
+
             # Deploy zafu.pro container
             podman stop ${{ env.CONTAINER_NAME_ZAFU }} 2>/dev/null || true
             podman rm ${{ env.CONTAINER_NAME_ZAFU }} 2>/dev/null || true
+            free_port ${{ env.CONTAINER_PORT_ZAFU }}
 
             podman run -d \
               --name ${{ env.CONTAINER_NAME_ZAFU }} \
@@ -135,6 +153,7 @@ jobs:
             # For zigner.zafu.pro: same app, just route to /zigner
             podman stop ${{ env.CONTAINER_NAME_ZIGNER }} 2>/dev/null || true
             podman rm ${{ env.CONTAINER_NAME_ZIGNER }} 2>/dev/null || true
+            free_port ${{ env.CONTAINER_PORT_ZIGNER }}
 
             # Create nginx config for zigner: serve the SAME files directly.
             # Do NOT proxy to 127.0.0.1:8108 -- inside a container that is the
