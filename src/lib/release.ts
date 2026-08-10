@@ -203,3 +203,43 @@ export function prefixToQrPayload(bytes: Uint8Array): string {
   }
   return btoa(s);
 }
+
+export interface ReleaseKey {
+  index: number;
+  hex: string;
+}
+
+/** Parse `index:hex` as emitted by the device's Release key screen. */
+export function parseReleaseKey(input: string): ReleaseKey {
+  const trimmed = input.trim();
+  const at = trimmed.indexOf(":");
+  if (at < 0) throw new Error(`expected "index:hex", got "${trimmed.slice(0, 24)}…"`);
+  const index = Number(trimmed.slice(0, at));
+  if (!Number.isInteger(index) || index < 0 || index > 2) {
+    throw new Error(`key slot must be 0, 1 or 2 - got "${trimmed.slice(0, at)}"`);
+  }
+  const hex = trimmed.slice(at + 1).replace(/\s+/g, "").toLowerCase();
+  if (!/^[0-9a-f]{64}$/.test(hex)) {
+    throw new Error(`a public key is 32 bytes / 64 hex characters, got ${hex.length}`);
+  }
+  return { index, hex };
+}
+
+/**
+ * Emit the Rust constant. Ordered by slot rather than by entry order, because
+ * position in this array IS the key index the manifest refers to - pasting
+ * them in the order they were typed would silently rename the keys.
+ */
+export function formatReleaseKeyBytes(keys: ReleaseKey[]): string {
+  const bySlot = [0, 1, 2].map((i) => keys.find((k) => k.index === i));
+  const rows = bySlot.map((k, i) => {
+    if (!k) return `    // slot ${i}: MISSING`;
+    const bytes = (k.hex.match(/.{2}/g) ?? []).map((b) => `0x${b}`);
+    const lines: string[] = [];
+    for (let j = 0; j < bytes.length; j += 8) {
+      lines.push("        " + bytes.slice(j, j + 8).join(", ") + ",");
+    }
+    return `    // slot ${i}\n    [\n${lines.join("\n")}\n    ],`;
+  });
+  return `pub const RELEASE_KEY_BYTES: [[u8; 32]; 3] = [\n${rows.join("\n")}\n];`;
+}

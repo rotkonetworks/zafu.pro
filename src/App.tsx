@@ -22,6 +22,7 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 // Lazy like every other route: Release pulls in the QR renderer, and importing
 // it eagerly put that ~23 kB in the entry chunk that every page loads.
 const Release = lazy(() => import("./pages/Release"));
+const Ceremony = lazy(() => import("./pages/Ceremony"));
 
 export default function App() {
   return (
@@ -47,6 +48,7 @@ export default function App() {
 
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/release" component={Release} />
+      <Route path="/ceremony" component={Ceremony} />
 
       <Route path="*404" component={NotFound} />
     </Router>
