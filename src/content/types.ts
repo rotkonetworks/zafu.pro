@@ -21,9 +21,19 @@ export interface StepEntry {
   link?: { href: string; text: string };
 }
 
+export interface LinkEntry {
+  title: string;
+  href: string;
+  /** Short mono label shown right of the title (e.g. "discord"). */
+  value?: string;
+  description?: string;
+}
+
 export type SectionBlock =
   | { kind: "specs"; cols?: 1 | 2 | 3; entries: SpecEntry[] }
   | { kind: "steps"; steps: StepEntry[] }
+  /** Unordered set of destinations. Use instead of `steps` when there is no sequence. */
+  | { kind: "links"; links: LinkEntry[] }
   | { kind: "code"; code: string; caption?: string };
 
 export interface SectionContent {

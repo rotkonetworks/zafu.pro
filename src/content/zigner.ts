@@ -1,4 +1,5 @@
 import type { PageContent } from "./types";
+import { SUPPORT_CHANNELS } from "./support";
 
 export const zignerSecurity: PageContent = {
   title: "Zigner Security",
@@ -408,6 +409,17 @@ export const zignerDocs: PageContent = {
               body: "Zigner fingerprints nonce commitments with SHA-256 and stores them; if a commitment ever repeats, the session aborts before any signature share is emitted.",
             },
           ],
+        },
+      ],
+    },
+    {
+      id: "support",
+      title: "Support & Community",
+      lede: "Zigner bugs and feature requests belong on our issue tracker — that is the channel we watch. The Zcash and Penumbra Discords are upstream protocol communities: the right place for questions about the chains themselves, not about the signer.",
+      blocks: [
+        {
+          kind: "links",
+          links: SUPPORT_CHANNELS,
         },
       ],
     },

@@ -76,6 +76,43 @@ export function Steps(props: {
   );
 }
 
+export function LinkList(props: {
+  items: { title: string; href: string; value?: string; description?: string }[];
+}) {
+  return (
+    <ul class="m-0 grid list-none gap-3 p-0 sm:grid-cols-2">
+      <For each={props.items}>
+        {(item) => (
+          <li class="m-0">
+            <a
+              href={item.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex h-full flex-col border border-[var(--color-border)] bg-[var(--color-bg-elevated)] p-5 transition-colors hover:border-[var(--color-border-strong)]"
+            >
+              <span class="flex items-baseline gap-2">
+                <span class="text-sm font-semibold text-[var(--color-text)]">
+                  {item.title}
+                </span>
+                <Show when={item.value}>
+                  <span class="ml-auto font-mono text-xs text-[var(--color-accent)]">
+                    {item.value}
+                  </span>
+                </Show>
+              </span>
+              <Show when={item.description}>
+                <span class="mt-1 text-sm leading-relaxed text-[var(--color-text-muted)]">
+                  {item.description}
+                </span>
+              </Show>
+            </a>
+          </li>
+        )}
+      </For>
+    </ul>
+  );
+}
+
 export function CodeBlock(props: { code: string; caption?: string }) {
   return (
     <figure class="m-0 my-4">

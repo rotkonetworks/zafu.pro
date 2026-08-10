@@ -1,4 +1,5 @@
 import type { PageContent } from "./types";
+import { SUPPORT_CHANNELS } from "./support";
 
 export const zafuSecurity: PageContent = {
   title: "Zafu Security",
@@ -501,6 +502,17 @@ export const zafuDocs: PageContent = {
               body: "Any t participants run the 2-round signing protocol over the same QR channel. Nonce commitments are fingerprinted and checked to prevent reuse.",
             },
           ],
+        },
+      ],
+    },
+    {
+      id: "support",
+      title: "Support & Community",
+      lede: "Zafu bugs and feature requests belong on our issue tracker — that is the channel we watch. The Zcash and Penumbra Discords are upstream protocol communities: the right place for questions about the chains themselves, not about the wallet.",
+      blocks: [
+        {
+          kind: "links",
+          links: SUPPORT_CHANNELS,
         },
       ],
     },

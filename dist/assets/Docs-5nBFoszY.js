@@ -1,0 +1,1 @@
+import{h as e}from"./index-DPcBCcj3.js";import{t}from"./ContentPage-C6t6sPrq.js";import{t as n}from"./zigner-TV6gVPaD.js";function r(){return e(t,{content:n})}export{r as default};
