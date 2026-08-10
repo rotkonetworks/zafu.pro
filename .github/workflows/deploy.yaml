@@ -78,16 +78,20 @@ jobs:
 
             test -w "$TARGET" || { echo "$TARGET not writable by $(whoami)"; exit 1; }
 
-            # Stage beside the target, then swap contents in place. The containers
-            # mount $TARGET itself, so the directory must keep its identity.
-            rm -rf "$TARGET.new"
-            mkdir -p "$TARGET.new"
-            cp -a dist/. "$TARGET.new/"
-            test -f "$TARGET.new/index.html"
+            # Stage in $HOME, not beside $TARGET: /opt is root-owned, so the
+            # deploy user can write inside /opt/zafu.pro but cannot create
+            # siblings there. Then swap contents in place -- the containers mount
+            # $TARGET itself, so the directory must keep its identity (never
+            # rm/recreate it, that would break the bind mount).
+            STAGE="$PWD/.deploy-stage"
+            rm -rf "$STAGE"
+            mkdir -p "$STAGE"
+            cp -a dist/. "$STAGE/"
+            test -f "$STAGE/index.html"
 
             find "$TARGET" -mindepth 1 -maxdepth 1 -exec rm -rf {} +
-            cp -a "$TARGET.new/." "$TARGET/"
-            rm -rf "$TARGET.new"
+            cp -a "$STAGE/." "$TARGET/"
+            rm -rf "$STAGE"
 
             test -f "$TARGET/index.html" || { echo "swap failed"; exit 1; }
 

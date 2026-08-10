@@ -1,4 +1,5 @@
 import { A } from "@solidjs/router";
+import { DONATION_ADDRESS } from "../content/donation";
 
 export default function Footer() {
   return (
@@ -56,8 +57,7 @@ export default function Footer() {
           </div>
         </div>
         <p class="text-xs text-dim2 mt-8 break-all">
-          Donate:
-          u153khs43zxz6hcnlwnut77knyqmursnutmungxjxd7khruunhj77ea6tmpzxct9wzlgen66jxwc93ea053j22afkktu7hrs9rmsz003h3
+          Donate: {DONATION_ADDRESS}
         </p>
       </div>
     </footer>

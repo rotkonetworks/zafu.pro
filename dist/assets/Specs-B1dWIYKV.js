@@ -1,0 +1,1 @@
+import{m as e}from"./index-BMNkYI_B.js";import{t}from"./ContentPage-CtR2XTM7.js";import{i as n}from"./zafu-o-venDCt.js";function r(){return e(t,{content:n})}export{r as default};

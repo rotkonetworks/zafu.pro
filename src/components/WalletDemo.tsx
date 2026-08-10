@@ -1,11 +1,16 @@
 import { createSignal, Show, For } from "solid-js";
 import AnimatedQR, { StaticQR } from "./AnimatedQR";
+import { DONATION_ADDRESS } from "../content/donation";
 
 /**
  * Interactive wallet demo for the lander — the real Zafu look, clickable.
- * receive → address + QR · swap → cross-chain demo · send → contact book
- * + a demo proof where recipient name and amount visibly encrypt.
- * All data is fake; the AES-GCM encryption in the send flow is real.
+ * receive → donation address + QR · swap → cross-chain demo · send → saved
+ * shielded addresses + a demo proof where recipient and amount visibly encrypt.
+ *
+ * The receive address is the real donation address. Balances, swap rates and
+ * saved recipients are fake; the AES-GCM encryption in the send flow is real.
+ * Payments always target a shielded address — ZID is off-chain identity and is
+ * never a payment destination.
  */
 
 const T = {
@@ -24,13 +29,18 @@ const T = {
 };
 const mono = "'JetBrains Mono', monospace";
 
-const ADDRESS =
-  "u1zafu9qxtl3m0v8snw2kfpr7dhe4ycu6zajn5xg0b1t8mqwe9rvd2ks4hyplc7fjn3h3kfe0";
+/** Real Zafu donation address — the receive QR below is live, not a mockup. */
+const ADDRESS = DONATION_ADDRESS;
 
+/**
+ * Saved recipients are a local label attached to a shielded address. ZID is an
+ * off-chain identity system and is never a payment destination, so it must not
+ * appear as one here — funds always go to a shielded address.
+ */
 const CONTACTS = [
-  { name: "tommi", zid: "8f3a…c2d1" },
-  { name: "alice", zid: "2b7e…91af" },
-  { name: "satoshi", zid: "e4c0…77b3" },
+  { name: "tommi", addr: "u1qz8k…4mre" },
+  { name: "alice", addr: "u1m4vd…q7xs" },
+  { name: "satoshi", addr: "u1t0rp…9hkc" },
 ];
 
 const SWAP_TARGETS = [
@@ -157,7 +167,7 @@ export default function WalletDemo(props: { class?: string }) {
     const enc = await crypto.subtle.encrypt(
       { name: "AES-GCM", iv },
       key,
-      new TextEncoder().encode(`${c.name}+${sendAmt()} ZEC`),
+      new TextEncoder().encode(`${c.addr}+${sendAmt()} ZEC`),
     );
     const rnd = (n: number) => toHex(crypto.getRandomValues(new Uint8Array(n)).buffer);
     // brief beat so "proving…" is legible, but never slow
@@ -308,14 +318,14 @@ export default function WalletDemo(props: { class?: string }) {
         {/* ---------------- receive ---------------- */}
         <Show when={view() === "receive"}>
           <div style={{ display: "flex", "flex-direction": "column", gap: "12px" }}>
-            <BackRow title="receive · shielded" onBack={() => go("home")} />
+            <BackRow title="receive · zafu donations" onBack={() => go("home")} />
             <div style={{ display: "grid", "grid-template-columns": "auto 1fr", gap: "14px", "align-items": "start" }}>
               <div style={{ background: T.fgHigh, padding: "10px", "border-radius": "4px", width: "fit-content" }}>
                 <StaticQR data={ADDRESS} size={150} dark={T.canvas} light={T.fgHigh} />
               </div>
               <div style={{ display: "flex", "flex-direction": "column", gap: "10px", "min-width": "0" }}>
                 <div style={{ background: T.elev1, border: `1px solid ${T.borderSoft}`, "border-radius": "6px", padding: "12px" }}>
-                  <Kicker>unified address · m/0</Kicker>
+                  <Kicker>zafu donation address · unified</Kicker>
                   <div style={{ "margin-top": "6px", "font-family": mono, "font-size": "11px", color: T.fg, "word-break": "break-all", "line-height": "1.6" }}>
                     {ADDRESS}
                   </div>
@@ -324,7 +334,8 @@ export default function WalletDemo(props: { class?: string }) {
                   {copied() ? "copied ✓" : "copy address"}
                 </button>
                 <div style={{ "font-family": mono, "font-size": "10px", color: T.fgDim }}>
-                  receives to the shielded pool. sender, amount and memo are hidden on-chain.
+                  real address — donations to zafu land here. receives to the shielded pool;
+                  sender, amount and memo are hidden on-chain.
                 </div>
               </div>
             </div>
@@ -381,7 +392,7 @@ export default function WalletDemo(props: { class?: string }) {
         {/* ---------------- send ---------------- */}
         <Show when={view() === "send"}>
           <div style={{ display: "flex", "flex-direction": "column", gap: "12px" }}>
-            <BackRow title="send · contact book" onBack={() => go("home")} />
+            <BackRow title="send · saved addresses" onBack={() => go("home")} />
             <Show
               when={proof()}
               fallback={
@@ -404,7 +415,7 @@ export default function WalletDemo(props: { class?: string }) {
                         >
                           <span style={{ "font-family": mono, "font-size": "12px", color: T.fgHigh }}>{c.name}</span>
                           <span style={{ "margin-left": "auto", "font-family": mono, "font-size": "10px", color: T.fgDim }}>
-                            zid {c.zid}
+                            {c.addr}
                           </span>
                         </button>
                       )}
@@ -420,7 +431,9 @@ export default function WalletDemo(props: { class?: string }) {
                       {proving() ? "proving… (halo 2)" : "prove + send"}
                     </button>
                     <div style={{ "font-family": mono, "font-size": "10px", color: T.fgDim }}>
-                      {contact() ? `to ${contact()!.name} — name & amount will be encrypted into the proof` : "pick a contact"}
+                      {contact()
+                        ? `to ${contact()!.addr} — recipient & amount will be encrypted into the proof`
+                        : "pick a saved address"}
                     </div>
                   </div>
                 </div>
@@ -433,7 +446,7 @@ export default function WalletDemo(props: { class?: string }) {
                 {field("enc_note", `${proof()!.enc}…`, true)}
                 {field("π (halo2)", `${proof()!.pi}…`)}
                 <div style={{ "margin-top": "4px", "font-family": mono, "font-size": "10px", color: T.fgDim, "line-height": "1.7" }}>
-                  <span style={{ color: T.hanko }}>enc_note</span> is "{contact()!.name}+{sendAmt()} ZEC" — really AES-GCM
+                  <span style={{ color: T.hanko }}>enc_note</span> is "{contact()!.addr}+{sendAmt()} ZEC" — really AES-GCM
                   encrypted in your browser just now. the chain sees only this. ✓ verified,
                   nothing revealed.
                 </div>

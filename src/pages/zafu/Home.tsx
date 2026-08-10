@@ -24,14 +24,17 @@ export default function ZafuHome() {
             </a>
             <a
               href="https://chromewebstore.google.com/detail/zafu-wallet-beta/bhlogefpcebekhjpomlodifcelldoimn"
-              class="transition-opacity hover:opacity-80"
-              title="Store build lags releases while reviews land"
+              class="group relative inline-block transition-opacity hover:opacity-80"
+              title="Store build lags releases while reviews land — use the GitHub build for the newest release"
             >
               <img
                 src="/badge-chrome.png"
-                alt="Available in the Chrome Web Store"
-                class="h-13 w-auto"
+                alt="Available in the Chrome Web Store (outdated build)"
+                class="h-13 w-auto opacity-60 grayscale transition group-hover:opacity-80"
               />
+              <span class="pointer-events-none absolute -right-1 -top-1 rounded-sm border border-accent/50 bg-bg px-1.5 py-0.5 font-mono text-[10px] leading-none text-accent">
+                outdated
+              </span>
             </a>
             <A
               href="/zafu/docs#install"
@@ -42,6 +45,10 @@ export default function ZafuHome() {
           </div>
           <p class="mt-4 font-mono text-xs text-muted">
             free · open source · MIT licensed
+          </p>
+          <p class="mt-2 font-mono text-xs text-dim2">
+            the Chrome Web Store build is outdated while reviews land — GitHub has the
+            newest release.
           </p>
         </div>
         <WalletDemo class="w-full max-w-lg justify-self-center" />
