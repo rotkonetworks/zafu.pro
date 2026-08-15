@@ -111,31 +111,23 @@ export function parsePrefix(bytes: Uint8Array): Prefix {
 }
 
 export interface Signature {
-  index: number;
   bytes: Uint8Array;
 }
 
 /**
- * Parse `index:hex` - the exact string the device shows after signing, both
- * as a QR and as selectable text, so a remote holder can paste it in.
+ * Parse a signature the device shows after signing - bare 128-hex, no slot tag
+ * (signatures are untagged; the verifier matches each against the pinned keys).
+ * A legacy `index:` prefix is tolerated and stripped.
  */
 export function parseSignature(input: string): Signature {
-  const trimmed = input.trim();
-  const at = trimmed.indexOf(":");
-  if (at < 0) {
-    throw new Error(`expected "index:hex", got "${trimmed.slice(0, 24)}…"`);
-  }
-  const index = Number(trimmed.slice(0, at));
-  if (!Number.isInteger(index) || index < 0 || index > 2) {
-    throw new Error(`key index must be 0, 1 or 2 - got "${trimmed.slice(0, at)}"`);
-  }
-  const hexPart = trimmed.slice(at + 1).replace(/\s+/g, "");
+  const raw = input.trim().replace(/\s+/g, "");
+  const hexPart = raw.includes(":") ? raw.slice(raw.indexOf(":") + 1) : raw;
   if (!/^[0-9a-fA-F]{128}$/.test(hexPart)) {
     throw new Error(`a signature is 64 bytes / 128 hex characters, got ${hexPart.length}`);
   }
   const bytes = new Uint8Array(64);
   for (let i = 0; i < 64; i++) bytes[i] = parseInt(hexPart.substr(i * 2, 2), 16);
-  return { index, bytes };
+  return { bytes };
 }
 
 /**
@@ -145,27 +137,27 @@ export function parseSignature(input: string): Signature {
  * device could disagree with.
  */
 export function assemble(prefix: Uint8Array, sigs: Signature[], payload: Uint8Array): Uint8Array {
-  const seen = new Set<number>();
+  const seen = new Set<string>();
   for (const s of sigs) {
-    if (seen.has(s.index)) {
-      // The device rejects duplicate indices, and two signatures from one key
-      // are not 2-of-3 in any case. Fail here rather than ship a package that
-      // is guaranteed to be refused.
-      throw new Error(`key #${s.index} signed twice - 2-of-3 needs two DIFFERENT keys`);
+    // ed25519 is deterministic, so one key signing the same prefix twice yields
+    // identical bytes. Two identical signatures are one key, not 2-of-3.
+    const key = Array.from(s.bytes).map((b) => b.toString(16).padStart(2, "0")).join("");
+    if (seen.has(key)) {
+      throw new Error("the same signature was given twice - 2-of-3 needs two DIFFERENT keys");
     }
-    seen.add(s.index);
+    seen.add(key);
   }
   if (sigs.length < REQUIRED_SIGS) {
     throw new Error(`${sigs.length} signature(s), ${REQUIRED_SIGS} required`);
   }
 
-  const out = new Uint8Array(prefix.length + 1 + sigs.length * 65 + payload.length);
+  // Untagged: sig_count | sig[64] * count. Order does not matter.
+  const out = new Uint8Array(prefix.length + 1 + sigs.length * 64 + payload.length);
   let at = 0;
   out.set(prefix, at);
   at += prefix.length;
   out[at++] = sigs.length;
   for (const s of sigs) {
-    out[at++] = s.index;
     out.set(s.bytes, at);
     at += 64;
   }
@@ -205,41 +197,36 @@ export function prefixToQrPayload(bytes: Uint8Array): string {
 }
 
 export interface ReleaseKey {
-  index: number;
   hex: string;
 }
 
-/** Parse `index:hex` as emitted by the device's Release key screen. */
+/**
+ * Parse a public key from the device's Release key screen - bare 64-hex, no
+ * slot tag (one key per seed; the trust set is order-independent). A legacy
+ * `index:` prefix is tolerated and stripped.
+ */
 export function parseReleaseKey(input: string): ReleaseKey {
-  const trimmed = input.trim();
-  const at = trimmed.indexOf(":");
-  if (at < 0) throw new Error(`expected "index:hex", got "${trimmed.slice(0, 24)}…"`);
-  const index = Number(trimmed.slice(0, at));
-  if (!Number.isInteger(index) || index < 0 || index > 2) {
-    throw new Error(`key slot must be 0, 1 or 2 - got "${trimmed.slice(0, at)}"`);
-  }
-  const hex = trimmed.slice(at + 1).replace(/\s+/g, "").toLowerCase();
+  const raw = input.trim().replace(/\s+/g, "").toLowerCase();
+  const hex = raw.includes(":") ? raw.slice(raw.indexOf(":") + 1) : raw;
   if (!/^[0-9a-f]{64}$/.test(hex)) {
     throw new Error(`a public key is 32 bytes / 64 hex characters, got ${hex.length}`);
   }
-  return { index, hex };
+  return { hex };
 }
 
 /**
- * Emit the Rust constant. Ordered by slot rather than by entry order, because
- * position in this array IS the key index the manifest refers to - pasting
- * them in the order they were typed would silently rename the keys.
+ * Emit the Rust constant from the three collected keys, in entry order. Order
+ * carries no meaning now - the verifier matches each signature against the whole
+ * set - so any arrangement of the same three keys is the same trust root.
  */
 export function formatReleaseKeyBytes(keys: ReleaseKey[]): string {
-  const bySlot = [0, 1, 2].map((i) => keys.find((k) => k.index === i));
-  const rows = bySlot.map((k, i) => {
-    if (!k) return `    // slot ${i}: MISSING`;
+  const rows = keys.map((k, i) => {
     const bytes = (k.hex.match(/.{2}/g) ?? []).map((b) => `0x${b}`);
     const lines: string[] = [];
     for (let j = 0; j < bytes.length; j += 8) {
       lines.push("        " + bytes.slice(j, j + 8).join(", ") + ",");
     }
-    return `    // slot ${i}\n    [\n${lines.join("\n")}\n    ],`;
+    return `    // key ${i}\n    [\n${lines.join("\n")}\n    ],`;
   });
   return `pub const RELEASE_KEY_BYTES: [[u8; 32]; 3] = [\n${rows.join("\n")}\n];`;
 }

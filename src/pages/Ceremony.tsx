@@ -5,18 +5,20 @@ import { ed25519Supported, loadOrCreateIdentity, login, type ZidIdentity } from 
 import { formatReleaseKeyBytes, parseReleaseKey, type ReleaseKey } from "../lib/release";
 
 /**
- * Slot layout for the 2-of-3 release trust root:
- *   slot 0  GitHub / CI  - a software key (modpack keygen --count 1), age-
- *                          encrypted, signs in CI with `modpack sign`.
- *   slot 1  zigner A      - a device key derived from an existing seed.
- *   slot 2  zigner B      - a second device key, different seed, different holder.
- * Any two authorise a release, so a normal release is one zigner + CI, and a
- * fully-offline release is the two zigners.
+ * The three keys of the 2-of-3 release trust root. Order is NOT significant -
+ * the app matches each signature against the whole set - so these labels only
+ * help you keep track of which key is which while collecting them:
+ *   GitHub / CI  - a software key (modpack keygen --count 1), age-encrypted,
+ *                  signs in CI with `modpack sign`.
+ *   zigner A     - a device key, one seed.
+ *   zigner B     - a second device key, a DIFFERENT seed / holder.
+ * Any two authorise a release: a normal release is one zigner + CI, a fully
+ * offline one is the two zigners.
  */
 const SLOTS = [
-  { kind: "ci" as const, name: "GitHub / CI", how: "modpack keygen --count 1, then read off slot 0's verifying key" },
-  { kind: "device" as const, name: "zigner A", how: "on the device: Release key → slot 1 → read off slot:hex" },
-  { kind: "device" as const, name: "zigner B", how: "on the device: Release key → slot 2 → read off slot:hex" },
+  { kind: "ci" as const, name: "GitHub / CI", how: "modpack keygen --count 1 → the printed verifying key" },
+  { kind: "device" as const, name: "zigner A", how: "on the device: Settings → Release key → its QR / hex" },
+  { kind: "device" as const, name: "zigner B", how: "on the device: Settings → Release key → its QR / hex" },
 ];
 
 /**
@@ -82,27 +84,25 @@ export default function Ceremony() {
   const independence = createMemo(() => {
     const { keys } = parsed();
     const problems: string[] = [];
-    const slots = new Set<number>();
     const seen = new Map<string, number>();
-    for (const k of keys) {
-      if (slots.has(k.index)) problems.push(`slot #${k.index} was given twice`);
-      slots.add(k.index);
+    keys.forEach((k, i) => {
       const prev = seen.get(k.hex);
       if (prev !== undefined) {
         problems.push(
-          `slots #${prev} and #${k.index} are the SAME key — that is 1-of-2, not 2-of-3. ` +
-            `Two devices sharing a seed, or one device read twice.`,
+          `keys #${prev + 1} and #${i + 1} are the SAME key — that is fewer than 3 ` +
+            `distinct keys, so it is not really 2-of-3. Two devices sharing a seed, ` +
+            `or one key read twice.`,
         );
       }
-      seen.set(k.hex, k.index);
+      seen.set(k.hex, i);
       if (/^0+$/.test(k.hex)) {
         problems.push(
-          `slot #${k.index} is all zero — the kernel refuses placeholder slots individually, ` +
+          `key #${i + 1} is all zero — the kernel refuses placeholder keys individually, ` +
             `because an all-zero encoding decodes to a valid small-order point whose ` +
             `signatures are forgeable.`,
         );
       }
-    }
+    });
     return problems;
   });
 
@@ -135,9 +135,10 @@ export default function Ceremony() {
             <section class="max-w-2xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] p-5 text-sm">
               <p class="mb-3 font-semibold">Before you start</p>
               <p class="mb-3 text-[var(--color-text-muted)]">
-                Three slots, 2-of-3: <strong>slot 0</strong> is a GitHub/CI software key,
-                <strong> slots 1 and 2</strong> are two zigner devices. A release needs any
-                two — normally one zigner plus CI, or the two zigners fully offline.
+                Three keys, 2-of-3: one <strong>GitHub/CI</strong> software key and
+                <strong> two zigner devices</strong> (each a different seed). A release needs
+                any two — normally one zigner plus CI, or the two zigners fully offline.
+                Order does not matter; the app checks a release against all three.
               </p>
               <ul class="flex list-disc flex-col gap-2 pl-5 text-[var(--color-text-muted)]">
                 <li>
@@ -166,7 +167,7 @@ export default function Ceremony() {
               <h2 class="mb-2 text-sm font-semibold">Collect the keys</h2>
               <p class="mb-4 max-w-2xl text-sm text-[var(--color-text-muted)]">
                 Public keys, so they travel over any channel. Scan the QR the device shows,
-                or paste <code>index:hex</code> by hand.
+                or paste the <code>64-hex</code> key by hand.
               </p>
               <div class="flex max-w-3xl flex-col gap-4">
                 <For each={inputs()}>
@@ -174,7 +175,7 @@ export default function Ceremony() {
                     <div class="flex flex-col gap-2">
                       <div class="flex items-baseline justify-between">
                         <span class="text-xs font-semibold">
-                          slot {i()} — {SLOTS[i()].name}
+                          {SLOTS[i()].name}
                           <span class="ml-2 font-normal text-[var(--color-text-muted)]">
                             {SLOTS[i()].kind === "ci" ? "software key" : "device"}
                           </span>
@@ -186,7 +187,7 @@ export default function Ceremony() {
                       <div class="flex gap-2">
                         <input
                           class="flex-1 border border-[var(--color-border)] bg-transparent px-3 py-2 font-mono text-xs"
-                          placeholder={`${i()}:…64 hex characters…`}
+                          placeholder={`…64 hex characters…`}
                           value={val}
                           onInput={(e) => setSlot(i(), e.currentTarget.value)}
                         />
@@ -201,7 +202,7 @@ export default function Ceremony() {
                       </div>
                       <Show when={scanning() === i()}>
                         <QrScanner
-                          label={`Scan slot ${i()} (${SLOTS[i()].name})`}
+                          label={`Scan ${SLOTS[i()].name}`}
                           onClose={() => setScanning(null)}
                           onScan={(text) => {
                             setSlot(i(), text.trim());

@@ -251,7 +251,8 @@ export default function Release() {
               <section>
                 <h2 class="mb-2 text-sm font-semibold">4 · Paste the signatures</h2>
                 <p class="mb-4 text-sm text-[var(--color-text-muted)]">
-                  Each device shows <code>index:hex</code>. Two different key indices.
+                  Each device shows its signature as bare hex. Any two from different
+                  keys - order does not matter, the app matches them to the pinned set.
                 </p>
                 <div class="flex max-w-2xl flex-col gap-2">
                   <For each={sigInputs()}>
