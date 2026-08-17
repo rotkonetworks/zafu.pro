@@ -10,7 +10,7 @@ export default function Footer() {
         <div class="flex flex-col sm:flex-row justify-between gap-8">
           <div>
             <img
-              src="/brand/logos/zafu-enso-512.png"
+              src="/media/logos/zafu-enso-512.png"
               alt=""
               aria-hidden="true"
               class="h-8 w-8 mb-4 opacity-80"

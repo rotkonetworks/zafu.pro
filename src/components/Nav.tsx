@@ -30,7 +30,7 @@ export default function Nav() {
             aria-label="zafu.pro home"
           >
             <img
-              src="/brand/logos/zafu-enso-512.png"
+              src="/media/logos/zafu-enso-512.png"
               alt=""
               aria-hidden="true"
               class="h-6 w-6 shrink-0"

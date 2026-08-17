@@ -97,10 +97,10 @@ export default function Brand() {
 
       <Section title="Logo — enso" sub="The launch / app mark. Transparent, square with margin.">
         <div class="grid gap-4" style={{ "grid-template-columns": "repeat(auto-fill,minmax(240px,1fr))" }}>
-          <Asset src="/brand/logos/zafu-enso-512.png" label="enso" meta="512² · alpha" tone="checker" />
-          <Asset src="/brand/logos/zafu-enso-512.png" label="on dark" meta="#0a0a0a" tone="dark" max="150px" />
-          <Asset src="/brand/logos/zafu-enso-512.png" label="on light" meta="#f4f4f4" tone="light" max="150px" />
-          <Asset src="/brand/logos/zafu-logo.png" label="source" meta="png" tone="checker" />
+          <Asset src="/media/logos/zafu-enso-512.png" label="enso" meta="512² · alpha" tone="checker" />
+          <Asset src="/media/logos/zafu-enso-512.png" label="on dark" meta="#0a0a0a" tone="dark" max="150px" />
+          <Asset src="/media/logos/zafu-enso-512.png" label="on light" meta="#f4f4f4" tone="light" max="150px" />
+          <Asset src="/media/logos/zafu-logo.png" label="source" meta="png" tone="checker" />
         </div>
       </Section>
 
@@ -118,12 +118,12 @@ export default function Brand() {
                     {(kind) => (
                       <div class="px-4 py-4 border-t border-border flex items-center gap-4">
                         <div class="bg-[#0a0a0a] rounded p-1.5">
-                          <img src={`/brand/favicons/${kind}-${s}.png`} width={s} height={s} alt="" />
+                          <img src={`/media/favicons/${kind}-${s}.png`} width={s} height={s} alt="" />
                         </div>
                         {s < 48 && (
                           <div class="bg-[#0a0a0a] rounded p-1.5">
                             <img
-                              src={`/brand/favicons/${kind}-${s}.png`}
+                              src={`/media/favicons/${kind}-${s}.png`}
                               width={s * 3}
                               height={s * 3}
                               style={{ "image-rendering": "pixelated" }}
@@ -143,17 +143,17 @@ export default function Brand() {
 
       <Section title="Chrome Web Store">
         <div class="grid gap-4" style={{ "grid-template-columns": "repeat(auto-fill,minmax(240px,1fr))" }}>
-          <Asset src="/brand/store/marquee-1400x560.png" label="marquee" meta="1400×560" tone="dark" />
-          <Asset src="/brand/store/small-tile-440x280.png" label="small tile" meta="440×280" tone="dark" />
-          <Asset src="/brand/store/screenshot-1280x800.png" label="screenshot" meta="1280×800" tone="dark" />
-          <Asset src="/brand/store/screenshot-640x400.png" label="screenshot" meta="640×400" tone="dark" />
+          <Asset src="/media/store/marquee-1400x560.png" label="marquee" meta="1400×560" tone="dark" />
+          <Asset src="/media/store/small-tile-440x280.png" label="small tile" meta="440×280" tone="dark" />
+          <Asset src="/media/store/screenshot-1280x800.png" label="screenshot" meta="1280×800" tone="dark" />
+          <Asset src="/media/store/screenshot-640x400.png" label="screenshot" meta="640×400" tone="dark" />
         </div>
       </Section>
 
       <Section title="Social">
         <div class="grid gap-4" style={{ "grid-template-columns": "repeat(auto-fill,minmax(240px,1fr))" }}>
-          <Asset src="/brand/social/cover.png" label="cover" meta="banner" tone="dark" />
-          <Asset src="/brand/social/profile.png" label="profile" meta="avatar" tone="checker" max="160px" />
+          <Asset src="/media/social/cover.png" label="cover" meta="banner" tone="dark" />
+          <Asset src="/media/social/profile.png" label="profile" meta="avatar" tone="checker" max="160px" />
         </div>
       </Section>
     </Page>
