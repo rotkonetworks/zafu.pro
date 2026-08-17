@@ -201,17 +201,40 @@ export interface ReleaseKey {
 }
 
 /**
- * Parse a public key from the device's Release key screen - bare 64-hex, no
- * slot tag (one key per seed; the trust set is order-independent). A legacy
- * `index:` prefix is tolerated and stripped.
+ * Parse a public key from the device's Release key screen. Two encodings:
+ *  - the QR carries the 32 raw bytes as base64 (44 chars) - half the payload
+ *    of the hex string, so a poor webcam can lock it;
+ *  - the screen also prints the 64-hex for manual entry.
+ * Both resolve to the same 32-byte key. A legacy `index:` prefix is stripped.
  */
 export function parseReleaseKey(input: string): ReleaseKey {
-  const raw = input.trim().replace(/\s+/g, "").toLowerCase();
-  const hex = raw.includes(":") ? raw.slice(raw.indexOf(":") + 1) : raw;
-  if (!/^[0-9a-f]{64}$/.test(hex)) {
-    throw new Error(`a public key is 32 bytes / 64 hex characters, got ${hex.length}`);
+  const raw = input.trim().replace(/\s+/g, "");
+  const body = raw.includes(":") ? raw.slice(raw.indexOf(":") + 1) : raw;
+
+  // 64-hex: manual entry or legacy QR. Case-insensitive.
+  if (/^[0-9a-fA-F]{64}$/.test(body)) {
+    return { hex: body.toLowerCase() };
   }
-  return { hex };
+
+  // base64 of the 32 raw bytes (the device QR). Case-SENSITIVE - decode as-is.
+  if (/^[A-Za-z0-9+/]{43}=$|^[A-Za-z0-9+/]{44}$/.test(body)) {
+    let bin: string;
+    try {
+      bin = atob(body);
+    } catch {
+      throw new Error("looks like base64 but did not decode");
+    }
+    if (bin.length !== 32) {
+      throw new Error(`a public key is 32 bytes; base64 decoded to ${bin.length}`);
+    }
+    return {
+      hex: Array.from(bin, (c) => c.charCodeAt(0).toString(16).padStart(2, "0")).join(""),
+    };
+  }
+
+  throw new Error(
+    `expected a 32-byte key: 64 hex chars, or 44-char base64 from the QR; got ${body.length} chars`,
+  );
 }
 
 /**
