@@ -46,7 +46,7 @@ const Frame = (props: { children: any; tone?: "dark" | "light" | "checker" }) =>
 const Asset = (props: { src: string; label: string; meta: string; tone?: "dark" | "light" | "checker"; max?: string }) => (
   <a
     href={props.src}
-    download
+    download=""
     class="group block rounded-lg border border-border bg-surface overflow-hidden hover:border-border-strong transition-colors"
   >
     <Frame tone={props.tone}>
