@@ -12,7 +12,7 @@ export default function ZafuHome() {
           <p class="mt-4 max-w-xl text-lg text-muted">
             Zcash &amp; Penumbra wallet as a Chrome extension. Ironwood pool, Penumbra
             swaps, ZID identity, FROST multisig. Cold signing via Zigner or Ledger —
-            keys never touch the internet.
+            spending keys never touch an online device.
           </p>
           <div class="mt-8 flex flex-wrap items-center gap-3">
             <a

@@ -550,7 +550,7 @@ export const zignerRoadmap: PageContent = {
               title: "iOS support",
               value: "old iPhones",
               description:
-                "Most Americans carry iPhones, so their drawer phones are iPhones too — iOS support turns them into signers with Secure Enclave key storage.",
+                "Turns a spare iPhone into a signer with Secure Enclave key storage.",
             },
             {
               title: "iPod touch 6",
