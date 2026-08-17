@@ -1,8 +1,8 @@
-import { For } from "solid-js";
+import { For, Show } from "solid-js";
 import Page from "./Page";
 import SpecItem from "./SpecItem";
-import { SubSection, SpecGrid, Steps, LinkList, CodeBlock, Tabs } from "./PageKit";
-import type { PageContent, SectionBlock } from "../content/types";
+import { SubSection, SpecGrid, Steps, LinkList, CodeBlock, Tabs, DocsToc } from "./PageKit";
+import type { PageContent, SectionBlock, SectionContent } from "../content/types";
 
 // Content is static data, so plain narrowing (no reactive tracking) is fine here.
 function Block(props: { block: SectionBlock }) {
@@ -47,8 +47,26 @@ function Block(props: { block: SectionBlock }) {
   return <CodeBlock code={b.code} caption={b.caption} />;
 }
 
-/** Generic renderer: turns a PageContent data object into a full page. */
-export default function ContentPage(props: { content: PageContent }) {
+function Sections(props: { sections: SectionContent[] }) {
+  return (
+    <For each={props.sections}>
+      {(section) => (
+        <SubSection id={section.id} title={section.title} lede={section.lede}>
+          <div class="space-y-6">
+            <For each={section.blocks}>{(block) => <Block block={block} />}</For>
+          </div>
+        </SubSection>
+      )}
+    </For>
+  );
+}
+
+/**
+ * Generic renderer: turns a PageContent data object into a full page.
+ * Pass `toc` to render a sticky in-page table of contents beside the sections
+ * (docs layout); without it the sections render single-column.
+ */
+export default function ContentPage(props: { content: PageContent; toc?: boolean }) {
   return (
     <Page
       title={props.content.title}
@@ -56,15 +74,22 @@ export default function ContentPage(props: { content: PageContent }) {
       lede={props.content.lede}
       stamp={props.content.stamp}
     >
-      <For each={props.content.sections}>
-        {(section) => (
-          <SubSection id={section.id} title={section.title} lede={section.lede}>
-            <div class="space-y-6">
-              <For each={section.blocks}>{(block) => <Block block={block} />}</For>
-            </div>
-          </SubSection>
-        )}
-      </For>
+      <Show
+        when={props.toc}
+        fallback={<Sections sections={props.content.sections} />}
+      >
+        <div class="lg:grid lg:grid-cols-[13rem_minmax(0,1fr)] lg:gap-12">
+          <DocsToc
+            items={props.content.sections.map((s) => ({
+              id: s.id,
+              title: s.title,
+            }))}
+          />
+          <div class="min-w-0">
+            <Sections sections={props.content.sections} />
+          </div>
+        </div>
+      </Show>
     </Page>
   );
 }

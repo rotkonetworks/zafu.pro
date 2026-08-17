@@ -24,8 +24,20 @@ export default function Nav() {
     <nav class="border-b border-border sticky top-0 z-50 bg-bg/90 backdrop-blur">
       <div class="max-w-5xl mx-auto px-6 flex items-center justify-between py-4 gap-4">
         <div class="flex items-center gap-6">
-          <A href="/" class="font-mono text-lg font-semibold text-text hover:text-accent transition-colors">
-            zafu<span class="text-accent">.</span>pro
+          <A
+            href="/"
+            class="group flex items-center gap-2 font-mono text-lg font-semibold text-text hover:text-accent transition-colors"
+            aria-label="zafu.pro home"
+          >
+            <img
+              src="/brand/logos/zafu-enso-512.png"
+              alt=""
+              aria-hidden="true"
+              class="h-6 w-6 shrink-0"
+            />
+            <span>
+              zafu<span class="text-accent">.</span>pro
+            </span>
           </A>
           {/* Product switcher */}
           <div class="flex border border-border text-xs font-mono">

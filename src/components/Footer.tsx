@@ -9,6 +9,12 @@ export default function Footer() {
       <div class="max-w-5xl mx-auto px-6">
         <div class="flex flex-col sm:flex-row justify-between gap-8">
           <div>
+            <img
+              src="/brand/logos/zafu-enso-512.png"
+              alt=""
+              aria-hidden="true"
+              class="h-8 w-8 mb-4 opacity-80"
+            />
             <p class="text-sm text-muted mb-3">
               Zafu &amp; Zigner by{" "}
               <a href="https://rotko.net" class="accent-link">

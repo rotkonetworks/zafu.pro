@@ -1,4 +1,4 @@
-import { createEffect, type ParentComponent } from "solid-js";
+import { createEffect, onMount, type ParentComponent } from "solid-js";
 import Hanko from "./Hanko";
 
 interface PageProps {
@@ -20,6 +20,17 @@ interface PageProps {
 const Page: ParentComponent<PageProps> = (props) => {
   createEffect(() => {
     document.title = `${props.title} — zafu.pro`;
+  });
+
+  // Lazy routes mount their content after navigation resolves, so the browser
+  // has already given up on scrolling to a cross-page #hash by the time the
+  // target exists. Re-run the scroll once this page is in the DOM.
+  onMount(() => {
+    const id = window.location.hash.slice(1);
+    if (!id) return;
+    requestAnimationFrame(() => {
+      document.getElementById(id)?.scrollIntoView();
+    });
   });
 
   return (

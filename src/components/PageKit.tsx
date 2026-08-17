@@ -12,9 +12,22 @@ export const SubSection: ParentComponent<{
   lede?: string;
 }> = (props) => {
   return (
-    <section id={props.id} class="mt-14 first:mt-0">
-      <h2 class="m-0 text-xl font-semibold text-[var(--color-text)] sm:text-2xl">
-        {props.title}
+    <section id={props.id} class="mt-14 scroll-mt-24 first:mt-0">
+      <h2 class="group m-0 text-xl font-semibold text-[var(--color-text)] sm:text-2xl">
+        <Show when={props.id} fallback={props.title}>
+          <a
+            href={`#${props.id}`}
+            class="text-[var(--color-text)] no-underline hover:text-[var(--color-accent)]"
+          >
+            {props.title}
+            <span
+              aria-hidden="true"
+              class="ml-2 font-mono text-[var(--color-accent)] opacity-0 transition-opacity group-hover:opacity-100"
+            >
+              #
+            </span>
+          </a>
+        </Show>
       </h2>
       <Show when={props.lede}>
         <p class="m-0 mt-2 max-w-2xl text-sm leading-relaxed text-[var(--color-text-muted)]">
@@ -25,6 +38,38 @@ export const SubSection: ParentComponent<{
     </section>
   );
 };
+
+/**
+ * In-page table of contents for docs pages: anchor links to section ids.
+ * Renders as a plain list stacked above the content on small screens and as
+ * a sticky sidebar (clearing the fixed nav) from `lg` up.
+ */
+export function DocsToc(props: { items: { id: string; title: string }[] }) {
+  return (
+    <nav
+      aria-label="On this page"
+      class="mb-10 lg:mb-0 lg:sticky lg:top-20 lg:self-start"
+    >
+      <p class="m-0 mb-3 font-mono text-xs uppercase tracking-wider text-[var(--color-text-dim)]">
+        On this page
+      </p>
+      <ul class="m-0 flex list-none flex-col gap-2 p-0">
+        <For each={props.items}>
+          {(item) => (
+            <li class="m-0">
+              <a
+                href={`#${item.id}`}
+                class="block border-l border-[var(--color-border)] pl-3 text-sm text-[var(--color-text-muted)] transition-colors hover:border-[var(--color-accent)] hover:text-[var(--color-text)]"
+              >
+                {item.title}
+              </a>
+            </li>
+          )}
+        </For>
+      </ul>
+    </nav>
+  );
+}
 
 /** Responsive card grid for SpecItem entries. */
 export const SpecGrid: ParentComponent<{ cols?: 1 | 2 | 3 }> = (props) => {
