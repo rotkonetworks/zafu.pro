@@ -77,7 +77,7 @@ export default function Zapps() {
     <Page
       title="ZAPPs"
       heading="ZAPPs"
-      lede="Small tools behind a ZID login. No accounts, no email, no KYC — you sign in with a key you already hold."
+      lede="Small tools. No accounts, no email, no KYC — where a login is needed, you sign in with a ZID key you already hold."
     >
       <div class="flex flex-col gap-10">
         <section class="flex flex-col gap-4">

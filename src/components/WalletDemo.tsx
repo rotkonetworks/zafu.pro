@@ -249,7 +249,7 @@ export default function WalletDemo(props: { class?: string }) {
           }}
           class="text-muted"
         >
-          zafu.pro — live demo, click around
+          zafu.pro
         </span>
         <span style={{ width: "43px" }} />
       </div>

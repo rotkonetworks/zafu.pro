@@ -17,6 +17,7 @@ const ZignerDocs = lazy(() => import("./pages/zigner/Docs"));
 const ZignerRoadmap = lazy(() => import("./pages/zigner/Roadmap"));
 
 const Dashboard = lazy(() => import("./pages/Dashboard"));
+const Brand = lazy(() => import("./pages/Brand"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 // Lazy like every other route: Release pulls in the QR renderer, and importing
@@ -48,6 +49,7 @@ export default function App() {
       </Route>
 
       <Route path="/dashboard" component={Dashboard} />
+      <Route path="/brand" component={Brand} />
       <Route path="/release" component={Release} />
       <Route path="/ceremony" component={Ceremony} />
       <Route path="/zapps" component={Zapps} />

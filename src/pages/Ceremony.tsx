@@ -1,7 +1,7 @@
 import { For, Show, createMemo, createSignal, onMount } from "solid-js";
 import Page from "../components/Page";
 import QrScanner from "../components/QrScanner";
-import { ed25519Supported, loadOrCreateIdentity, login, type ZidIdentity } from "../lib/zid";
+import { ed25519Supported } from "../lib/zid";
 import { formatReleaseKeyBytes, parseReleaseKey, type ReleaseKey } from "../lib/release";
 
 /**
@@ -36,9 +36,7 @@ const SLOTS = [
  * itself new trust anchors.
  */
 export default function Ceremony() {
-  const [identity, setIdentity] = createSignal<ZidIdentity | null>(null);
   const [supported, setSupported] = createSignal(true);
-  const [status, setStatus] = createSignal("");
   const [inputs, setInputs] = createSignal<string[]>(["", "", ""]);
   const [scanning, setScanning] = createSignal<number | null>(null);
 
@@ -48,18 +46,6 @@ export default function Ceremony() {
     const next = [...inputs()];
     next[i] = value;
     setInputs(next);
-  }
-
-  async function connect() {
-    setStatus("connecting…");
-    try {
-      const id = await loadOrCreateIdentity();
-      await login(id);
-      setIdentity(id);
-      setStatus("");
-    } catch (e) {
-      setStatus(`error: ${e instanceof Error ? e.message : String(e)}`);
-    }
   }
 
   const parsed = createMemo(() => {
@@ -116,21 +102,8 @@ export default function Ceremony() {
     >
       <Show
         when={supported()}
-        fallback={<p class="text-sm text-[var(--color-text-muted)]">This browser lacks the Web Crypto API required for ZID.</p>}
+        fallback={<p class="text-sm text-[var(--color-text-muted)]">This browser lacks the Web Crypto API needed to verify the ed25519 release keys.</p>}
       >
-        <Show
-          when={identity()}
-          fallback={
-            <div class="max-w-md border border-[var(--color-border)] bg-[var(--color-bg-elevated)] p-6">
-              <button class="border border-[var(--color-border)] px-4 py-2 text-sm" onClick={connect}>
-                Connect ZID
-              </button>
-              <Show when={status()}>
-                <p class="mt-3 text-xs text-[var(--color-text-muted)]">{status()}</p>
-              </Show>
-            </div>
-          }
-        >
           <div class="flex flex-col gap-8">
             <section class="max-w-2xl border border-[var(--color-border)] bg-[var(--color-bg-elevated)] p-5 text-sm">
               <p class="mb-3 font-semibold">Before you start</p>
@@ -161,6 +134,35 @@ export default function Ceremony() {
                   the distribution you just did.
                 </li>
               </ul>
+            </section>
+
+            <section class="max-w-2xl">
+              <h2 class="mb-2 text-sm font-semibold">Get the tool</h2>
+              <p class="mb-3 text-sm text-[var(--color-text-muted)]">
+                <code>modpack</code> is not published — build it from the same zigner source
+                revision you are pinning, so the binary minting the key is one you can audit.
+                Run it offline.
+              </p>
+              <pre class="mb-4 overflow-x-auto border border-[var(--color-border)] bg-[var(--color-bg-elevated)] p-3 text-xs">
+{`git clone https://github.com/rotkonetworks/zigner
+cd zigner/rust
+cargo install --path modpack        # puts modpack on PATH
+# or, without installing:
+#   cargo run --release -p modpack -- <args>`}
+              </pre>
+              <p class="mb-3 text-sm text-[var(--color-text-muted)]">
+                Mint the CI (software) key once, offline. It prints the verifying key to pin
+                below and writes the secret key <code>0600</code> to age-encrypt for CI:
+              </p>
+              <pre class="mb-4 overflow-x-auto border border-[var(--color-border)] bg-[var(--color-bg-elevated)] p-3 text-xs">
+{`modpack keygen --count 1`}
+              </pre>
+              <p class="text-sm text-[var(--color-text-muted)]">
+                The two device keys need no tooling: each zigner derives its own from its seed
+                (domain <code>zigner-release</code>) and shows it as a QR/hex — scan or paste all
+                three below. The output constant is deterministic, so anyone can rebuild it from
+                the same three keys and check it matches what shipped.
+              </p>
             </section>
 
             <section>
@@ -257,7 +259,6 @@ export default function Ceremony() {
               </section>
             </Show>
           </div>
-        </Show>
       </Show>
     </Page>
   );
