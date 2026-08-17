@@ -323,34 +323,107 @@ export const zignerDocs: PageContent = {
       ],
     },
     {
-      id: "building",
-      title: "Building & Installing",
-      lede: "Build from source and sideload; the device should never touch a network after provisioning.",
+      id: "installing",
+      title: "Installing",
+      lede: "Three routes to the same APK, easiest first. Once it is on the phone the app walks you through the rest — taking the device offline, and generating or restoring a seed.",
       blocks: [
         {
-          kind: "code",
-          code: "git clone https://github.com/rotkonetworks/zigner\ncd zigner\n./gradlew assembleRelease\n# APK output: app/build/outputs/apk/release/",
-          caption:
-            "Release builds target SDK 35. Bitcoin support is an optional build-time feature.",
-        },
-        {
-          kind: "steps",
-          steps: [
+          kind: "tabs",
+          tabs: [
             {
-              title: "Prepare the device",
-              body: "Factory-reset the phone. Skip all account sign-in. Enable developer mode.",
+              label: "F-Droid",
+              note: "recommended",
+              blocks: [
+                {
+                  kind: "steps",
+                  steps: [
+                    {
+                      title: "Add the repository",
+                      body: "In F-Droid: Settings → Repositories → +, then enter https://foss.rotko.net/fdroid/repo. Compare the fingerprint it shows against the one published on foss.rotko.net before accepting — that fingerprint is what pins the repository to us.",
+                    },
+                    {
+                      title: "Install Zigner",
+                      body: "Search for Zigner and install. Updates appear as soon as a release is tagged, and F-Droid will tell you when one is waiting.",
+                    },
+                  ],
+                },
+                {
+                  kind: "links",
+                  links: [
+                    {
+                      title: "Our F-Droid repository",
+                      href: "https://foss.rotko.net",
+                      value: "foss.rotko.net",
+                      description:
+                        "The APKs here are the signed artifacts from the release workflow — the same builds, under the same signing key, as the GitHub releases. Switching between the two sources never forces a reinstall.",
+                    },
+                  ],
+                },
+              ],
             },
             {
-              title: "Install",
-              body: "Sideload the APK via adb while the device is still trusted, then enable airplane mode.",
+              label: "GitHub release",
+              blocks: [
+                {
+                  kind: "steps",
+                  steps: [
+                    {
+                      title: "Download",
+                      body: "Take zigner-vX.Y.Z.apk plus SHA256SUMS and SHA256SUMS.sig from the release page.",
+                    },
+                    {
+                      title: "Verify",
+                      body: "Check the APK against SHA256SUMS, and check SHA256SUMS itself against its ssh signature. Verifying the checksum without verifying its signature only proves the file downloaded intact.",
+                    },
+                    {
+                      title: "Sideload",
+                      body: "adb install -r the APK while the device is still trusted, then take it offline.",
+                    },
+                  ],
+                },
+                {
+                  kind: "code",
+                  code: "sha256sum -c SHA256SUMS\nssh-keygen -Y verify -f allowed_signers -I release@rotko.net \\\n  -n file -s SHA256SUMS.sig < SHA256SUMS\nadb install -r zigner-vX.Y.Z.apk",
+                  caption:
+                    "allowed_signers is a file you create: one line reading `release@rotko.net ssh-ed25519 AAAA...`, holding the release signing key. Get that key from a channel you already trust — a signature that carries its own key proves only that the file was signed by whoever signed it.",
+                },
+                {
+                  kind: "links",
+                  links: [
+                    {
+                      title: "GitHub releases",
+                      href: "https://github.com/rotkonetworks/zigner/releases",
+                      value: "apk + checksums",
+                      description: "Signed APK, SHA256SUMS, and the ssh-signed checksum file.",
+                    },
+                  ],
+                },
+              ],
             },
             {
-              title: "Go dark",
-              body: "Disable Wi-Fi, Bluetooth, and NFC permanently. The device should never rejoin a network.",
-            },
-            {
-              title: "Initialize",
-              body: "Generate or restore a seed. Key material is encrypted with AES-256-GCM under a StrongBox or TEE master key.",
+              label: "From source",
+              note: "advanced",
+              blocks: [
+                {
+                  kind: "code",
+                  code: "git clone https://github.com/rotkonetworks/zigner\ncd zigner\n./gradlew :android:assembleRelease\n# APK output: android/build/outputs/apk/release/",
+                  caption:
+                    "Release builds target SDK 35. The Rust signer compiles to both a native library and a WebAssembly module during the build, so the first build takes a while. Cargo.lock is committed, so the dependency set is pinned.",
+                },
+                {
+                  kind: "steps",
+                  steps: [
+                    {
+                      title: "Build",
+                      body: "A local build is signed with your own key, not ours — it will not upgrade an install that came from F-Droid or a GitHub release, and vice versa. Pick one source and stay on it.",
+                    },
+                    {
+                      title: "Sideload",
+                      body: "adb install -r the APK you built while the device is still trusted.",
+                    },
+                  ],
+                },
+              ],
             },
           ],
         },

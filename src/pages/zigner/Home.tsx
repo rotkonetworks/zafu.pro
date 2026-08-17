@@ -20,18 +20,20 @@ export default function ZignerHome() {
             >
               <img src="/badge-github.png" alt="Get it on GitHub" class="h-13 w-auto" />
             </a>
+            <a
+              href="https://foss.rotko.net"
+              class="transition-opacity hover:opacity-80"
+            >
+              <img src="/badge-fdroid.png" alt="Get it on F-Droid" class="h-13 w-auto" />
+            </a>
+            {/* Google Play — hidden until the listing is live; restore this badge then.
             <img
               src="/badge-playstore.png"
               alt="Google Play — coming soon"
               title="coming soon"
               class="h-13 w-auto cursor-default opacity-35 grayscale"
             />
-            <img
-              src="/badge-fdroid.png"
-              alt="F-Droid — coming soon"
-              title="coming soon"
-              class="h-13 w-auto cursor-default opacity-35 grayscale"
-            />
+            */}
             <A
               href="/zigner/docs"
               class="border border-border px-5 py-3 font-mono text-sm text-text transition-colors hover:border-border-strong"

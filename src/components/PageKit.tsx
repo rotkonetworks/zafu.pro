@@ -1,4 +1,4 @@
-import { For, Show, type JSX, type ParentComponent } from "solid-js";
+import { For, Show, createSignal, type JSX, type ParentComponent } from "solid-js";
 
 /**
  * Helpers for technical content pages, complementing Page/Section/SpecItem.
@@ -125,5 +125,52 @@ export function CodeBlock(props: { code: string; caption?: string }) {
         </figcaption>
       </Show>
     </figure>
+  );
+}
+
+/**
+ * Tab strip over mutually exclusive panels. Every panel stays mounted so the
+ * content is in the DOM for search and for anyone printing the page; only the
+ * active one is shown.
+ */
+export function Tabs(props: {
+  tabs: { label: string; note?: string; panel: JSX.Element }[];
+}) {
+  const [active, setActive] = createSignal(0);
+  return (
+    <div>
+      <div
+        role="tablist"
+        class="flex flex-wrap gap-2 border-b border-[var(--color-border)]"
+      >
+        <For each={props.tabs}>
+          {(tab, i) => (
+            <button
+              type="button"
+              role="tab"
+              aria-selected={active() === i()}
+              onClick={() => setActive(i())}
+              class={`-mb-px border-b-2 px-4 py-2 font-mono text-sm transition-colors ${
+                active() === i()
+                  ? "border-[var(--color-accent)] text-[var(--color-text)]"
+                  : "border-transparent text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
+              }`}
+            >
+              {tab.label}
+              <Show when={tab.note}>
+                <span class="ml-2 text-xs text-[var(--color-accent)]">{tab.note}</span>
+              </Show>
+            </button>
+          )}
+        </For>
+      </div>
+      <For each={props.tabs}>
+        {(tab, i) => (
+          <div role="tabpanel" class="mt-6" classList={{ hidden: active() !== i() }}>
+            {tab.panel}
+          </div>
+        )}
+      </For>
+    </div>
   );
 }

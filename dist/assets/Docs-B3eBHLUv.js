@@ -1,1 +1,0 @@
-import{g as e}from"./index-CBWzmwFZ.js";import{t}from"./ContentPage-CrMDQOWs.js";import{t as n}from"./zafu-SIGUIZDS.js";function r(){return e(t,{content:n})}export{r as default};

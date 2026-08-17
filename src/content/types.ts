@@ -34,7 +34,20 @@ export type SectionBlock =
   | { kind: "steps"; steps: StepEntry[] }
   /** Unordered set of destinations. Use instead of `steps` when there is no sequence. */
   | { kind: "links"; links: LinkEntry[] }
-  | { kind: "code"; code: string; caption?: string };
+  | { kind: "code"; code: string; caption?: string }
+  /**
+   * Alternative routes to the same outcome — e.g. three ways to install.
+   * Order them easiest-first: the first tab is the one shown by default, and
+   * most readers never open the others.
+   */
+  | { kind: "tabs"; tabs: TabEntry[] };
+
+export interface TabEntry {
+  label: string;
+  /** Short mono caption under the tab strip, e.g. "recommended". */
+  note?: string;
+  blocks: SectionBlock[];
+}
 
 export interface SectionContent {
   id: string;

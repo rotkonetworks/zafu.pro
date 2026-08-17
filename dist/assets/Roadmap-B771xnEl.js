@@ -1,0 +1,1 @@
+import{g as e}from"./index-Dhi5If0g.js";import{t}from"./ContentPage-DuttPapg.js";import{n}from"./zafu-kkU-FcS8.js";function r(){return e(t,{content:n})}export{r as default};

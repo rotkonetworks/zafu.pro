@@ -1,7 +1,7 @@
 import { For } from "solid-js";
 import Page from "./Page";
 import SpecItem from "./SpecItem";
-import { SubSection, SpecGrid, Steps, LinkList, CodeBlock } from "./PageKit";
+import { SubSection, SpecGrid, Steps, LinkList, CodeBlock, Tabs } from "./PageKit";
 import type { PageContent, SectionBlock } from "../content/types";
 
 // Content is static data, so plain narrowing (no reactive tracking) is fine here.
@@ -28,6 +28,21 @@ function Block(props: { block: SectionBlock }) {
   }
   if (b.kind === "links") {
     return <LinkList items={b.links.map((l) => ({ ...l }))} />;
+  }
+  if (b.kind === "tabs") {
+    return (
+      <Tabs
+        tabs={b.tabs.map((t) => ({
+          label: t.label,
+          note: t.note,
+          panel: (
+            <div class="space-y-6">
+              <For each={t.blocks}>{(block) => <Block block={block} />}</For>
+            </div>
+          ),
+        }))}
+      />
+    );
   }
   return <CodeBlock code={b.code} caption={b.caption} />;
 }
