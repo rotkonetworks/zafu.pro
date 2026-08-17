@@ -26,18 +26,10 @@ export default function Nav() {
         <div class="flex items-center gap-6">
           <A
             href="/"
-            class="group flex items-center gap-2 font-mono text-lg font-semibold text-text hover:text-accent transition-colors"
+            class="font-mono text-lg font-semibold text-text hover:text-accent transition-colors"
             aria-label="zafu.pro home"
           >
-            <img
-              src="/media/logos/zafu-enso-512.png"
-              alt=""
-              aria-hidden="true"
-              class="h-6 w-6 shrink-0"
-            />
-            <span>
-              zafu<span class="text-accent">.</span>pro
-            </span>
+            zafu<span class="text-accent">.</span>pro
           </A>
           {/* Product switcher */}
           <div class="flex border border-border text-xs font-mono">

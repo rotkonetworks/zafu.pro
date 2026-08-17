@@ -6,7 +6,15 @@ export default function ZafuHome() {
   return (
     <Page title="Zafu" stamp="">
       {/* hero */}
-      <div class="grid items-center gap-12 lg:grid-cols-2">
+      <div class="relative">
+        {/* atmospheric enso — decorative, sits behind the content */}
+        <img
+          src="/media/logos/zafu-enso-512.png"
+          alt=""
+          aria-hidden="true"
+          class="pointer-events-none select-none absolute -top-16 -right-6 -z-10 w-72 max-w-[55%] opacity-[0.06] blur-[1px]"
+        />
+        <div class="grid items-center gap-12 lg:grid-cols-2">
         <div>
           <h1 class="text-4xl font-bold text-text sm:text-5xl">Zafu</h1>
           <p class="mt-4 max-w-xl text-lg text-muted">
@@ -52,6 +60,7 @@ export default function ZafuHome() {
           </p>
         </div>
         <WalletDemo class="w-full max-w-lg justify-self-center" />
+        </div>
       </div>
 
       {/* quick pillars */}
