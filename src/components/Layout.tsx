@@ -2,6 +2,7 @@ import { Suspense, type ParentComponent } from "solid-js";
 import { ThemeProvider } from "./ThemeProvider";
 import Nav from "./Nav";
 import Footer from "./Footer";
+import Canonical from "./Canonical";
 
 /**
  * Shared shell for every route: theme context, nav, page content, footer.
@@ -11,6 +12,7 @@ import Footer from "./Footer";
 const Layout: ParentComponent = (props) => {
   return (
     <ThemeProvider>
+      <Canonical />
       <div class="min-h-screen flex flex-col bg-bg text-text">
         <Nav />
         <main class="flex-1">

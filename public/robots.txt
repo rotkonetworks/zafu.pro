@@ -1,0 +1,8 @@
+# zafu.pro
+#
+# Served as a real file. Before this existed the SPA fallback answered
+# /robots.txt with index.html, so crawlers got HTML with a 200 and no rules.
+User-agent: *
+Allow: /
+
+Sitemap: https://zafu.pro/sitemap.xml
