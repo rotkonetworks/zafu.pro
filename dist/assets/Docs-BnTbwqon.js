@@ -1,0 +1,1 @@
+import{_ as e}from"./index-CzwAhvGh.js";import{t}from"./ContentPage-eec5OENa.js";import{t as n}from"./zigner-CRjZZcCj.js";function r(){return e(t,{content:n,toc:!0})}export{r as default};
