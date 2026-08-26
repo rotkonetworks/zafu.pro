@@ -328,15 +328,34 @@ export const zafuDocs: PageContent = {
   sections: [
     {
       id: "install",
-      title: "Installing the Latest Beta",
-      lede: "Zafu is in beta: the Chrome Web Store build lags while reviews land, so GitHub always has the newest release. Some apps (like zk.poker) need the latest beta.",
+      title: "Installing Zafu",
+      lede: "Install from the Chrome Web Store. Zafu is still in beta, and store releases wait on review, so when a review is pending the newest build is on GitHub - some apps (like zk.poker) need it.",
       blocks: [
+        {
+          kind: "links",
+          links: [
+            {
+              title: "Chrome Web Store",
+              value: "recommended",
+              href: "https://chromewebstore.google.com/detail/zafu-wallet-beta/bhlogefpcebekhjpomlodifcelldoimn",
+              description:
+                "One click, and Chrome keeps it updated for you. The right choice unless you need a build that has not cleared review yet.",
+            },
+            {
+              title: "GitHub releases",
+              value: "newest",
+              href: "https://github.com/rotkonetworks/zafu/releases/latest",
+              description:
+                "The latest beta, ahead of the store whenever a review is pending. Loaded unpacked, and updated by hand - see below.",
+            },
+          ],
+        },
         {
           kind: "steps",
           steps: [
             {
               title: "Download",
-              body: "Grab zafu-beta-*.zip (or .crx) from the latest GitHub release and unzip it.",
+              body: "Only needed for the GitHub route. Grab zafu-beta-*.zip (or .crx) from the latest release and unzip it.",
               link: {
                 href: "https://github.com/rotkonetworks/zafu/releases/latest",
                 text: "download latest zafu-beta (.zip / .crx) →",

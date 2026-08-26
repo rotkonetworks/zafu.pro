@@ -24,25 +24,23 @@ export default function ZafuHome() {
           </p>
           <div class="mt-8 flex flex-wrap items-center gap-3">
             <a
-              href="https://github.com/rotkonetworks/zafu/releases/latest"
+              href="https://chromewebstore.google.com/detail/zafu-wallet-beta/bhlogefpcebekhjpomlodifcelldoimn"
               class="transition-opacity hover:opacity-80"
-              title="Latest beta — always newest"
-            >
-              <img src="/badge-github.png" alt="Get it on GitHub" class="h-13 w-auto" />
-            </a>
-            <span
-              class="group relative inline-block"
-              title="Chrome Web Store build temporarily unavailable"
+              title="Install Zafu from the Chrome Web Store"
             >
               <img
                 src="/badge-chrome.png"
-                alt="Available in the Chrome Web Store (outdated build)"
-                class="h-13 w-auto opacity-60 grayscale"
+                alt="Available in the Chrome Web Store"
+                class="h-13 w-auto"
               />
-              <span class="pointer-events-none absolute -right-1 -top-1 rounded-sm border border-accent/50 bg-bg px-1.5 py-0.5 font-mono text-[10px] leading-none text-accent">
-                outdated
-              </span>
-            </span>
+            </a>
+            <a
+              href="https://github.com/rotkonetworks/zafu/releases/latest"
+              class="transition-opacity hover:opacity-80"
+              title="Latest beta build, ahead of the store when a review is pending"
+            >
+              <img src="/badge-github.png" alt="Get it on GitHub" class="h-13 w-auto" />
+            </a>
             <A
               href="/zafu/docs#install"
               class="border border-border px-5 py-3 font-mono text-sm text-text transition-colors hover:border-border-strong"
@@ -54,8 +52,7 @@ export default function ZafuHome() {
             free · open source · MIT licensed
           </p>
           <p class="mt-2 font-mono text-xs text-dim2">
-            the Chrome Web Store build is outdated while reviews land — GitHub has the
-            newest release.
+            GitHub carries the newest beta while a store review is pending.
           </p>
         </div>
         <WalletDemo class="w-full max-w-lg justify-self-center" />
