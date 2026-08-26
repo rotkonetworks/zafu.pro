@@ -430,6 +430,91 @@ export const zignerDocs: PageContent = {
       ],
     },
     {
+      id: "going-offline",
+      title: "Taking the Device Offline",
+      lede: "The air gap is the whole security model: an attacker who owns your laptop still cannot reach a phone with no radio on. It is a discipline rather than a setting, and the order matters - everything that needs a network happens first, once, and then never again.",
+      blocks: [
+        {
+          kind: "steps",
+          steps: [
+            {
+              title: "Start with a phone you already own",
+              body: "An old Android you have stopped carrying is close to ideal. It needs no SIM, no plan and no service - only a working screen and camera. Factory reset it so nothing from its previous life is still installed.",
+            },
+            {
+              title: "If you are choosing one, Pixel 8 or later",
+              body: "Those hold the key-wrapping secret in StrongBox, on the discrete Titan M2 chip, rather than in the TEE beside the main processor. Older phones fall back to the TEE-backed keystore - still a hardware boundary, just a softer one.",
+            },
+            {
+              title: "Take every update while it is still online",
+              body: "Run the system and Google Play system updates until the phone reports there are none left, then check once more after the reboot. This is the only chance it gets: an offline device never receives another security patch, so whatever version you strand it on is the version it keeps. Do this before installing anything.",
+            },
+            {
+              title: "Install Zigner, and nothing else",
+              body: "Add the F-Droid repository and check the fingerprint against the one published on foss.rotko.net, or install the signed APK from a GitHub release. Verify before installing, not after. Nothing else goes on this phone - no browser, no camera app, no messenger.",
+            },
+            {
+              title: "Pull the SIM, then turn off every radio",
+              body: "Airplane mode alone is not enough: Android will leave Wi-Fi or Bluetooth on inside it, and can re-enable them after a reboot. Turn off Wi-Fi, Bluetooth, NFC and location individually, then put it in airplane mode on top. Remove the SIM so there is no cellular path at all, and forget any saved networks.",
+            },
+            {
+              title: "Generate the seed here, offline",
+              body: "Create the seed on the air-gapped device, never on an online one. A seed that has existed on a networked machine cannot be un-exposed, no matter where it is moved afterwards.",
+            },
+            {
+              title: "Never reconnect it",
+              body: "If it joins a network even once - a remembered Wi-Fi profile, someone charging it from a laptop - the gap is gone. Treat it as compromised: move the funds using a signer you still trust, then re-provision this one from scratch.",
+            },
+            {
+              title: "Prove it works before relying on it",
+              body: "Sign and broadcast a small amount and confirm it lands. Then confirm the seed backup actually restores, on a second wiped device if you can. An untested backup is a guess.",
+            },
+          ],
+        },
+        {
+          kind: "specs",
+          entries: [
+            {
+              title: "One job only",
+              value: "no other apps",
+              description:
+                "Every additional app is code with camera and storage access sitting next to your spending keys - and on an offline phone none of it will ever be patched again.",
+            },
+            {
+              title: "Updating without a network",
+              value: "over the camera",
+              description:
+                "F-Droid cannot reach a device with no radios, so the normal update path stops the moment you go offline. Zigner accepts signed module updates over the same camera channel it uses for signing, which is how it stays current without rejoining a network. The Android OS underneath it does not get that luxury, which is why you patch fully before the gap goes up.",
+            },
+            {
+              title: "Seed backup",
+              value: "paper or metal",
+              description:
+                "Written down, never photographed, never typed into a password manager or a cloud note. More than one copy in more than one place - fire and water are likelier than an attacker.",
+            },
+            {
+              title: "Hardened OS",
+              value: "optional",
+              description:
+                "GrapheneOS on a supported Pixel adds verified boot and a hardened allocator on top of the hardware keystore, and keeps shipping patches for devices Google has dropped. Relock the bootloader after flashing; an unlocked bootloader undoes much of what verified boot is for.",
+            },
+            {
+              title: "Spread the risk",
+              value: "FROST t-of-n",
+              description:
+                "One device holding one seed is one thing to lose, steal or coerce. A threshold group across several devices in several places means no single device can spend, and losing one is an inconvenience rather than a loss. See FROST Setup below.",
+            },
+            {
+              title: "Physical custody",
+              value: "tamper-evident",
+              description:
+                "Once the network is gone, physical access is the remaining attack. Store it somewhere interference would be noticed; a tamper-evident bag is cheap and makes an opened device obvious.",
+            },
+          ],
+        },
+      ],
+    },
+    {
       id: "qr",
       title: "QR Signing Protocol",
       lede: "All communication is one-directional per leg: camera in, screen out. Payloads are UR-encoded, fountain-coded with RaptorQ, and displayed as animated APNG QR sequences reconstructible from any sufficient subset of frames.",
