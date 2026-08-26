@@ -328,50 +328,69 @@ export const zafuDocs: PageContent = {
   sections: [
     {
       id: "install",
-      title: "Installing Zafu",
-      lede: "Install from the Chrome Web Store. Zafu is still in beta, and store releases wait on review, so when a review is pending the newest build is on GitHub - some apps (like zk.poker) need it.",
+      title: "Installing",
+      lede: "Two routes to the same wallet, easiest first. Zafu is in beta and store releases wait on review, so when one is pending the newest build is on GitHub - some apps (like zk.poker) need it.",
       blocks: [
         {
-          kind: "links",
-          links: [
+          kind: "tabs",
+          tabs: [
             {
-              title: "Chrome Web Store",
-              value: "recommended",
-              href: "https://chromewebstore.google.com/detail/zafu-wallet-beta/bhlogefpcebekhjpomlodifcelldoimn",
-              description:
-                "One click, and Chrome keeps it updated for you. The right choice unless you need a build that has not cleared review yet.",
+              label: "Chrome Web Store",
+              note: "recommended",
+              blocks: [
+                {
+                  kind: "steps",
+                  steps: [
+                    {
+                      title: "Install",
+                      body: "Open the listing and click Add to Chrome. Chrome keeps it updated from then on - there is nothing else to do.",
+                      link: {
+                        href: "https://chromewebstore.google.com/detail/zafu-wallet-beta/bhlogefpcebekhjpomlodifcelldoimn",
+                        text: "Zafu on the Chrome Web Store →",
+                      },
+                    },
+                    {
+                      title: "Pin it",
+                      body: "Click the puzzle-piece icon in the toolbar and pin Zafu, so the popup is one click away.",
+                    },
+                  ],
+                },
+              ],
             },
             {
-              title: "GitHub releases",
-              value: "newest",
-              href: "https://github.com/rotkonetworks/zafu/releases/latest",
-              description:
-                "The latest beta, ahead of the store whenever a review is pending. Loaded unpacked, and updated by hand - see below.",
-            },
-          ],
-        },
-        {
-          kind: "steps",
-          steps: [
-            {
-              title: "Download",
-              body: "Only needed for the GitHub route. Grab zafu-beta-*.zip (or .crx) from the latest release and unzip it.",
-              link: {
-                href: "https://github.com/rotkonetworks/zafu/releases/latest",
-                text: "download latest zafu-beta (.zip / .crx) →",
-              },
-            },
-            {
-              title: "Enable developer mode",
-              body: "Open chrome://extensions and toggle Developer mode on (top right).",
-            },
-            {
-              title: "Load unpacked",
-              body: "Click Load unpacked and pick the unzipped folder.",
-            },
-            {
-              title: "Reload",
-              body: "Reload any open dapp pages so they see the new wallet version. To update later, download the new zip and Load unpacked again.",
+              label: "GitHub",
+              note: "newest beta",
+              blocks: [
+                {
+                  kind: "steps",
+                  steps: [
+                    {
+                      title: "Download",
+                      body: "Grab zafu-beta-*.zip (or .crx) from the latest release and unzip it.",
+                      link: {
+                        href: "https://github.com/rotkonetworks/zafu/releases/latest",
+                        text: "download latest zafu-beta (.zip / .crx) →",
+                      },
+                    },
+                    {
+                      title: "Enable developer mode",
+                      body: "Open chrome://extensions and toggle Developer mode on (top right).",
+                    },
+                    {
+                      title: "Load unpacked",
+                      body: "Click Load unpacked and pick the unzipped folder.",
+                    },
+                    {
+                      title: "Reload",
+                      body: "Reload any open dapp pages so they see the new wallet version.",
+                    },
+                    {
+                      title: "Updating",
+                      body: "This route does not update itself. Download the new zip and Load unpacked again each time - or switch to the store build once your release has cleared review.",
+                    },
+                  ],
+                },
+              ],
             },
           ],
         },

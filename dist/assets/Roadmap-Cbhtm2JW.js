@@ -1,0 +1,1 @@
+import{_ as e}from"./index-CzgEGDo4.js";import{t}from"./ContentPage-DB-6_Esc.js";import{n}from"./zafu-DGI1_6jN.js";function r(){return e(t,{content:n})}export{r as default};
