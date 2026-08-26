@@ -15,16 +15,18 @@ export default function ZignerHome() {
           </p>
           <div class="mt-8 flex flex-wrap items-center gap-3">
             <a
-              href="https://github.com/rotkonetworks/zigner/releases"
-              class="transition-opacity hover:opacity-80"
-            >
-              <img src="/badge-github.png" alt="Get it on GitHub" class="h-13 w-auto" />
-            </a>
-            <a
               href="https://foss.rotko.net"
               class="transition-opacity hover:opacity-80"
+              title="Install from our F-Droid repository - updates arrive automatically"
             >
               <img src="/badge-fdroid.png" alt="Get it on F-Droid" class="h-13 w-auto" />
+            </a>
+            <a
+              href="https://github.com/rotkonetworks/zigner/releases"
+              class="transition-opacity hover:opacity-80"
+              title="Signed APKs, updated by hand"
+            >
+              <img src="/badge-github.png" alt="Get it on GitHub" class="h-13 w-auto" />
             </a>
             {/* Google Play — hidden until the listing is live; restore this badge then.
             <img
