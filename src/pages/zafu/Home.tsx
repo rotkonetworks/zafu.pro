@@ -110,11 +110,11 @@ export default function ZafuHome() {
             <p class="mt-3 font-mono text-xs text-accent">zkbtc.org →</p>
           </a>
           <a
-            href="https://dex.rotko.net"
+            href="https://penumbra.fi"
             class="card group block transition-colors hover:border-border-strong"
           >
             <div class="flex items-baseline justify-between gap-3">
-              <h3 class="text-base font-semibold text-text">dex.rotko.net</h3>
+              <h3 class="text-base font-semibold text-text">Penumbra DEX</h3>
               <span class="shrink-0 border border-border px-1.5 py-0.5 font-mono text-xs uppercase tracking-wider text-muted">
                 live
               </span>
@@ -123,7 +123,7 @@ export default function ZafuHome() {
               Penumbra DEX frontend. Shielded batch swaps with no price discovery to
               validators — MEV-free, no slippage surveillance. Trade straight from Zafu.
             </p>
-            <p class="mt-3 font-mono text-xs text-accent">dex.rotko.net →</p>
+            <p class="mt-3 font-mono text-xs text-accent">penumbra.fi →</p>
           </a>
         </div>
       </div>
