@@ -127,6 +127,48 @@ export default function ZafuHome() {
           </a>
         </div>
       </div>
+
+      {/* networks */}
+      <div class="mt-20">
+        <div class="mb-6 flex items-baseline gap-3">
+          <h2 class="text-2xl font-semibold text-text">Networks</h2>
+          <span class="font-mono text-xs text-muted">what zafu is built on</span>
+        </div>
+        <div class="grid gap-4 sm:grid-cols-2">
+          <a
+            href="https://z.cash"
+            class="card group block transition-colors hover:border-border-strong"
+          >
+            <div class="flex items-baseline justify-between gap-3">
+              <h3 class="text-base font-semibold text-text">Zcash</h3>
+              <span class="shrink-0 border border-border px-1.5 py-0.5 font-mono text-xs uppercase tracking-wider text-muted">
+                ironwood
+              </span>
+            </div>
+            <p class="mt-2 text-sm leading-relaxed text-muted">
+              Shielded payments with client-side proving. Ironwood is the active pool;
+              Orchard is legacy, migrate-only through the NU6.3 turnstile.
+            </p>
+            <p class="mt-3 font-mono text-xs text-accent">z.cash →</p>
+          </a>
+          <a
+            href="https://penumbra.fi"
+            class="card group block transition-colors hover:border-border-strong"
+          >
+            <div class="flex items-baseline justify-between gap-3">
+              <h3 class="text-base font-semibold text-text">Penumbra</h3>
+              <span class="shrink-0 border border-border px-1.5 py-0.5 font-mono text-xs uppercase tracking-wider text-muted">
+                decaf377
+              </span>
+            </div>
+            <p class="mt-2 text-sm leading-relaxed text-muted">
+              Fully shielded chain: batch swaps on the DEX, staking, governance voting and
+              IBC transfers — every one of them private by default.
+            </p>
+            <p class="mt-3 font-mono text-xs text-accent">penumbra.fi →</p>
+          </a>
+        </div>
+      </div>
     </Page>
   );
 }
