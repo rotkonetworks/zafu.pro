@@ -72,6 +72,16 @@ export default function Nav() {
             )}
           </For>
           <li>
+            <A
+              href="/blog"
+              class="text-sm transition-colors"
+              activeClass="text-accent"
+              inactiveClass="text-muted hover:text-text"
+            >
+              blog
+            </A>
+          </li>
+          <li>
             <a
               href="https://github.com/rotkonetworks/zafu"
               target="_blank"

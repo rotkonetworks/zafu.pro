@@ -52,7 +52,7 @@ const ZAPPS: Zapp[] = [
       "Share a secret with a ZID contact, optionally on a delay. Encrypted to the recipient, so the host holds ciphertext and nothing else.",
     status: "planned",
     gap:
-      "Two unsolved pieces. Contact discovery: ZID is ed25519, so encrypting to someone needs an X25519 conversion and a way to look their key up. Time-release: releasing on a schedule means either a party trusted to hold the key until then — which gives away the point — or a threshold beacon like drand. Worth costing before promising the feature.",
+      "Contact discovery now exists in the SDK (@zafu/zid): a pairwise root secret from the contact card, per-epoch rendezvous tags, and a blind relay that pads every write, so a lookup never hands the relay your contact list. What is missing is the relay endpoint and the wallet-side wiring. Time-release is still unsolved: releasing on a schedule means either a party trusted to hold the key until then (which gives away the point) or a threshold beacon like drand. Worth costing before promising the feature.",
   },
   {
     name: "ZID messaging",

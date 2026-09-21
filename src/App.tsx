@@ -20,6 +20,11 @@ const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Brand = lazy(() => import("./pages/Brand"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
+// Blog: markdown posts compiled at build time (virtual:zafu-posts). Lazy so
+// the rendered-HTML payload only loads on /blog routes.
+const Blog = lazy(() => import("./pages/Blog"));
+const BlogPost = lazy(() => import("./pages/BlogPost"));
+
 // Lazy like every other route: Release pulls in the QR renderer, and importing
 // it eagerly put that ~23 kB in the entry chunk that every page loads.
 const Release = lazy(() => import("./pages/Release"));
@@ -47,6 +52,9 @@ export default function App() {
         <Route path="/docs" component={ZignerDocs} />
         <Route path="/roadmap" component={ZignerRoadmap} />
       </Route>
+
+      <Route path="/blog" component={Blog} />
+      <Route path="/blog/:slug" component={BlogPost} />
 
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/brand" component={Brand} />
