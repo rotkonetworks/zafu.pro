@@ -61,7 +61,7 @@ export interface PageContent {
   title: string;
   heading: string;
   lede?: string;
-  /** Kanji for the header hanko stamp (e.g. 座蒲 for Zafu, 印 for Zigner). */
+  /** Kanji for the header hanko stamp (default 秘 for Zafu, 印 for Zigner). */
   stamp?: string;
   sections: SectionContent[];
 }

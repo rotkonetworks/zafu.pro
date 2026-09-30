@@ -27,7 +27,8 @@ const T = {
   goldFg: "#141008",
   hanko: "#c73e3a",
 };
-const mono = "'JetBrains Mono', monospace";
+const mono = "var(--font-mono)";
+const display = "var(--font-display)";
 
 /** Real Zafu donation address — the receive QR below is live, not a mockup. */
 const ADDRESS = DONATION_ADDRESS;
@@ -81,7 +82,7 @@ function BackRow(props: { title: string; onBack: () => void }) {
         style={{
           background: T.elev2,
           border: "none",
-          "border-radius": "4px",
+          "border-radius": "0",
           color: T.fg,
           width: "26px",
           height: "26px",
@@ -100,7 +101,7 @@ function BackRow(props: { title: string; onBack: () => void }) {
 const inputStyle = {
   background: T.elev2,
   border: `1px solid ${T.border}`,
-  "border-radius": "4px",
+  "border-radius": "0",
   color: T.fgHigh,
   "font-family": mono,
   "font-size": "12px",
@@ -113,7 +114,7 @@ const goldBtn = {
   background: T.gold,
   color: T.goldFg,
   border: "none",
-  "border-radius": "6px",
+  "border-radius": "0",
   padding: "8px 0",
   "font-family": mono,
   "font-size": "12px",
@@ -214,7 +215,7 @@ export default function WalletDemo(props: { class?: string }) {
       class={props.class ?? ""}
       style={{
         border: "1px solid var(--color-border)",
-        "border-radius": "10px",
+        "border-radius": "0",
         overflow: "hidden",
         background: "var(--color-bg-elevated)",
         "box-shadow": "0 12px 32px -16px rgba(0,0,0,0.5)",
@@ -258,14 +259,14 @@ export default function WalletDemo(props: { class?: string }) {
       <div style={{ background: T.canvas, padding: "16px", "min-height": "300px" }}>
         {/* ---------------- home ---------------- */}
         <Show when={view() === "home"}>
-          <div style={{ display: "grid", "grid-template-columns": "1fr auto", gap: "14px" }}>
+          <div class="demo-cols" style={{ display: "grid", "grid-template-columns": "1fr auto", gap: "14px" }}>
             <div style={{ display: "flex", "flex-direction": "column", gap: "10px", "min-width": "0" }}>
               <div style={{ padding: "0 2px" }}>
                 <div style={{ "font-family": mono, "font-size": "11px", color: T.fgDim, "letter-spacing": "0.05em" }}>
                   your address
                 </div>
                 <div style={{ display: "flex", "align-items": "center", gap: "6px", "margin-top": "3px" }}>
-                  <span style={{ background: "rgba(244,183,40,0.15)", color: T.gold, "font-family": mono, "font-size": "10px", padding: "2px 6px", "border-radius": "3px", "line-height": "1" }}>
+                  <span style={{ background: "rgba(244,183,40,0.15)", color: T.gold, "font-family": mono, "font-size": "10px", padding: "2px 6px", "border-radius": "0", "line-height": "1" }}>
                     m/0
                   </span>
                   <span style={{ "font-family": mono, "font-size": "11px", color: T.fg, overflow: "hidden", "text-overflow": "ellipsis", "white-space": "nowrap" }}>
@@ -274,9 +275,9 @@ export default function WalletDemo(props: { class?: string }) {
                 </div>
               </div>
 
-              <div style={{ background: T.elev1, border: `1px solid ${T.borderSoft}`, "border-radius": "6px", padding: "14px" }}>
+              <div style={{ background: T.elev1, border: `1px solid ${T.borderSoft}`, "border-radius": "0", padding: "14px" }}>
                 <Kicker>total balance</Kicker>
-                <div style={{ "margin-top": "5px", "font-family": mono, "font-size": "26px", "line-height": "1", color: T.gold, "font-variant-numeric": "tabular-nums" }}>
+                <div style={{ "margin-top": "5px", "font-family": display, "font-size": "28px", "line-height": "1", color: T.gold, "font-variant-numeric": "tabular-nums" }}>
                   12.4501 ZEC
                 </div>
                 <div style={{ "margin-top": "5px", "font-family": mono, "font-size": "11px", color: T.fgDim, "font-variant-numeric": "tabular-nums" }}>
@@ -284,31 +285,31 @@ export default function WalletDemo(props: { class?: string }) {
                 </div>
               </div>
 
-              <div style={{ background: T.elev1, border: `1px solid ${T.borderSoft}`, "border-radius": "6px", padding: "10px 14px", display: "flex", "align-items": "center", gap: "8px" }}>
+              <div style={{ background: T.elev1, border: `1px solid ${T.borderSoft}`, "border-radius": "0", padding: "10px 14px", display: "flex", "align-items": "center", gap: "8px" }}>
                 <span style={{ "font-family": mono, "font-size": "12px", color: T.fgHigh }}>multisig wallets</span>
-                <span style={{ background: "rgba(244,183,40,0.15)", color: T.gold, "font-family": mono, "font-size": "10px", padding: "2px 6px", "border-radius": "9px", "line-height": "1" }}>2/3</span>
+                <span style={{ background: "rgba(244,183,40,0.15)", color: T.gold, "font-family": mono, "font-size": "10px", padding: "2px 6px", "border-radius": "0", "line-height": "1" }}>2/3</span>
                 <span style={{ "margin-left": "auto", "font-family": mono, "font-size": "12px", color: T.fgMuted, "font-variant-numeric": "tabular-nums" }}>3.2000 ZEC</span>
               </div>
 
               <div style={{ display: "grid", "grid-template-columns": "1fr 1fr 1fr", gap: "8px" }}>
                 <button title="receive" aria-label="receive" onClick={() => go("receive")}
-                  style={{ height: "40px", background: T.elev2, color: T.fg, border: "none", "border-radius": "6px", display: "flex", "align-items": "center", "justify-content": "center" }}>
+                  style={{ height: "40px", background: T.elev2, color: T.fg, border: "none", "border-radius": "0", display: "flex", "align-items": "center", "justify-content": "center" }}>
                   <span class="i-lucide-arrow-down" style={{ width: "18px", height: "18px" }} />
                 </button>
                 <button title="swap" aria-label="swap" onClick={() => go("swap")}
-                  style={{ height: "40px", background: T.elev2, color: T.fg, border: "none", "border-radius": "6px", display: "flex", "align-items": "center", "justify-content": "center" }}>
+                  style={{ height: "40px", background: T.elev2, color: T.fg, border: "none", "border-radius": "0", display: "flex", "align-items": "center", "justify-content": "center" }}>
                   <span class="i-lucide-arrow-left-right" style={{ width: "18px", height: "18px" }} />
                 </button>
                 <button title="send" aria-label="send" onClick={() => go("send")}
-                  style={{ height: "40px", background: T.gold, color: T.goldFg, border: "none", "border-radius": "6px", display: "flex", "align-items": "center", "justify-content": "center" }}>
+                  style={{ height: "40px", background: T.gold, color: T.goldFg, border: "none", "border-radius": "0", display: "flex", "align-items": "center", "justify-content": "center" }}>
                   <span class="i-lucide-arrow-up" style={{ width: "18px", height: "18px" }} />
                 </button>
               </div>
             </div>
 
-            <div style={{ background: T.elev1, border: `1px solid ${T.borderSoft}`, "border-radius": "6px", padding: "12px", display: "flex", "flex-direction": "column", "align-items": "center", gap: "8px" }}>
+            <div style={{ background: T.elev1, border: `1px solid ${T.borderSoft}`, "border-radius": "0", padding: "12px", display: "flex", "flex-direction": "column", "align-items": "center", gap: "8px" }}>
               <Kicker>sign via qr</Kicker>
-              <div style={{ background: T.fgHigh, padding: "8px", "border-radius": "4px" }}>
+              <div style={{ background: T.fgHigh, padding: "8px", "border-radius": "0" }}>
                 <AnimatedQR size={116} dark={T.canvas} light={T.fgHigh} />
               </div>
             </div>
@@ -320,11 +321,11 @@ export default function WalletDemo(props: { class?: string }) {
           <div style={{ display: "flex", "flex-direction": "column", gap: "12px" }}>
             <BackRow title="receive · zafu donations" onBack={() => go("home")} />
             <div style={{ display: "grid", "grid-template-columns": "auto 1fr", gap: "14px", "align-items": "start" }}>
-              <div style={{ background: T.fgHigh, padding: "10px", "border-radius": "4px", width: "fit-content" }}>
+              <div style={{ background: T.fgHigh, padding: "10px", "border-radius": "0", width: "fit-content" }}>
                 <StaticQR data={ADDRESS} size={150} dark={T.canvas} light={T.fgHigh} />
               </div>
               <div style={{ display: "flex", "flex-direction": "column", gap: "10px", "min-width": "0" }}>
-                <div style={{ background: T.elev1, border: `1px solid ${T.borderSoft}`, "border-radius": "6px", padding: "12px" }}>
+                <div style={{ background: T.elev1, border: `1px solid ${T.borderSoft}`, "border-radius": "0", padding: "12px" }}>
                   <Kicker>zafu donation address · unified</Kicker>
                   <div style={{ "margin-top": "6px", "font-family": mono, "font-size": "11px", color: T.fg, "word-break": "break-all", "line-height": "1.6" }}>
                     {ADDRESS}
@@ -346,7 +347,7 @@ export default function WalletDemo(props: { class?: string }) {
         <Show when={view() === "swap"}>
           <div style={{ display: "flex", "flex-direction": "column", gap: "12px" }}>
             <BackRow title="swap · cross-chain" onBack={() => go("home")} />
-            <div style={{ background: T.elev1, border: `1px solid ${T.borderSoft}`, "border-radius": "6px", padding: "12px", display: "flex", "flex-direction": "column", gap: "10px" }}>
+            <div style={{ background: T.elev1, border: `1px solid ${T.borderSoft}`, "border-radius": "0", padding: "12px", display: "flex", "flex-direction": "column", gap: "10px" }}>
               <div style={{ display: "flex", gap: "8px", "align-items": "center" }}>
                 <input
                   value={swapAmt()}
@@ -364,7 +365,7 @@ export default function WalletDemo(props: { class?: string }) {
                           background: swapTo().sym === t.sym ? "rgba(244,183,40,0.15)" : T.elev2,
                           color: swapTo().sym === t.sym ? T.gold : T.fgMuted,
                           border: `1px solid ${swapTo().sym === t.sym ? T.gold : T.border}`,
-                          "border-radius": "4px",
+                          "border-radius": "0",
                           padding: "5px 8px",
                           "font-family": mono,
                           "font-size": "11px",
@@ -405,7 +406,7 @@ export default function WalletDemo(props: { class?: string }) {
                           style={{
                             background: contact()?.name === c.name ? "rgba(244,183,40,0.12)" : T.elev1,
                             border: `1px solid ${contact()?.name === c.name ? T.gold : T.borderSoft}`,
-                            "border-radius": "6px",
+                            "border-radius": "0",
                             padding: "9px 11px",
                             display: "flex",
                             "align-items": "center",
@@ -421,7 +422,7 @@ export default function WalletDemo(props: { class?: string }) {
                       )}
                     </For>
                   </div>
-                  <div style={{ background: T.elev1, border: `1px solid ${T.borderSoft}`, "border-radius": "6px", padding: "12px", display: "flex", "flex-direction": "column", gap: "9px" }}>
+                  <div style={{ background: T.elev1, border: `1px solid ${T.borderSoft}`, "border-radius": "0", padding: "12px", display: "flex", "flex-direction": "column", gap: "9px" }}>
                     <Kicker>amount</Kicker>
                     <div style={{ display: "flex", gap: "6px", "align-items": "center" }}>
                       <input value={sendAmt()} onInput={(e) => setSendAmt(e.currentTarget.value)} style={{ ...inputStyle, "text-align": "right" }} />
@@ -439,7 +440,7 @@ export default function WalletDemo(props: { class?: string }) {
                 </div>
               }
             >
-              <div style={{ background: T.elev1, border: `1px solid ${T.borderSoft}`, "border-radius": "6px", padding: "12px", display: "flex", "flex-direction": "column", gap: "7px" }}>
+              <div style={{ background: T.elev1, border: `1px solid ${T.borderSoft}`, "border-radius": "0", padding: "12px", display: "flex", "flex-direction": "column", gap: "7px" }}>
                 <Kicker>shielded transaction · proof</Kicker>
                 {field("anchor", proof()!.anchor)}
                 {field("nullifier", proof()!.nullifier)}

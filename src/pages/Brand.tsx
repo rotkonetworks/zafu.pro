@@ -6,27 +6,24 @@ import Page from "../components/Page";
  * served from /public/brand. Static — no keys, no logic.
  */
 
-const PALETTE: Array<{ name: string; hex: string; note?: string }> = [
-  { name: "gold", hex: "#f4b728", note: "accent · cold/zigner" },
-  { name: "gold-light", hex: "#fcd34d" },
-  { name: "gold-dark", hex: "#b8860b" },
-  { name: "hanko", hex: "#c73e3a", note: "personality accent" },
-  { name: "blue", hex: "#3b82f6", note: "hot/zafu" },
+const PALETTE = [
   { name: "canvas", hex: "#0c0a08", note: "bg" },
   { name: "elev-1", hex: "#131009" },
   { name: "elev-2", hex: "#1a1611" },
-  { name: "fg-high", hex: "#f2ecdf", note: "text" },
-  { name: "fg-muted", hex: "#948a79" },
-  { name: "border", hex: "#322a21" },
+  { name: "line", hex: "#241f18" },
+  { name: "ink", hex: "#f2ecdf", note: "text" },
+  { name: "muted", hex: "#948a79" },
+  { name: "gold", hex: "#f4b728", note: "action" },
+  { name: "hanko", hex: "#c73e3a", note: "seal only" },
 ];
 
 const SIZES = [16, 32, 48, 128];
 
 const Frame = (props: { children: any; tone?: "dark" | "light" | "checker" }) => (
   <div
-    class="flex items-center justify-center min-h-[150px] p-5 rounded-lg border border-border"
+    class="flex items-center justify-center min-h-[150px] p-5 border border-border"
     classList={{
-      "bg-[#0a0a0a]": props.tone !== "light" && props.tone !== "checker",
+      "bg-[#0c0a08]": props.tone !== "light" && props.tone !== "checker",
       "bg-[#f4f4f4]": props.tone === "light",
     }}
     style={
@@ -47,7 +44,7 @@ const Asset = (props: { src: string; label: string; meta: string; tone?: "dark" 
   <a
     href={props.src}
     download=""
-    class="group block rounded-lg border border-border bg-surface overflow-hidden hover:border-border-strong transition-colors"
+    class="group block border border-border bg-surface overflow-hidden hover:border-border-strong transition-colors"
   >
     <Frame tone={props.tone}>
       <img src={props.src} alt={props.label} class="max-w-full" style={{ "max-height": props.max ?? "200px" }} />
@@ -74,13 +71,13 @@ export default function Brand() {
     <Page
       title="Brand"
       heading="Brand & media kit"
-      lede="Logos, favicons, store and social assets. Warm-black, gold, monospace. Click any asset to download."
+      lede="logos, favicons, store and social assets. sumi ink, one gold, one seal. click any asset to download."
     >
-      <Section title="Palette" sub="Warm-black surfaces. Gold is the cold/zigner accent; vermillion is the personality accent (never a button fill); blue is the hot/zafu side.">
+      <Section title="Palette" sub="warm-black sumi surfaces. gold is the single action colour; hanko red marks the seal and nothing else.">
         <div class="grid gap-3" style={{ "grid-template-columns": "repeat(auto-fill,minmax(150px,1fr))" }}>
           <For each={PALETTE}>
             {(c) => (
-              <div class="rounded-lg border border-border overflow-hidden bg-surface">
+              <div class="border border-border overflow-hidden bg-surface">
                 <div class="h-16" style={{ "background-color": c.hex }} />
                 <div class="px-2.5 py-2 text-[11px]">
                   <div class="text-text">
@@ -95,17 +92,30 @@ export default function Brand() {
         </div>
       </Section>
 
-      <Section title="Logo — enso" sub="The launch / app mark. Transparent, square with margin.">
+      <Section title="Type" sub="iosevka term for body and data; shippori mincho for display headings and big numbers. square corners, lowercase voice.">
+        <div class="grid gap-3 sm:grid-cols-2">
+          <div class="border border-border bg-surface p-5">
+            <div class="font-display text-3xl text-text">秘 12.4501</div>
+            <div class="mt-2 text-[11px] text-muted">shippori mincho · display</div>
+          </div>
+          <div class="border border-border bg-surface p-5">
+            <div class="font-mono text-sm text-text">u1qz8k...4mre · synced</div>
+            <div class="mt-2 text-[11px] text-muted">iosevka term · body, data</div>
+          </div>
+        </div>
+      </Section>
+
+      <Section title="Logo - enso" sub="The launch / app mark. Transparent, square with margin.">
         <div class="grid gap-4" style={{ "grid-template-columns": "repeat(auto-fill,minmax(240px,1fr))" }}>
           <Asset src="/media/logos/zafu-enso-512.png" label="enso" meta="512² · alpha" tone="checker" />
-          <Asset src="/media/logos/zafu-enso-512.png" label="on dark" meta="#0a0a0a" tone="dark" max="150px" />
+          <Asset src="/media/logos/zafu-enso-512.png" label="on dark" meta="#0c0a08" tone="dark" max="150px" />
           <Asset src="/media/logos/zafu-enso-512.png" label="on light" meta="#f4f4f4" tone="light" max="150px" />
           <Asset src="/media/logos/zafu-logo.png" label="source" meta="png" tone="checker" />
         </div>
       </Section>
 
-      <Section title="Favicon — enso vs Z" sub="The detailed enso blurs into a disc at 16px; the plain Z stays legible small. Rendered at real pixels.">
-        <div class="rounded-lg border border-border overflow-hidden">
+      <Section title="Favicon - enso vs Z" sub="The detailed enso blurs into a disc at 16px; the plain Z stays legible small. Rendered at real pixels.">
+        <div class="border border-border overflow-hidden">
           <div class="grid text-[11px]" style={{ "grid-template-columns": "auto 1fr 1fr" }}>
             <div class="px-4 py-3 bg-surface text-muted uppercase tracking-[0.1em]">size</div>
             <div class="px-4 py-3 bg-surface text-muted uppercase tracking-[0.1em]">enso</div>
@@ -117,11 +127,11 @@ export default function Brand() {
                   <For each={["enso", "z"]}>
                     {(kind) => (
                       <div class="px-4 py-4 border-t border-border flex items-center gap-4">
-                        <div class="bg-[#0a0a0a] rounded p-1.5">
+                        <div class="bg-[#0c0a08] p-1.5">
                           <img src={`/media/favicons/${kind}-${s}.png`} width={s} height={s} alt="" />
                         </div>
                         {s < 48 && (
-                          <div class="bg-[#0a0a0a] rounded p-1.5">
+                          <div class="bg-[#0c0a08] p-1.5">
                             <img
                               src={`/media/favicons/${kind}-${s}.png`}
                               width={s * 3}

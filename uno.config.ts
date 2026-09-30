@@ -18,6 +18,8 @@ export default defineConfig({
     colors: {
       bg: "var(--color-bg)",
       surface: "var(--color-bg-elevated)",
+      "surface-2": "var(--color-bg-elevated-2)",
+      hanko: "var(--color-hanko)",
       border: "var(--color-border)",
       "border-strong": "var(--color-border-strong)",
       accent: "var(--color-accent)",
@@ -32,13 +34,15 @@ export default defineConfig({
     fontFamily: {
       sans: "var(--font-sans)",
       mono: "var(--font-mono)",
+      display: "var(--font-display)",
     },
   },
   shortcuts: {
     "section-container": "max-w-3xl mx-auto px-6",
     "accent-link": "text-accent hover:text-text-em transition-colors",
     "card": "bg-surface border border-border p-6",
-    "btn": "inline-flex items-center gap-2 text-sm px-6 py-3 font-semibold transition-opacity hover:opacity-85",
+    "kicker": "font-mono text-xs tracking-wider text-muted",
+    "btn": "inline-flex items-center gap-2 text-sm px-6 py-3 transition-opacity hover:opacity-85",
     "btn-primary": "btn bg-accent text-accent-contrast",
     "btn-outline": "btn border border-border text-text hover:text-text-em",
   },

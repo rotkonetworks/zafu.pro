@@ -1,6 +1,7 @@
 import { For } from "solid-js";
 import { A, useLocation } from "@solidjs/router";
 import { useTheme } from "./ThemeProvider";
+import Hanko from "./Hanko";
 
 const SECTIONS = [
   { label: "security", path: "security" },
@@ -22,14 +23,17 @@ export default function Nav() {
 
   return (
     <nav class="border-b border-border sticky top-0 z-50 bg-bg/90 backdrop-blur">
-      <div class="max-w-5xl mx-auto px-6 flex items-center justify-between py-4 gap-4">
-        <div class="flex items-center gap-6">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 flex flex-wrap items-center gap-x-4 gap-y-3 py-3 sm:py-4">
+        <div class="flex items-center gap-4 sm:gap-6">
           <A
             href="/"
-            class="font-mono text-lg font-semibold text-text hover:text-accent transition-colors"
+            class="flex items-center gap-2 font-mono text-base text-text hover:text-accent transition-colors"
             aria-label="zafu.pro home"
           >
-            zafu<span class="text-accent">.</span>pro
+            <Hanko size={22} tilt={0} />
+            <span>
+              zafu<span class="text-accent">.</span>pro
+            </span>
           </A>
           {/* Product switcher */}
           <div class="flex border border-border text-xs font-mono">
@@ -56,7 +60,7 @@ export default function Nav() {
           </div>
         </div>
 
-        <ul class="flex items-center gap-5 list-none">
+        <ul class="order-last flex w-full flex-wrap items-center gap-x-4 gap-y-2 list-none sm:order-none sm:ml-auto sm:w-auto sm:gap-5">
           <For each={SECTIONS}>
             {(section) => (
               <li>
@@ -91,18 +95,16 @@ export default function Nav() {
               github
             </a>
           </li>
-          <li>
-            <button
-              type="button"
-              onClick={cycleTheme}
-              title={`Theme: ${theme()} (click to cycle)`}
-              aria-label={`Switch theme, current: ${theme()}`}
-              class="text-xs font-mono text-muted hover:text-accent transition-colors border border-border px-2 py-1 bg-transparent cursor-pointer"
-            >
-              {theme()}
-            </button>
-          </li>
         </ul>
+        <button
+          type="button"
+          onClick={cycleTheme}
+          title={`Theme: ${theme()} (click to cycle)`}
+          aria-label={`Switch theme, current: ${theme()}`}
+          class="ml-auto sm:ml-0 text-xs font-mono text-muted hover:text-accent transition-colors border border-border px-2 py-1 bg-transparent cursor-pointer"
+        >
+          {theme()}
+        </button>
       </div>
     </nav>
   );
