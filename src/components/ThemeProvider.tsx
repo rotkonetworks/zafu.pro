@@ -8,17 +8,15 @@ import {
   type ParentComponent,
 } from "solid-js";
 
-export type Theme = "sumi" | "washi" | "terminal";
+export type Theme = "sumi" | "washi";
 
-export const THEMES: readonly Theme[] = ["sumi", "washi", "terminal"] as const;
+export const THEMES: readonly Theme[] = ["sumi", "washi"] as const;
 
 const STORAGE_KEY = "zafu-theme";
 
 interface ThemeContextValue {
   theme: Accessor<Theme>;
-  setTheme: (theme: Theme) => void;
-  cycleTheme: () => void;
-  isDark: Accessor<boolean>;
+  toggleTheme: () => void;
 }
 
 const ThemeContext = createContext<ThemeContextValue>();
@@ -82,15 +80,10 @@ export const ThemeProvider: ParentComponent = (props) => {
     }
   };
 
-  const cycleTheme = () => {
-    const idx = THEMES.indexOf(theme());
-    setTheme(THEMES[(idx + 1) % THEMES.length]);
-  };
-
-  const isDark = () => theme() !== "washi";
+  const toggleTheme = () => setTheme(theme() === "sumi" ? "washi" : "sumi");
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme, cycleTheme, isDark }}>
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
       {props.children}
     </ThemeContext.Provider>
   );

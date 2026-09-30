@@ -2,7 +2,7 @@
 
 /* Fonts: Iosevka Term (body and data, self-hosted), Shippori Mincho (display
    headings and big numbers). The same pair the wallet uses. */
-@import url("https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600&display=swap");
 
 @font-face {
   font-family: "Iosevka Term";
@@ -31,13 +31,18 @@
   --color-bg-elevated: #131009;
   --color-bg-elevated-2: #1a1611;
   --color-text: #f2ecdf;
+  --color-text-body: #ded5c4;
   --color-text-muted: #948a79;
-  --color-text-dim: #6f6656;
+  --color-text-dim: #625a4d;
   --color-accent: #f4b728;
+  --color-accent-hover: #fcd34d;
   --color-accent-contrast: #141008;
   --color-border: #241f18;
-  --color-border-strong: #3a3228;
+  --color-border-strong: #322a21;
   --color-hanko: #c73e3a;
+  --color-ok: #8fbf73;
+  --color-warn: #d9773f;
+  --color-cold: #7fb3d5;
   color-scheme: dark;
 }
 
@@ -49,35 +54,23 @@
 
 /* washi - sumi ink on unbleached paper */
 :root[data-theme="washi"] {
-  --color-bg: #f3eee3;
-  --color-bg-elevated: #ebe4d6;
-  --color-bg-elevated-2: #e3dbca;
-  --color-text: #1a1611;
-  --color-text-muted: #5c5346;
-  --color-text-dim: #7d735f;
-  --color-accent: #f4b728;
-  --color-accent-contrast: #141008;
-  --color-border: #d6cdba;
-  --color-border-strong: #bcb19a;
-  --color-hanko: #b8322e;
+  --color-bg: #f5f0e6;
+  --color-bg-elevated: #fbf8f2;
+  --color-bg-elevated-2: #efe8da;
+  --color-text: #1d1812;
+  --color-text-body: #3b342b;
+  --color-text-muted: #6c6252;
+  --color-text-dim: #6c6252;
+  --color-accent: #a07300;
+  --color-accent-hover: #8a6300;
+  --color-accent-contrast: #fffaf0;
+  --color-border: #e2d8c6;
+  --color-border-strong: #cdbfa7;
+  --color-hanko: #b3322e;
+  --color-ok: #4f7a3a;
+  --color-warn: #a4521f;
+  --color-cold: #3f6f91;
   color-scheme: light;
-}
-
-/* terminal - pure black, no display serif */
-:root[data-theme="terminal"] {
-  --color-bg: #000000;
-  --color-bg-elevated: #0c0c0c;
-  --color-bg-elevated-2: #141414;
-  --color-text: #dcdcdc;
-  --color-text-muted: #8f8f8f;
-  --color-text-dim: #5f5f5f;
-  --color-accent: #f4b728;
-  --color-accent-contrast: #000000;
-  --color-border: #1f1f1f;
-  --color-border-strong: #333333;
-  --color-hanko: #c73e3a;
-  --font-display: var(--font-mono);
-  color-scheme: dark;
 }
 
 /* ---------------------------------------------------------------- */
@@ -91,7 +84,7 @@ html {
 
 body {
   background-color: var(--color-bg);
-  color: var(--color-text);
+  color: var(--color-text-body);
   font-family: var(--font-sans);
   font-size: 15px;
   line-height: 1.65;
@@ -106,8 +99,25 @@ h1,
 h2,
 .font-display {
   font-family: var(--font-display);
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0.01em;
+  color: var(--color-text);
+}
+
+/* Motion: smooth and restrained. Colour and opacity only, never layout. */
+a,
+button {
+  transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .page-in {
+    animation: page-in 0.24s ease-out;
+  }
+  @keyframes page-in {
+    from {
+      opacity: 0;
+    }
+  }
 }
 
 code,
@@ -171,7 +181,7 @@ samp {
 .prose-zafu h2 {
   font-family: var(--font-display);
   font-size: 1.5rem;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1.25;
   margin-top: 2.5rem;
   margin-bottom: 0.25rem;
@@ -179,7 +189,7 @@ samp {
 .prose-zafu h3 {
   font-family: var(--font-display);
   font-size: 1.2rem;
-  font-weight: 700;
+  font-weight: 600;
   margin-top: 1.75rem;
 }
 .prose-zafu a {
@@ -193,7 +203,7 @@ samp {
    the brighter ink plus a quiet underline instead of a fake bold. */
 .prose-zafu strong {
   color: var(--color-text);
-  font-weight: 700;
+  font-weight: 600;
   text-decoration: underline;
   text-decoration-color: var(--color-border-strong);
   text-underline-offset: 0.2em;
@@ -247,10 +257,64 @@ samp {
   margin-top: 0.5rem;
 }
 
-/* Wallet demo on narrow screens: the QR column drops under the balance so
-   neither side gets squeezed into clipping. */
-@media (max-width: 520px) {
-  .demo-cols {
-    grid-template-columns: 1fr !important;
-  }
+/* ---------------------------------------------------------------- */
+/* Product screens (components/Screens.tsx)                         */
+/* Rebuilt from the design canvases. They are pictures of the app,  */
+/* so they keep the app's sumi palette in both site themes.         */
+/* ---------------------------------------------------------------- */
+.app {
+  --hi: #f2ecdf;
+  --mu: #948a79;
+  --line: #241f18;
+  --line2: #322a21;
+  --gold: #f4b728;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 400px;
+  min-height: 628px;
+  background: #0c0a08;
+  color: #ded5c4;
+  border: 1px solid var(--line2);
+  font: 13px/1.4 var(--font-mono);
+  text-align: left;
 }
+.app.phone { max-width: 390px; min-height: 760px; }
+.app * { box-sizing: border-box; }
+.app h1, .app h2 { margin: 0; color: var(--hi); font-weight: 500; }
+.app-bar { height: 28px; flex-shrink: 0; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; font-size: 11px; color: var(--mu); border-bottom: 1px solid #1a1611; }
+.app-head { height: 56px; flex-shrink: 0; padding: 0 16px 0 12px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--line); }
+.app-title { flex-grow: 1; font-family: var(--font-display); font-size: 20px; }
+.app-main { flex-grow: 1; padding: 20px 16px; display: flex; flex-direction: column; gap: 18px; }
+.app-foot { flex-shrink: 0; padding: 12px 16px 16px; border-top: 1px solid var(--line); display: flex; gap: 8px; }
+.app-label { font-size: 12px; color: var(--mu); letter-spacing: 0.04em; }
+.app-meta { font-size: 11px; color: var(--mu); }
+.app-list { display: flex; flex-direction: column; border: 1px solid var(--line); background: #131009; }
+.app-list > * + * { border-top: 1px solid var(--line); }
+.app-row { min-height: 48px; padding: 0 14px; display: flex; align-items: center; gap: 12px; }
+.app-row > .grow { flex-grow: 1; display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.app-btn { flex: 1 1 0; height: 44px; padding: 0 12px; display: flex; align-items: center; justify-content: center; gap: 8px; background: #1a1611; border: 1px solid var(--line); color: var(--hi); white-space: nowrap; }
+.app-btn.pri { background: var(--gold); border-color: var(--gold); color: #141008; }
+.app-btn.tall { height: 56px; font-size: 15px; }
+.app-field { height: 48px; padding: 0 12px; display: flex; align-items: center; background: #131009; border: 1px solid var(--line); color: var(--hi); font-size: 14px; }
+.app-slot { min-height: 40px; padding: 10px 12px; display: flex; align-items: center; gap: 8px; border: 1px solid var(--line); font-size: 12px; }
+.app-big { font-family: var(--font-display); font-size: 44px; line-height: 1.05; color: var(--hi); }
+.app-ico { width: 30px; height: 30px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: #131009; border: 1px solid var(--line); }
+.app-tabs { height: 56px; flex-shrink: 0; display: flex; border-top: 1px solid var(--line); }
+.app-tabs > span { flex: 1 1 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; font-size: 11px; color: var(--mu); }
+.app .hi { color: var(--hi); }
+.app .mu { color: var(--mu); }
+.app .gold { color: var(--gold); }
+.app .ok { color: #8fbf73; }
+.app .warn { color: #d9773f; }
+.app .red { color: #c73e3a; }
+.app .cold { color: #7fb3d5; }
+.app .mincho { font-family: var(--font-display); }
+
+/* Watermark art: one image per theme, kept quiet. */
+.art-sumi { opacity: 0.22; }
+.art-washi { display: none; opacity: 0.3; }
+:root[data-theme="washi"] .art-sumi { display: none; }
+:root[data-theme="washi"] .art-washi { display: block; }

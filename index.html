@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#0c0a08" />
     <title>Zafu · private wallet for Zcash &amp; Penumbra</title>
-    <meta name="description" content="Zafu: private wallet for Zcash and Penumbra, in your browser. Zigner: air-gapped signer. Cold signing, FROST multisig, post-quantum messaging. Open source." />
+    <meta name="description" content="zafu: a shielded wallet for zcash and penumbra, held in your own hands. in the browser, on an offline zigner phone, or with zcli. open source." />
 
     <!-- Favicons: the enso mark -->
     <link rel="icon" type="image/png" sizes="32x32" href="/media/favicons/enso-32.png" />
@@ -26,54 +26,10 @@
     <meta name="twitter:image" content="https://zafu.pro/media/social/cover.png" />
 
     <style>
-      /* Keep the scrollbar gutter reserved so navigating between short and
-         tall pages never shifts the centered layout horizontally. */
+      /* Reserve the scrollbar gutter so short and tall pages never shift the layout. */
       html {
         scrollbar-gutter: stable;
-      }
-
-      /* ==============================================================
-       * Motion language: extremely fast, frame-stepped.
-       * Transitions run in 3 discrete frames over ~90ms (steps(3)) —
-       * they read as instant state changes, terminal-style. Animation
-       * here is texture, never a curtain over latency.
-       * ============================================================== */
-      @media (prefers-reduced-motion: no-preference) {
-        /* clamp every utility transition to the fast stepped profile */
-        *,
-        *::before,
-        *::after {
-          transition-duration: 90ms !important;
-          transition-timing-function: steps(3, end) !important;
-          animation-timing-function: steps(3, end);
-        }
-
-        /* route/page entrance: 3 frames, 90ms, tiny rise */
-        .page-in {
-          animation: page-in 90ms steps(3, end);
-        }
-        @keyframes page-in {
-          from {
-            opacity: 0;
-            transform: translateY(4px);
-          }
-        }
-
-        /* pressed state lands on the very next frame */
-        a:active,
-        button:active {
-          transition: none !important;
-          transform: translateY(1px);
-        }
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        *,
-        *::before,
-        *::after {
-          transition-duration: 1ms !important;
-          animation-duration: 1ms !important;
-        }
+        background: #0c0a08;
       }
     </style>
     <script type="module" src="/src/index.tsx"></script>
