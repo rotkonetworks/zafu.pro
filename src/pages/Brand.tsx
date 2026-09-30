@@ -105,49 +105,21 @@ export default function Brand() {
         </div>
       </Section>
 
-      <Section title="Logo - enso" sub="The launch / app mark. Transparent, square with margin.">
+      <Section title="seal" sub="the zafu mark: 匿 on vermillion. vector master, with png sizes tuned by hand for 16, 32 and 48.">
         <div class="grid gap-4" style={{ "grid-template-columns": "repeat(auto-fill,minmax(240px,1fr))" }}>
-          <Asset src="/media/logos/zafu-enso-512.png" label="enso" meta="512² · alpha" tone="checker" />
-          <Asset src="/media/logos/zafu-enso-512.png" label="on dark" meta="#0c0a08" tone="dark" max="150px" />
-          <Asset src="/media/logos/zafu-enso-512.png" label="on light" meta="#f4f4f4" tone="light" max="150px" />
-          <Asset src="/media/logos/zafu-logo.png" label="source" meta="png" tone="checker" />
+          <Asset src="/media/favicons/seal.svg" label="vector" meta="svg · paths, no font" tone="checker" />
+          <Asset src="/media/logos/zafu-seal-512.png" label="on dark" meta="512² png" tone="dark" max="150px" />
+          <Asset src="/media/logos/zafu-seal-512.png" label="on light" meta="512² png" tone="light" max="150px" />
         </div>
-      </Section>
-
-      <Section title="Favicon - enso vs Z" sub="The detailed enso blurs into a disc at 16px; the plain Z stays legible small. Rendered at real pixels.">
-        <div class="border border-border overflow-hidden">
-          <div class="grid text-[11px]" style={{ "grid-template-columns": "auto 1fr 1fr" }}>
-            <div class="px-4 py-3 bg-surface text-muted uppercase tracking-[0.1em]">size</div>
-            <div class="px-4 py-3 bg-surface text-muted uppercase tracking-[0.1em]">enso</div>
-            <div class="px-4 py-3 bg-surface text-muted uppercase tracking-[0.1em]">plain Z</div>
-            <For each={SIZES}>
-              {(s) => (
-                <>
-                  <div class="px-4 py-4 text-dim2 border-t border-border flex items-center">{s}²</div>
-                  <For each={["enso", "z"]}>
-                    {(kind) => (
-                      <div class="px-4 py-4 border-t border-border flex items-center gap-4">
-                        <div class="bg-[#0c0a08] p-1.5">
-                          <img src={`/media/favicons/${kind}-${s}.png`} width={s} height={s} alt="" />
-                        </div>
-                        {s < 48 && (
-                          <div class="bg-[#0c0a08] p-1.5">
-                            <img
-                              src={`/media/favicons/${kind}-${s}.png`}
-                              width={s * 3}
-                              height={s * 3}
-                              style={{ "image-rendering": "pixelated" }}
-                              alt=""
-                            />
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </For>
-                </>
-              )}
-            </For>
-          </div>
+        <div class="mt-4 flex flex-wrap items-end gap-6 border border-border p-5">
+          <For each={SIZES}>
+            {(s) => (
+              <div class="flex flex-col items-center gap-2 text-[11px] text-muted">
+                <img src={`/media/favicons/seal-${s}.png`} width={s} height={s} alt="" />
+                {s}²
+              </div>
+            )}
+          </For>
         </div>
       </Section>
 
