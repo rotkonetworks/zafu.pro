@@ -1,5 +1,4 @@
 import { createEffect, onMount, type ParentComponent } from "solid-js";
-import { Stamp } from "./Seal";
 
 interface PageProps {
   /** Browser tab title; suffixed with the site name. */
@@ -8,8 +7,6 @@ interface PageProps {
   heading?: string;
   /** Optional short lede under the heading. */
   lede?: string;
-  /** Kanji for an outlined hanko beside the heading; omit for none. */
-  stamp?: string;
 }
 
 /**
@@ -36,12 +33,9 @@ const Page: ParentComponent<PageProps> = (props) => {
   return (
     <div class="page-in mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
       {props.heading && (
-        <header class="mb-12 flex items-start justify-between gap-6">
-          <div>
-            <h1 class="text-4xl sm:text-5xl">{props.heading}</h1>
-            {props.lede && <p class="mt-4 max-w-2xl text-muted">{props.lede}</p>}
-          </div>
-          {props.stamp && <Stamp text={props.stamp} class="mt-2 hidden sm:inline-flex" />}
+        <header class="mb-12">
+          <h1 class="text-4xl sm:text-5xl">{props.heading}</h1>
+          {props.lede && <p class="mt-4 max-w-2xl text-muted">{props.lede}</p>}
         </header>
       )}
       {props.children}

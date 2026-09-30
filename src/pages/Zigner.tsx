@@ -13,7 +13,7 @@ const LOOP = [
 export default function Zigner() {
   return (
     <Page title="zigner, the offline signer">
-      <section class="relative grid grid-cols-1 items-center gap-12 pb-14 lg:grid-cols-[minmax(0,1fr)_390px]">
+      <section class="relative grid grid-cols-1 items-center overflow-hidden gap-12 pb-14 lg:grid-cols-[minmax(0,1fr)_390px]">
         <Watermark sumi="/media/art/castle-sumi.webp" washi="/media/art/castle-washi.webp" class="-right-16 -top-6 h-[600px] w-[440px]" />
         <ProductHead
           name="zigner"

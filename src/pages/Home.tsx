@@ -33,7 +33,7 @@ const WAYS = [
 export default function Home() {
   return (
     <Page title="shielded money, held in your own hands">
-      <section class="relative grid grid-cols-1 items-center gap-12 lg:grid-cols-[minmax(0,1fr)_400px]">
+      <section class="relative grid grid-cols-1 items-center overflow-hidden gap-12 lg:grid-cols-[minmax(0,1fr)_400px]">
         <Watermark sumi="/media/art/bamboo-sumi.webp" washi="/media/art/enso-washi.webp" class="-right-10 -top-8 h-[560px] w-[300px]" />
         <div>
           <span class="flex items-center gap-3">

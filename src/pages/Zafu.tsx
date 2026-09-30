@@ -7,13 +7,13 @@ import { CHROME_STORE_URL, ZAFU_RELEASES_URL } from "../content/links";
 export default function Zafu() {
   return (
     <Page title="zafu, the browser extension">
-      <section class="relative grid grid-cols-1 items-center gap-12 pb-14 lg:grid-cols-[minmax(0,1fr)_400px]">
+      <section class="relative grid grid-cols-1 items-center overflow-hidden gap-12 pb-14 lg:grid-cols-[minmax(0,1fr)_400px]">
         <Watermark sumi="/media/art/bamboo-sumi.webp" washi="/media/art/enso-washi.webp" class="-right-10 -top-8 h-[560px] w-[300px]" />
         <ProductHead
           name="zafu"
           line="the browser extension. a shielded wallet for zcash and penumbra that builds every proof on your own computer."
           base="/zafu"
-          note="the screens on this page are the 1.0 design, which arrives in q4 2026. today's release works the same way with an older look."
+          note="the screens on this page are the 1.0 design, which arrives in q4 2026. today's release looks different, and features still being finished are marked."
         >
           <a href={CHROME_STORE_URL} class="btn-primary">add to chrome</a>
           <a href={ZAFU_RELEASES_URL} class="btn-outline">latest release</a>

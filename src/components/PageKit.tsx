@@ -79,7 +79,7 @@ export const SpecGrid: ParentComponent<{ cols?: 1 | 2 | 3 }> = (props) => {
       : props.cols === 3
         ? "sm:grid-cols-2 lg:grid-cols-3"
         : "sm:grid-cols-2";
-  return <div class={`grid gap-4 ${cols()}`}>{props.children}</div>;
+  return <div class={`grid grid-cols-1 gap-4 ${cols()}`}>{props.children}</div>;
 };
 
 /** Numbered step list for procedural docs. */
@@ -248,7 +248,7 @@ export const Feature: ParentComponent<{ id?: string; title: string; body: string
  */
 export function Watermark(props: { sumi: string; washi: string; class: string }) {
   return (
-    <div aria-hidden="true" class={`pointer-events-none absolute hidden select-none md:block ${props.class}`}>
+    <div aria-hidden="true" class={`pointer-events-none absolute hidden select-none lg:block ${props.class}`}>
       <img src={props.sumi} alt="" class="art-sumi h-full w-full object-contain" />
       <img src={props.washi} alt="" class="art-washi h-full w-full object-contain" />
     </div>

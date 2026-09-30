@@ -41,10 +41,8 @@ export default defineConfig({
     },
   },
   shortcuts: {
-    "section-container": "max-w-3xl mx-auto px-6",
     "accent-link": "text-accent hover:text-text-em transition-colors",
     "card": "bg-surface border border-border p-6",
-    "kicker": "font-mono text-xs tracking-wider text-muted",
     "btn": "inline-flex items-center justify-center gap-2 h-12 px-6 text-sm border border-transparent",
     "btn-primary": "btn bg-accent text-accent-contrast hover:bg-[var(--color-accent-hover)]",
     "btn-outline": "btn bg-surface-2 border-border text-text hover:border-border-strong",

@@ -8,7 +8,7 @@ export default function BlogPost() {
   const post = () => postBySlug(params.slug);
 
   return (
-    <Page title={post()?.title ?? "Post not found"} stamp="">
+    <Page title={post()?.title ?? "Post not found"}>
       <A href="/blog" class="accent-link text-sm">
         &larr; All posts
       </A>

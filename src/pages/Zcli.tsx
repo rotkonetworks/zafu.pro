@@ -52,7 +52,7 @@ export default function Zcli() {
       <SubSection id="install" title="install">
         <SpecGrid cols={2}>
           <a href={ZCLI_RELEASES_URL} class="block">
-            <SpecItem title="release binaries" value="v0.9.0" description="zcli and zclid for linux (x86_64, aarch64) and macos (intel, apple silicon), with sha256 sums." />
+            <SpecItem title="release binaries" value="github" description="zcli and zclid for linux (x86_64, aarch64) and macos (intel, apple silicon), with sha256 sums." />
           </a>
           <a href={ZCLI_AUR_URL} class="block">
             <SpecItem title="arch linux" value="zcli-git" description="built from source on the AUR." />
