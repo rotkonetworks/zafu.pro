@@ -3,13 +3,12 @@ import { SUPPORT_CHANNELS } from "./support";
 
 export const zignerSecurity: PageContent = {
   title: "Zigner Security",
-  heading: "Security",
-  stamp: "印",
+  heading: "security",
   lede: "Zigner is an air-gapped signer for a dedicated Android phone. Keys are wrapped by hardware-backed keystores, and the only I/O channel is the camera and screen.",
   sections: [
     {
       id: "key-storage",
-      title: "Hardware Key Storage",
+      title: "hardware key storage",
       blocks: [
         {
           kind: "specs",
@@ -44,7 +43,7 @@ export const zignerSecurity: PageContent = {
     },
     {
       id: "air-gap",
-      title: "Air Gap & QR Protocol",
+      title: "air gap & QR protocol",
       lede: "Zigner is intended to run on a device with radios permanently disabled. All communication with the online wallet is camera-in, screen-out.",
       blocks: [
         {
@@ -101,7 +100,7 @@ export const zignerSecurity: PageContent = {
     },
     {
       id: "android",
-      title: "Android Hardening",
+      title: "android hardening",
       blocks: [
         {
           kind: "specs",
@@ -110,7 +109,7 @@ export const zignerSecurity: PageContent = {
               title: "Minimum SDK",
               value: "23",
               description:
-                "Android 6.0 — the floor for the hardware-backed keystore guarantees the app relies on.",
+                "Android 6.0 - the floor for the hardware-backed keystore guarantees the app relies on.",
             },
             {
               title: "Target SDK",
@@ -137,17 +136,16 @@ export const zignerSecurity: PageContent = {
 
 export const zignerSpecs: PageContent = {
   title: "Zigner Specs",
-  heading: "Specifications",
-  stamp: "印",
+  heading: "specs",
   lede: "Supported chains, cryptography, and platform architecture.",
   sections: [
     {
       id: "coins",
-      title: "Supported Coins & Protocols",
+      title: "supported networks",
+      lede: "zcash and penumbra only.",
       blocks: [
         {
           kind: "specs",
-          cols: 3,
           entries: [
             {
               title: "Zcash",
@@ -160,43 +158,13 @@ export const zignerSpecs: PageContent = {
               value: "decaf377",
               description: "Transfers, swaps, staking, voting, IBC.",
             },
-            {
-              title: "Substrate",
-              value: "Polkadot SDK",
-              description: "Polkadot-ecosystem chains.",
-              upcoming: true,
-            },
-            {
-              title: "Cosmos",
-              value: "Cosmos SDK",
-              description: "Cosmos SDK chains.",
-              upcoming: true,
-            },
-            {
-              title: "Bitcoin",
-              value: "optional",
-              description: "Included via a build-time feature flag.",
-              upcoming: true,
-            },
-            {
-              title: "Nostr",
-              value: "events",
-              description: "Nostr event signing.",
-              upcoming: true,
-            },
-            {
-              title: "atproto",
-              value: "identity",
-              description: "AT Protocol identity operations.",
-              upcoming: true,
-            },
           ],
         },
       ],
     },
     {
       id: "crypto",
-      title: "Cryptography",
+      title: "cryptography",
       blocks: [
         {
           kind: "specs",
@@ -233,7 +201,7 @@ export const zignerSpecs: PageContent = {
     },
     {
       id: "qr",
-      title: "QR Protocol",
+      title: "QR protocol",
       blocks: [
         {
           kind: "specs",
@@ -242,7 +210,7 @@ export const zignerSpecs: PageContent = {
               title: "Erasure coding",
               value: "RaptorQ",
               description:
-                "Payloads split into fountain-coded frames, decodable from any sufficient subset — dropped frames cost nothing.",
+                "Payloads split into fountain-coded frames, decodable from any sufficient subset - dropped frames cost nothing.",
             },
             {
               title: "Encoding",
@@ -260,7 +228,7 @@ export const zignerSpecs: PageContent = {
     },
     {
       id: "platform",
-      title: "Platform",
+      title: "platform",
       blocks: [
         {
           kind: "specs",
@@ -286,13 +254,12 @@ export const zignerSpecs: PageContent = {
 
 export const zignerDocs: PageContent = {
   title: "Zigner Docs",
-  heading: "Documentation",
-  stamp: "印",
+  heading: "docs",
   lede: "Building the APK, preparing a dedicated device, and using the QR signing and FROST workflows.",
   sections: [
     {
       id: "requirements",
-      title: "Device Requirements",
+      title: "device requirements",
       blocks: [
         {
           kind: "specs",
@@ -324,8 +291,8 @@ export const zignerDocs: PageContent = {
     },
     {
       id: "installing",
-      title: "Installing",
-      lede: "Three routes to the same APK, easiest first. Once it is on the phone the app walks you through the rest — taking the device offline, and generating or restoring a seed.",
+      title: "installing",
+      lede: "Three routes to the same APK, easiest first. Once it is on the phone the app walks you through the rest - taking the device offline, and generating or restoring a seed.",
       blocks: [
         {
           kind: "tabs",
@@ -339,7 +306,7 @@ export const zignerDocs: PageContent = {
                   steps: [
                     {
                       title: "Add the repository",
-                      body: "In F-Droid: Settings → Repositories → +, then enter https://foss.rotko.net/fdroid/repo. Compare the fingerprint it shows against the one published on foss.rotko.net before accepting — that fingerprint is what pins the repository to us.",
+                      body: "In F-Droid: Settings → Repositories → +, then enter https://foss.rotko.net/fdroid/repo. Compare the fingerprint it shows against the one published on foss.rotko.net before accepting - that fingerprint is what pins the repository to us.",
                     },
                     {
                       title: "Install Zigner",
@@ -355,7 +322,7 @@ export const zignerDocs: PageContent = {
                       href: "https://foss.rotko.net",
                       value: "foss.rotko.net",
                       description:
-                        "The APKs here are the signed artifacts from the release workflow — the same builds, under the same signing key, as the GitHub releases. Switching between the two sources never forces a reinstall.",
+                        "The APKs here are the signed artifacts from the release workflow - the same builds, under the same signing key, as the GitHub releases. Switching between the two sources never forces a reinstall.",
                     },
                   ],
                 },
@@ -385,7 +352,7 @@ export const zignerDocs: PageContent = {
                   kind: "code",
                   code: "sha256sum -c SHA256SUMS\nssh-keygen -Y verify -f allowed_signers -I release@rotko.net \\\n  -n file -s SHA256SUMS.sig < SHA256SUMS\nadb install -r zigner-vX.Y.Z.apk",
                   caption:
-                    "allowed_signers is a file you create: one line reading `release@rotko.net ssh-ed25519 AAAA...`, holding the release signing key. Get that key from a channel you already trust — a signature that carries its own key proves only that the file was signed by whoever signed it.",
+                    "allowed_signers is a file you create: one line reading `release@rotko.net ssh-ed25519 AAAA...`, holding the release signing key. Get that key from a channel you already trust - a signature that carries its own key proves only that the file was signed by whoever signed it.",
                 },
                 {
                   kind: "links",
@@ -415,7 +382,7 @@ export const zignerDocs: PageContent = {
                   steps: [
                     {
                       title: "Build",
-                      body: "A local build is signed with your own key, not ours — it will not upgrade an install that came from F-Droid or a GitHub release, and vice versa. Pick one source and stay on it.",
+                      body: "A local build is signed with your own key, not ours - it will not upgrade an install that came from F-Droid or a GitHub release, and vice versa. Pick one source and stay on it.",
                     },
                     {
                       title: "Sideload",
@@ -431,7 +398,7 @@ export const zignerDocs: PageContent = {
     },
     {
       id: "going-offline",
-      title: "Taking the Device Offline",
+      title: "taking the device offline",
       lede: "The air gap is the whole security model: an attacker who owns your laptop still cannot reach a phone with no radio on. It is a discipline rather than a setting, and the order matters - everything that needs a network happens first, once, and then never again.",
       blocks: [
         {
@@ -516,7 +483,7 @@ export const zignerDocs: PageContent = {
     },
     {
       id: "qr",
-      title: "QR Signing Protocol",
+      title: "QR signing protocol",
       lede: "All communication is one-directional per leg: camera in, screen out. Payloads are UR-encoded, fountain-coded with RaptorQ, and displayed as animated APNG QR sequences reconstructible from any sufficient subset of frames.",
       blocks: [
         {
@@ -532,7 +499,7 @@ export const zignerDocs: PageContent = {
             },
             {
               title: "Sign",
-              body: "Confirm on-device. Signing uses the chain's native scheme: RedPallas for Zcash Orchard, decaf377 for Penumbra. Support for Substrate, Cosmos, Bitcoin, Nostr, and atproto is upcoming.",
+              body: "Confirm on-device. Signing uses the chain's native scheme: RedPallas for Zcash Orchard, decaf377 for Penumbra.",
             },
             {
               title: "Return the response",
@@ -544,7 +511,7 @@ export const zignerDocs: PageContent = {
     },
     {
       id: "frost",
-      title: "FROST Setup",
+      title: "FROST setup",
       lede: "FROST distributes a spending key across n devices with a t-of-n signing threshold. All rounds run over the same QR channel.",
       blocks: [
         {
@@ -572,8 +539,8 @@ export const zignerDocs: PageContent = {
     },
     {
       id: "support",
-      title: "Support & Community",
-      lede: "Zigner bugs and feature requests belong on our issue tracker — that is the channel we watch — and we post progress in our Zcash forum development thread. The Zcash and Penumbra Discords are upstream protocol communities: the right place for questions about the chains themselves, not about the signer.",
+      title: "support & community",
+      lede: "Zigner bugs and feature requests belong on our issue tracker - that is the channel we watch - and we post progress in our Zcash forum development thread. The Zcash and Penumbra Discords are upstream protocol communities: the right place for questions about the chains themselves, not about the signer.",
       blocks: [
         {
           kind: "links",

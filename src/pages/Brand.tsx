@@ -3,7 +3,7 @@ import Page from "../components/Page";
 
 /**
  * Brand / media kit. Logos, favicons, store + social assets and the palette,
- * served from /public/brand. Static — no keys, no logic.
+ * served from /public/brand. Static - no keys, no logic.
  */
 
 const PALETTE = [

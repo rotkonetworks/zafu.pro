@@ -172,7 +172,7 @@ export function transferEstimate(bytes: number): string {
     const s = Math.round((frames * ms) / 1000);
     return `${Math.floor(s / 60)}m${String(s % 60).padStart(2, "0")}s`;
   };
-  return `${frames} frames — fast ${secs(60)}, default ${secs(350)}`;
+  return `${frames} frames - fast ${secs(60)}, default ${secs(350)}`;
 }
 
 /**

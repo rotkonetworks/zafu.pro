@@ -36,7 +36,7 @@ export type SectionBlock =
   | { kind: "links"; links: LinkEntry[] }
   | { kind: "code"; code: string; caption?: string }
   /**
-   * Alternative routes to the same outcome — e.g. three ways to install.
+   * Alternative routes to the same outcome - e.g. three ways to install.
    * Order them easiest-first: the first tab is the one shown by default, and
    * most readers never open the others.
    */

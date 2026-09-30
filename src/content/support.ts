@@ -21,7 +21,7 @@ const ZAFU_ISSUES: LinkEntry = {
   value: "github",
   href: "https://github.com/rotkonetworks/zafu/issues",
   description:
-    "Bugs, feature requests and questions about Zafu or Zigner. This is the channel we watch — start here.",
+    "Bugs, feature requests and questions about Zafu or Zigner. This is the channel we watch - start here.",
 };
 
 /** Our own thread in the forum's General category, not the forum root. */

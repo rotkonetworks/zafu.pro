@@ -17,7 +17,7 @@
  *   GET  /api/vault           (session)             -> { ciphertext, iv }
  *   PUT  /api/vault           { ciphertext, iv }    -> 204
  *
- * Until the backend is deployed, vault sync falls back to localStorage —
+ * Until the backend is deployed, vault sync falls back to localStorage  - 
  * still ciphertext-at-rest, same code path.
  */
 
@@ -115,7 +115,7 @@ export async function login(id: ZidIdentity): Promise<{ session: string; mode: "
  *
  * Key indirection: vault data is encrypted with a random DEK; the DEK is
  * wrapped under a KEK derived from the (rotatable) identity. Rotating the
- * identity only requires re-wrapping 32 bytes — ciphertext stays valid,
+ * identity only requires re-wrapping 32 bytes - ciphertext stays valid,
  * and the server sees a brand-new account (new pubkey, same blob shape).
  * The identity itself never holds funds; ZID keys are never spending keys.
  */
