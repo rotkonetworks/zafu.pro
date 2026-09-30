@@ -7,7 +7,7 @@ import { CHROME_STORE_URL, ZAFU_RELEASES_URL } from "../content/links";
 export default function Zafu() {
   return (
     <Page title="zafu, the browser extension">
-      <section class="relative grid items-center gap-12 pb-14 lg:grid-cols-[minmax(0,1fr)_400px]">
+      <section class="relative grid grid-cols-1 items-center gap-12 pb-14 lg:grid-cols-[minmax(0,1fr)_400px]">
         <Watermark sumi="/media/art/bamboo-sumi.webp" washi="/media/art/enso-washi.webp" class="-right-10 -top-8 h-[560px] w-[300px]" />
         <ProductHead
           name="zafu"

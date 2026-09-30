@@ -318,3 +318,13 @@ samp {
 .art-washi { display: none; opacity: 0.3; }
 :root[data-theme="washi"] .art-sumi { display: none; }
 :root[data-theme="washi"] .art-washi { display: block; }
+
+/* One or more product screens side by side, wrapping on narrow screens. */
+.screens {
+  display: grid;
+  width: 100%;
+  gap: 24px;
+  align-items: start;
+  justify-items: center;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+}

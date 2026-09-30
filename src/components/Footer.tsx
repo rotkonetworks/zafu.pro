@@ -1,7 +1,7 @@
 import { For } from "solid-js";
 import { A } from "@solidjs/router";
 import { DONATION_ADDRESS } from "../content/donation";
-import { FOOTER_CHANNELS } from "../content/support";
+import { SUPPORT_CHANNELS } from "../content/support";
 import { ZAFU_GITHUB_URL } from "../content/links";
 import { NAV_LINKS } from "./Nav";
 import { Seal } from "./Seal";
@@ -32,11 +32,11 @@ export default function Footer() {
             </For>
           </ul>
           <ul class={col}>
-            <For each={FOOTER_CHANNELS}>
+            <For each={SUPPORT_CHANNELS}>
               {(c) => (
                 <li>
                   <a href={c.href} target="_blank" rel="noopener noreferrer" class="text-muted hover:text-text">
-                    {c.title.replace(/^Zafu /, "").toLowerCase()}
+                    {c.title}
                   </a>
                 </li>
               )}

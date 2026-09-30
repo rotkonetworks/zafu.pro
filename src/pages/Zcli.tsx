@@ -34,7 +34,7 @@ const FEATURES = [
 export default function Zcli() {
   return (
     <Page title="zcli, the command-line wallet">
-      <section class="grid items-center gap-12 pb-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+      <section class="grid grid-cols-1 items-center gap-12 pb-4 lg:grid-cols-2">
         <div>
           <h1 class="text-5xl sm:text-6xl">zcli</h1>
           <p class="mt-5 max-w-lg text-lg text-muted">

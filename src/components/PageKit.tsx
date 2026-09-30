@@ -228,14 +228,17 @@ export function Tabs(props: {
  * or two Screens; the copy column stays narrow so the screen does the work.
  */
 export const Feature: ParentComponent<{ id?: string; title: string; body: string; flip?: boolean }> = (props) => (
-  <section id={props.id} class="grid scroll-mt-24 items-center gap-8 border-t border-border py-14 md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] md:gap-14">
+  <section
+    id={props.id}
+    class={`grid scroll-mt-24 grid-cols-1 items-center gap-8 border-t border-border py-14 md:gap-14 ${
+      props.flip ? "md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]" : "md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]"
+    }`}
+  >
     <div classList={{ "md:order-2": props.flip }}>
       <h2 class="text-3xl">{props.title}</h2>
       <p class="mt-3 max-w-md text-muted">{props.body}</p>
     </div>
-    <div class="grid w-full items-start justify-items-center gap-6 sm:grid-cols-[repeat(auto-fit,minmax(300px,1fr))] md:justify-items-start">
-      {props.children}
-    </div>
+    <div class="screens">{props.children}</div>
   </section>
 );
 
