@@ -95,7 +95,7 @@ export default function Brand() {
       <Section title="Type" sub="iosevka term for body and data; shippori mincho for display headings and big numbers. square corners, lowercase voice.">
         <div class="grid gap-3 sm:grid-cols-2">
           <div class="border border-border bg-surface p-5">
-            <div class="font-display text-3xl text-text">秘 12.4501</div>
+            <div class="font-display text-3xl text-text">匿 12.4501</div>
             <div class="mt-2 text-[11px] text-muted">shippori mincho · display</div>
           </div>
           <div class="border border-border bg-surface p-5">

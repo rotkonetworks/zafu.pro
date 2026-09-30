@@ -69,7 +69,7 @@ const Mark = (p: { size?: number }) => (
       "flex-shrink": 0,
     }}
   >
-    秘
+    匿
   </span>
 );
 
