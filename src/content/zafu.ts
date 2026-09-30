@@ -631,64 +631,141 @@ export const zafuDocs: PageContent = {
 };
 
 
+/*
+ * TODO(founder review): the "finishing for 1.0" group below is the working
+ * list as of 2026-09-30 and needs founder sign-off before it is treated as a
+ * commitment. Note that multisig group chat (offline queueing) already shipped
+ * in 28.0.0; "groups" here means bringing multisig, chat and async approvals
+ * together. Shipped items are taken from the zafu CHANGELOG (26.0.0 to 28.3.x).
+ */
 export const zafuRoadmap: PageContent = {
   title: "Zafu Roadmap",
-  heading: "Roadmap",
-  lede: "Where Zafu is headed. Priorities can shift with network upgrades; the latest state is always the GitHub milestones.",
+  heading: "road to 1.0 · Q4 2026",
+  lede: "what shipped, what is being finished for 1.0, and what comes after. the latest state is always the github milestones.",
   sections: [
     {
-      id: "high-priority",
-      title: "High Priority",
+      id: "shipped",
+      title: "shipped",
       blocks: [
         {
           kind: "specs",
           entries: [
             {
-              title: "Post-quantum encryption",
-              value: "PQ migration",
-              description:
-                "Move wallet-layer encryption (vault, ZID payloads, QR channel) to post-quantum schemes so captured ciphertext today cannot be harvested and decrypted later.",
+              title: "Ironwood (NU6.3)",
+              value: "zcash",
+              description: "Shielded sends, shielding and migration out of Orchard, with client-side proving.",
             },
             {
-              title: "OTA updates over QR",
-              value: "no reinstalls",
+              title: "Post-quantum encryption",
+              value: "28.0.1",
               description:
-                "Ship wallet logic updates over the animated QR channel so network upgrades like NU7 do not force an extension reinstall — the store review cycle stops gating consensus changes.",
+                "Hybrid X25519 + ML-KEM-768 for ZID direct messages and the app-facing sealed box.",
+            },
+            {
+              title: "FROST multisig",
+              value: "room codes",
+              description:
+                "Key generation and signing over a frostd relay with number-plus-two-word codes, and a sealed group thread per multisig.",
+            },
+            {
+              title: "Single-use receive addresses",
+              value: "28.3.0",
+              description: "A fresh random shielded address every time you show or copy one.",
+            },
+            {
+              title: "Private contacts",
+              value: "28.0.0",
+              description: "ZID-anchored contacts, blind-relay contact discovery and in-wallet messaging.",
+            },
+            {
+              title: "zcash.me directory",
+              value: "opt-in",
+              description: "Pay a /username; off by default, with decoy-covered lookups.",
+            },
+            {
+              title: "Injective USDC ramp",
+              value: "28.0.1",
+              description: "Circle-native USDC on Injective, shielded into Penumbra over live IBC routes.",
+            },
+            {
+              title: "Signers",
+              value: "zigner · keystone · ledger",
+              description:
+                "Cold signing with Zigner or Keystone, watch-only wallets from a viewing key, and Ledger for transparent zec (experimental).",
+            },
+            {
+              title: "Everyday",
+              value: "side panel · tracker · ZIP 321",
+              description:
+                "Side panel mode, one tracker for every transaction zafu sends, and zcash: payment links.",
             },
           ],
         },
       ],
     },
     {
-      id: "next",
-      title: "Next",
+      id: "finishing",
+      title: "finishing for 1.0",
+      lede: "in progress now. this list may still change before 1.0.",
       blocks: [
         {
           kind: "specs",
           entries: [
             {
-              title: "Constrained header proofs",
-              value: "prover-chosen → committed",
-              description:
-                "Give the Ligerito header proof a constraint system, so the roots it proves are the ones block headers already commit to rather than values the prover picked. Per-pool pinned roots are the precondition: a proof cannot bind to a root the server cannot name at a given height.",
+              title: "Redesigned interface",
+              value: "in progress",
+              description: "A calmer wallet with fewer words, in the same sumi look as this site.",
             },
             {
-              title: "Block omission",
-              value: "needs consensus-layer DA",
-              description:
-                "A server can serve a valid header chain and still withhold blocks or actions. Detecting that needs data-availability commitments from block producers — a network change, not a wallet one. Listed here because it bounds how trustless a light client can honestly claim to be.",
+              title: "Groups",
+              value: "in progress",
+              description: "Multisig with built-in chat and async approvals, so co-signers do not need to be online together.",
+            },
+            {
+              title: "Zcash pockets",
+              value: "in progress",
+              description: "Named sub-accounts inside one wallet, each with its own addresses.",
             },
             {
               title: "Ledger shielded signing",
-              value: "flag-off today",
+              value: "in progress",
               description:
-                "Shielded (Ironwood/Orchard) signing on Ledger hardware — not just transparent. Ships disabled until Ledger's app-zcash recognises the current branch id and frame shape; re-enabled once upstream releases land.",
+                "Shielded signing on Ledger through the Zcash app, not just transparent. Ships once it is tested on real devices.",
             },
             {
               title: "PIR voting",
-              value: "Zcash + Penumbra",
+              value: "in progress",
               description:
-                "Governance voting over private information retrieval on both chains: the query backend cannot see which proposals you fetch or correlate reads with votes.",
+                "Governance voting over private information retrieval: the backend cannot see which proposals you fetch or tie reads to votes.",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: "after",
+      title: "after 1.0",
+      blocks: [
+        {
+          kind: "specs",
+          entries: [
+            {
+              title: "OTA updates over QR",
+              upcoming: true,
+              description:
+                "Ship wallet logic updates over the animated QR channel, so network upgrades like NU7 do not wait on a store review cycle.",
+            },
+            {
+              title: "Constrained header proofs",
+              upcoming: true,
+              description:
+                "Give the Ligerito header proof a constraint system, so the roots it proves are the ones block headers already commit to rather than values the prover picked. Per-pool pinned roots are the precondition.",
+            },
+            {
+              title: "Block-omission detection",
+              upcoming: true,
+              description:
+                "A server can serve a valid header chain and still withhold blocks or actions. Detecting that needs data-availability commitments from block producers: a consensus-layer change, not a wallet one.",
             },
           ],
         },
