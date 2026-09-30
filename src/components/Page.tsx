@@ -1,5 +1,5 @@
 import { createEffect, onMount, type ParentComponent } from "solid-js";
-import Hanko from "./Hanko";
+import { Stamp } from "./Seal";
 
 interface PageProps {
   /** Browser tab title; suffixed with the site name. */
@@ -8,7 +8,7 @@ interface PageProps {
   heading?: string;
   /** Optional short lede under the heading. */
   lede?: string;
-  /** Kanji for the header seal stamp; pass "" to hide. Default 秘 (zafu). */
+  /** Kanji for an outlined hanko beside the heading; omit for none. */
   stamp?: string;
 }
 
@@ -34,14 +34,14 @@ const Page: ParentComponent<PageProps> = (props) => {
   });
 
   return (
-    <div class="page-in max-w-5xl mx-auto px-4 py-12 sm:px-6 sm:py-16">
+    <div class="page-in mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
       {props.heading && (
-        <header class="mb-10 flex items-start justify-between gap-6">
+        <header class="mb-12 flex items-start justify-between gap-6">
           <div>
-            <h1 class="font-display text-3xl text-text sm:text-4xl">{props.heading}</h1>
-            {props.lede && <p class="text-muted mt-4 max-w-2xl">{props.lede}</p>}
+            <h1 class="text-4xl sm:text-5xl">{props.heading}</h1>
+            {props.lede && <p class="mt-4 max-w-2xl text-muted">{props.lede}</p>}
           </div>
-          {props.stamp !== "" && <Hanko text={props.stamp} class="hidden sm:block" />}
+          {props.stamp && <Stamp text={props.stamp} class="mt-2 hidden sm:inline-flex" />}
         </header>
       )}
       {props.children}

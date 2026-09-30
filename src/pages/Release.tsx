@@ -1,6 +1,6 @@
 import { For, Show, createMemo, createSignal, onMount } from "solid-js";
 import Page from "../components/Page";
-import { StaticQR } from "../components/AnimatedQR";
+import { StaticQR } from "../components/QR";
 import {
   ed25519Supported,
   loadOrCreateIdentity,

@@ -10,7 +10,7 @@ export interface SpecEntry {
   /** Short mono value shown right of the title (e.g. "PCZT v2"). */
   value?: string;
   description?: string;
-  /** Not yet supported: rendered grayed out with an "upcoming" tag. */
+  /** Not yet supported: rendered dimmed with a "planned" tag. */
   upcoming?: boolean;
 }
 
