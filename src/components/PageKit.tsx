@@ -123,9 +123,12 @@ export function Steps(props: {
 
 export function LinkList(props: {
   items: { title: string; href: string; value?: string; description?: string }[];
+  cols?: 2 | 3;
 }) {
   return (
-    <ul class="m-0 grid list-none gap-3 p-0 sm:grid-cols-2">
+    <ul
+      class={`m-0 grid list-none gap-3 p-0 sm:grid-cols-2 ${props.cols === 3 ? "lg:grid-cols-3" : ""}`}
+    >
       <For each={props.items}>
         {(item) => (
           <li class="m-0">

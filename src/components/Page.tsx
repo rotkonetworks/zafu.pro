@@ -41,7 +41,7 @@ const Page: ParentComponent<PageProps> = (props) => {
             <h1 class="font-display text-3xl text-text sm:text-4xl">{props.heading}</h1>
             {props.lede && <p class="text-muted mt-4 max-w-2xl">{props.lede}</p>}
           </div>
-          {props.stamp !== "" && <Hanko text={props.stamp} />}
+          {props.stamp !== "" && <Hanko text={props.stamp} class="hidden sm:block" />}
         </header>
       )}
       {props.children}

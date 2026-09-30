@@ -29,7 +29,7 @@ const SpecItem: ParentComponent<SpecItemProps> = (props) => {
         <Show
           when={!props.upcoming}
           fallback={
-            <span class="shrink-0 border border-border px-1.5 py-0.5 font-mono text-xs uppercase tracking-wider text-muted">
+            <span class="shrink-0 border border-border px-1.5 py-0.5 font-mono text-xs tracking-wider text-muted">
               upcoming
             </span>
           }
