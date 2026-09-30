@@ -601,7 +601,7 @@ export const zignerRoadmap: PageContent = {
               title: "Post-quantum encryption",
               value: "PQ migration",
               description:
-                "Move key wrapping and the QR channel to post-quantum schemes, matching Zafu's PQ migration — captured QR frames or extracted storage today must not be decryptable later.",
+                "Move key wrapping and the QR channel to post-quantum schemes. Zafu shipped hybrid X25519 + ML-KEM-768 for messaging in 28.0.1; captured QR frames or extracted storage today must not be decryptable later.",
             },
           ],
         },
