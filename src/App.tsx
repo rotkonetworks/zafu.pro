@@ -2,19 +2,23 @@ import { lazy } from "solid-js";
 import { Navigate, Route, Router } from "@solidjs/router";
 import Layout from "./components/Layout";
 
-// Zafu (wallet)
-const ZafuHome = lazy(() => import("./pages/zafu/Home"));
+const Home = lazy(() => import("./pages/Home"));
+const Buy = lazy(() => import("./pages/Buy"));
+const Roadmap = lazy(() => import("./pages/Roadmap"));
+
+// Products
+const Zafu = lazy(() => import("./pages/Zafu"));
+const Zigner = lazy(() => import("./pages/Zigner"));
+const Zcli = lazy(() => import("./pages/Zcli"));
+const Cloud = lazy(() => import("./pages/Cloud"));
+
+// Reference pages, rendered from src/content
 const ZafuSecurity = lazy(() => import("./pages/zafu/Security"));
 const ZafuSpecs = lazy(() => import("./pages/zafu/Specs"));
 const ZafuDocs = lazy(() => import("./pages/zafu/Docs"));
-const ZafuRoadmap = lazy(() => import("./pages/zafu/Roadmap"));
-
-// Zigner (hardware signer)
-const ZignerHome = lazy(() => import("./pages/zigner/Home"));
 const ZignerSecurity = lazy(() => import("./pages/zigner/Security"));
 const ZignerSpecs = lazy(() => import("./pages/zigner/Specs"));
 const ZignerDocs = lazy(() => import("./pages/zigner/Docs"));
-const ZignerRoadmap = lazy(() => import("./pages/zigner/Roadmap"));
 
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Brand = lazy(() => import("./pages/Brand"));
@@ -34,23 +38,26 @@ const Zapps = lazy(() => import("./pages/Zapps"));
 export default function App() {
   return (
     <Router root={Layout}>
-      {/* Root is the Zafu home */}
-      <Route path="/" component={ZafuHome} />
+      <Route path="/" component={Home} />
+      <Route path="/buy" component={Buy} />
+      <Route path="/roadmap" component={Roadmap} />
+      <Route path="/zcli" component={Zcli} />
+      <Route path="/cloud" component={Cloud} />
 
       <Route path="/zafu">
-        <Route path="/" component={() => <Navigate href="/" />} />
+        <Route path="/" component={Zafu} />
         <Route path="/security" component={ZafuSecurity} />
         <Route path="/specs" component={ZafuSpecs} />
         <Route path="/docs" component={ZafuDocs} />
-        <Route path="/roadmap" component={ZafuRoadmap} />
+        <Route path="/roadmap" component={() => <Navigate href="/roadmap" />} />
       </Route>
 
       <Route path="/zigner">
-        <Route path="/" component={ZignerHome} />
+        <Route path="/" component={Zigner} />
         <Route path="/security" component={ZignerSecurity} />
         <Route path="/specs" component={ZignerSpecs} />
         <Route path="/docs" component={ZignerDocs} />
-        <Route path="/roadmap" component={ZignerRoadmap} />
+        <Route path="/roadmap" component={() => <Navigate href="/roadmap" />} />
       </Route>
 
       <Route path="/blog" component={Blog} />

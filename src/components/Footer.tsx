@@ -2,90 +2,50 @@ import { For } from "solid-js";
 import { A } from "@solidjs/router";
 import { DONATION_ADDRESS } from "../content/donation";
 import { FOOTER_CHANNELS } from "../content/support";
+import { ZAFU_GITHUB_URL } from "../content/links";
+import { NAV_LINKS } from "./Nav";
+import { Seal } from "./Seal";
+
+const col = "m-0 flex list-none flex-col gap-1.5 p-0 text-sm";
 
 export default function Footer() {
   return (
     <footer class="border-t border-border py-12">
-      <div class="max-w-5xl mx-auto px-6">
-        <div class="flex flex-col sm:flex-row justify-between gap-8">
-          <div>
-            <img
-              src="/media/logos/zafu-enso-512.png"
-              alt=""
-              aria-hidden="true"
-              class="h-8 w-8 mb-4 opacity-80"
-            />
-            <p class="text-sm text-muted mb-3">
-              Zafu &amp; Zigner by{" "}
-              <a href="https://rotko.net" class="accent-link">
-                Rotko Networks
-              </a>
-            </p>
-            <p class="text-xs text-dim2">
-              <a
-                href="https://github.com/rotkonetworks/zafu"
-                class="accent-link"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                GitHub
-              </a>
-              <span class="mx-2">•</span>
-              <a
-                href="https://github.com/rotkonetworks/zafu/blob/main/LICENSE"
-                class="accent-link"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                MIT License
-              </a>
-            </p>
-          </div>
-          <div class="flex gap-12 text-xs">
-            <div>
-              <p class="text-text mb-2 font-semibold">zafu</p>
-              <ul class="list-none space-y-1">
-                <li><A href="/zafu" class="text-muted hover:text-text transition-colors">overview</A></li>
-                <li><A href="/zafu/security" class="text-muted hover:text-text transition-colors">security</A></li>
-                <li><A href="/zafu/specs" class="text-muted hover:text-text transition-colors">specs</A></li>
-                <li><A href="/zafu/docs" class="text-muted hover:text-text transition-colors">docs</A></li>
-                <li><A href="/zafu/roadmap" class="text-muted hover:text-text transition-colors">roadmap</A></li>
-              </ul>
-            </div>
-            <div>
-              <p class="text-text mb-2 font-semibold">zigner</p>
-              <ul class="list-none space-y-1">
-                <li><A href="/zigner" class="text-muted hover:text-text transition-colors">overview</A></li>
-                <li><A href="/zigner/security" class="text-muted hover:text-text transition-colors">security</A></li>
-                <li><A href="/zigner/specs" class="text-muted hover:text-text transition-colors">specs</A></li>
-                <li><A href="/zigner/docs" class="text-muted hover:text-text transition-colors">docs</A></li>
-                <li><A href="/zigner/roadmap" class="text-muted hover:text-text transition-colors">roadmap</A></li>
-              </ul>
-            </div>
-            <div>
-              <p class="text-text mb-2 font-semibold">support</p>
-              <ul class="list-none space-y-1">
-                <For each={FOOTER_CHANNELS}>
-                  {(c) => (
-                    <li>
-                      <a
-                        href={c.href}
-                        class="text-muted hover:text-text transition-colors"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {c.title.replace(/^Zafu /, "")}
-                      </a>
-                    </li>
-                  )}
-                </For>
-              </ul>
-            </div>
-          </div>
+      <div class="mx-auto flex max-w-6xl flex-col gap-10 px-4 sm:px-6 md:flex-row md:justify-between">
+        <div class="max-w-sm">
+          <Seal size={30} />
+          <p class="mt-4 text-sm text-muted">
+            zafu, zigner and zcli, made by{" "}
+            <a href="https://rotko.net" class="accent-link">rotko networks</a>. open source under the{" "}
+            <a href={`${ZAFU_GITHUB_URL}/blob/main/LICENSE`} class="accent-link">MIT license</a>.
+          </p>
+          <p class="mt-4 break-all text-xs text-dim2">donations, shielded: {DONATION_ADDRESS}</p>
         </div>
-        <p class="text-xs text-dim2 mt-8 break-all">
-          Donate: {DONATION_ADDRESS}
-        </p>
+        <div class="flex gap-14">
+          <ul class={col}>
+            <For each={NAV_LINKS}>
+              {(l) => (
+                <li>
+                  <A href={l.href} class="text-muted hover:text-text">{l.label}</A>
+                </li>
+              )}
+            </For>
+          </ul>
+          <ul class={col}>
+            <For each={FOOTER_CHANNELS}>
+              {(c) => (
+                <li>
+                  <a href={c.href} target="_blank" rel="noopener noreferrer" class="text-muted hover:text-text">
+                    {c.title.replace(/^Zafu /, "").toLowerCase()}
+                  </a>
+                </li>
+              )}
+            </For>
+            <li>
+              <a href={ZAFU_GITHUB_URL} class="text-muted hover:text-text">github</a>
+            </li>
+          </ul>
+        </div>
       </div>
     </footer>
   );

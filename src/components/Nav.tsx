@@ -1,109 +1,47 @@
 import { For } from "solid-js";
-import { A, useLocation } from "@solidjs/router";
+import { A } from "@solidjs/router";
 import { useTheme } from "./ThemeProvider";
-import Hanko from "./Hanko";
+import { Seal } from "./Seal";
 
-const SECTIONS = [
-  { label: "security", path: "security" },
-  { label: "specs", path: "specs" },
-  { label: "docs", path: "docs" },
-  { label: "roadmap", path: "roadmap" },
+/** One flat row: the products first, then everything else. No dropdowns. */
+export const NAV_LINKS = [
+  { label: "zafu", href: "/zafu" },
+  { label: "zigner", href: "/zigner" },
+  { label: "zcli", href: "/zcli" },
+  { label: "cloud agent", href: "/cloud" },
+  { label: "get zec", href: "/buy" },
+  { label: "roadmap", href: "/roadmap" },
+  { label: "blog", href: "/blog" },
 ] as const;
 
 export default function Nav() {
-  const location = useLocation();
-  const { theme, cycleTheme } = useTheme();
-
-  const product = () =>
-    location.pathname === "/zigner" || location.pathname.startsWith("/zigner/")
-      ? "zigner"
-      : "zafu";
-
-  const base = () => `/${product()}`;
+  const { theme, toggleTheme } = useTheme();
 
   return (
-    <nav class="border-b border-border sticky top-0 z-50 bg-bg/90 backdrop-blur">
-      <div class="max-w-5xl mx-auto px-4 sm:px-6 flex flex-wrap items-center gap-x-4 gap-y-3 py-3 sm:py-4">
-        <div class="flex items-center gap-4 sm:gap-6">
-          <A
-            href="/"
-            class="flex items-center gap-2 font-mono text-base text-text hover:text-accent transition-colors"
-            aria-label="zafu.pro home"
-          >
-            <Hanko size={22} tilt={0} />
-            <span>
-              zafu<span class="text-accent">.</span>pro
-            </span>
-          </A>
-          {/* Product switcher */}
-          <div class="flex border border-border text-xs font-mono">
-            <A
-              href="/zafu"
-              class="px-3 py-1 transition-colors"
-              classList={{
-                "bg-accent text-accent-contrast": product() === "zafu",
-                "text-muted hover:text-text": product() !== "zafu",
-              }}
-            >
-              zafu
-            </A>
-            <A
-              href="/zigner"
-              class="px-3 py-1 transition-colors border-l border-border"
-              classList={{
-                "bg-accent text-accent-contrast": product() === "zigner",
-                "text-muted hover:text-text": product() !== "zigner",
-              }}
-            >
-              zigner
-            </A>
-          </div>
-        </div>
-
-        <ul class="order-last flex w-full flex-wrap items-center gap-x-4 gap-y-2 list-none sm:order-none sm:ml-auto sm:w-auto sm:gap-5">
-          <For each={SECTIONS}>
-            {(section) => (
+    <nav class="sticky top-0 z-50 border-b border-border bg-bg">
+      <div class="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-2 px-4 py-3 sm:px-6">
+        <A href="/" class="flex items-center gap-2.5 text-text" aria-label="zafu.pro home">
+          <Seal />
+          <span class="font-display text-lg">zafu</span>
+        </A>
+        <ul class="order-last flex w-full list-none flex-wrap gap-x-5 gap-y-1 p-0 text-sm md:order-none md:ml-auto md:w-auto">
+          <For each={NAV_LINKS}>
+            {(l) => (
               <li>
-                <A
-                  href={`${base()}/${section.path}`}
-                  class="text-sm transition-colors"
-                  activeClass="text-accent"
-                  inactiveClass="text-muted hover:text-text"
-                >
-                  {section.label}
+                <A href={l.href} activeClass="text-accent" inactiveClass="text-muted hover:text-text">
+                  {l.label}
                 </A>
               </li>
             )}
           </For>
-          <li>
-            <A
-              href="/blog"
-              class="text-sm transition-colors"
-              activeClass="text-accent"
-              inactiveClass="text-muted hover:text-text"
-            >
-              blog
-            </A>
-          </li>
-          <li>
-            <a
-              href="https://github.com/rotkonetworks/zafu"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="text-sm text-muted hover:text-text transition-colors"
-            >
-              github
-            </a>
-          </li>
         </ul>
         <button
           type="button"
-          onClick={cycleTheme}
-          title={`Theme: ${theme()} (click to cycle)`}
-          aria-label={`Switch theme, current: ${theme()}`}
-          class="ml-auto sm:ml-0 text-xs font-mono text-muted hover:text-accent transition-colors border border-border px-2 py-1 bg-transparent cursor-pointer"
+          onClick={toggleTheme}
+          aria-label={`switch to ${theme() === "sumi" ? "washi (light)" : "sumi (dark)"}`}
+          class="ml-auto h-8 cursor-pointer border border-border bg-transparent px-2.5 text-xs text-muted hover:text-text md:ml-0"
         >
-          {theme()}
+          {theme() === "sumi" ? "washi" : "sumi"}
         </button>
       </div>
     </nav>
