@@ -1,7 +1,7 @@
 import { For } from "solid-js";
 import { A } from "@solidjs/router";
 import Page from "../components/Page";
-import { Seal } from "../components/Seal";
+import { Lockup } from "../components/Seal";
 import { ZafuHome } from "../components/Screens";
 import { Card, Watermark } from "../components/PageKit";
 import { CHROME_STORE_URL, ZAFU_RELEASES_URL, ZK_POKER_URL } from "../content/links";
@@ -36,10 +36,7 @@ export default function Home() {
       <section class="relative grid grid-cols-1 items-center overflow-hidden gap-12 lg:grid-cols-[minmax(0,1fr)_400px]">
         <Watermark sumi="/media/art/bamboo-sumi.webp" washi="/media/art/enso-washi.webp" class="-right-10 -top-8 h-[560px] w-[300px]" />
         <div>
-          <span class="flex items-center gap-3">
-            <Seal size={34} />
-            <span class="font-display text-2xl text-text">zafu</span>
-          </span>
+          <Lockup size={34} />
           <h1 class="mt-8 text-5xl leading-tight sm:text-6xl">
             shielded money,
             <br />

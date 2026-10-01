@@ -1,7 +1,7 @@
 import { For } from "solid-js";
 import { A } from "@solidjs/router";
 import { useTheme } from "./ThemeProvider";
-import { Seal } from "./Seal";
+import { Lockup } from "./Seal";
 
 /** One flat row: the products first, then everything else. No dropdowns. */
 export const NAV_LINKS = [
@@ -20,9 +20,8 @@ export default function Nav() {
   return (
     <nav class="sticky top-0 z-50 border-b border-border bg-bg">
       <div class="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-2 px-4 py-3 sm:px-6">
-        <A href="/" class="flex items-center gap-2.5 text-text" aria-label="zafu.pro home">
-          <Seal />
-          <span class="font-display text-lg">zafu</span>
+        <A href="/" aria-label="zafu.pro home">
+          <Lockup />
         </A>
         <ul class="order-last flex w-full list-none flex-wrap gap-x-5 gap-y-1 p-0 text-sm md:order-none md:ml-auto md:w-auto">
           <For each={NAV_LINKS}>
