@@ -239,12 +239,15 @@ export function ZafuWelcome() {
       <div style={{ padding: "22px 28px 0", display: "flex", "flex-direction": "column", gap: "12px", "flex-grow": 1 }}>
         <span style={{ display: "flex", "align-items": "center", gap: "12px" }}>
           <Mark size={34} />
-          <span class="mincho hi" style={{ "font-size": "26px", "font-weight": 600 }}>zafu</span>
+          <span style={{ display: "flex", "flex-direction": "column" }}>
+            <span class="mincho hi" style={{ "font-size": "26px", "font-weight": 600, "line-height": 1.1 }}>zafu</span>
+            <span class="app-label" style={{ "font-size": "11px" }}>shielded signing</span>
+          </span>
         </span>
         <h1 class="mincho" style={{ "font-size": "28px", "line-height": 1.25 }}>
-          shielded money,
+          held in your own hands,
           <br />
-          held in your own hands.
+          seen by no one.
         </h1>
         <span class="app-label">zcash · penumbra · private by default</span>
       </div>

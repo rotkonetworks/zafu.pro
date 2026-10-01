@@ -32,15 +32,15 @@ const WAYS = [
 
 export default function Home() {
   return (
-    <Page title="shielded money, held in your own hands">
+    <Page title="held in your own hands, seen by no one">
       <section class="relative grid grid-cols-1 items-center overflow-hidden gap-12 lg:grid-cols-[minmax(0,1fr)_400px]">
         <Watermark sumi="/media/art/bamboo-sumi.webp" washi="/media/art/enso-washi.webp" class="-right-10 -top-8 h-[560px] w-[300px]" />
         <div>
-          <Lockup size={34} />
+          <Lockup size={34} slogan />
           <h1 class="mt-8 text-5xl leading-tight sm:text-6xl">
-            shielded money,
+            held in your own hands,
             <br />
-            held in your own hands.
+            seen by no one.
           </h1>
           <p class="mt-6 max-w-lg text-lg text-muted">
             a wallet for zcash, and penumbra too. private by default, and the keys stay with you.
