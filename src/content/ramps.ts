@@ -11,10 +11,8 @@ import type { LinkEntry } from "./types";
 export const PEER_REFERRAL_CODE = "L59SD4";
 export const PEER_REFERRAL_URL = `https://app.peer.xyz/referrals?referralCode=${PEER_REFERRAL_CODE}`;
 
-export const ZCASHTOCASH_URL = "https://zcashto.cash/";
-
 export const RAMPS_NOTE =
-  "both are outside services, not run by zafu. zafu never holds or sees these trades, so please look over each service before you send money.";
+  "peer is an outside service, not run by zafu. zafu never holds or sees these trades, so please look it over before you send money.";
 
 export const RAMP_LINKS: LinkEntry[] = [
   {
@@ -25,8 +23,8 @@ export const RAMP_LINKS: LinkEntry[] = [
   },
   {
     title: "cash out",
-    value: "zcashto.cash",
-    href: ZCASHTOCASH_URL,
-    description: "sell zec and receive the money in revolut and other payment apps. it is built on peer.",
+    value: "peer",
+    href: PEER_REFERRAL_URL,
+    description: "swap zec into usdc in zafu, then sell the usdc on peer and receive the money in revolut, wise and other payment apps.",
   },
 ];

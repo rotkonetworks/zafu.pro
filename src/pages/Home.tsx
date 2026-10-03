@@ -80,7 +80,7 @@ export default function Home() {
       <section class="mt-24 grid gap-4 md:grid-cols-2">
         <A href="/buy" class="card hover:border-border-strong">
           <span class="font-display text-2xl text-text">get zec, or cash out</span>
-          <span class="mt-2 block text-sm text-muted">buy through peer, sell through zcashto.cash. both are outside services.</span>
+          <span class="mt-2 block text-sm text-muted">buy and sell through peer, an outside service.</span>
         </A>
         <A href="/roadmap" class="card hover:border-border-strong">
           <span class="font-display text-2xl text-text">road to 1.0</span>
