@@ -111,28 +111,22 @@ export const zafuSecurity: PageContent = {
     {
       id: "backend-trust",
       title: "backend trust",
-      lede: "the query backend (zidecar / lightwalletd) is treated as an adversary for metadata. opt-in verification and decoy traffic shrink what a provider can learn or lie about. or run your own.",
+      lede: "the server (zidecar or lightwalletd) is treated as an adversary for metadata. zafu tells it nothing about which notes are yours, and checks what it can on your device. or run your own.",
       blocks: [
         {
           kind: "specs",
           entries: [
             {
+              title: "Scanning on your device",
+              value: "every block",
+              description:
+                "zafu downloads every block since your wallet's birthday and finds your payments and spends on this device: notes by trial decryption, spends by matching each block's nullifiers against your own notes. The server is never told which notes are yours, and every wallet downloads the same blocks.",
+            },
+            {
               title: "Decoy fetching",
               value: "bucket + decoy",
               description:
-                "Memo and note fetches mix real buckets with random decoy buckets (2× in private mode, 5× in paranoid), shuffled together - the server cannot distinguish which requests are yours.",
-            },
-            {
-              title: "Header proof",
-              value: "zidecar server",
-              description:
-                "A short proof covering the whole chain of block headers, from a starting block built into zafu up to the current tip. Zafu checks it instead of downloading every header, and takes the note tree and spent-coin list it checks against from it.",
-            },
-            {
-              title: "Checks your notes",
-              value: "zidecar server",
-              description:
-                "After each sync, zafu asks the server to prove two things: that every payment you received is really in the chain's note tree, and that the coins shown as unspent really have not been spent. A server that invents a payment or hides a spend fails the check. A coin is only checked once the server's index has caught up to it; until then zafu relies on what it saw while scanning. A plain lightwalletd server cannot give these proofs, so zafu skips the checks there.",
+                "Memo fetches mix real buckets with random decoy buckets (2× in private mode, 5× in paranoid), shuffled together - the server cannot distinguish which requests are yours.",
             },
             {
               title: "Cross-endpoint verify",
@@ -142,9 +136,9 @@ export const zafuSecurity: PageContent = {
             },
             {
               title: "Honest limits",
-              value: "partial, not trustless",
+              value: "the chain is trusted",
               description:
-                "The Ligerito header proof has no constraint system yet: the roots it proves are values the prover chose and absorbed into its own transcript, so nothing ties them to what consensus committed. That part is ours to fix. Block and action omission is separate and harder: a server can serve a valid header chain and still withhold data, and no amount of client-side verification detects it. Cross-endpoint comparison is wired as an advisory mitigation, not a proof. Hence partial.",
+                "zafu does not yet prove the chain it is shown: it takes the server's blocks, cross-checked against independent servers. A dishonest server cannot learn which notes are yours, but it can hide a payment or a spend from you until you switch servers. Checking the chain against Zcash's own proof of work (FlyClient over the ZIP-221 history tree) is in progress.",
             },
             {
               title: "Self-hosting",
