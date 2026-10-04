@@ -3,7 +3,7 @@ import Page from "../components/Page";
 import { Feature, ProductHead, Watermark } from "../components/PageKit";
 import { ZafuGroup, ZafuHome, ZafuProving, ZafuReceive, ZafuSend, ZafuSignIn, ZafuWelcome } from "../components/Screens";
 import { CHROME_STORE_URL, ZAFU_RELEASES_URL } from "../content/links";
-import { PEER_REFERRAL_URL } from "../content/ramps";
+import { PEER_BUY_URL, PEER_SELL_URL } from "../content/ramps";
 
 export default function Zafu() {
   return (
@@ -44,10 +44,14 @@ export default function Zafu() {
             <span class="text-text">on penumbra</span>
             <p class="mt-2 text-sm text-muted">swaps run on penumbra's own exchange, which keeps your trades private. no outside service is involved.</p>
           </div>
-          <a href={PEER_REFERRAL_URL} class="card block hover:border-border-strong">
+          <div class="card">
             <span class="text-text">buy and sell with peer</span>
             <p class="mt-2 text-sm text-muted">buy: pay a seller with revolut, wise, zelle or monzo and the zec arrives in zafu. cash out: swap zec to usdc and sell it on peer to receive money in the same apps. peer is an outside service.</p>
-          </a>
+            <p class="mt-3 flex gap-4 text-sm">
+              <a href={PEER_BUY_URL} class="accent-link">buy on peer</a>
+              <a href={PEER_SELL_URL} class="accent-link">cash out on peer</a>
+            </p>
+          </div>
         </div>
       </Feature>
       <Feature id="groups" title="groups" body="a shared wallet that needs approval from several people, such as 2 of 3. each group has its own private chat, and people join with a short code.">
