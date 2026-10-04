@@ -38,13 +38,13 @@ export default function Zcli() {
         <div>
           <h1 class="text-5xl sm:text-6xl">zcli</h1>
           <p class="mt-5 max-w-lg text-lg text-muted">
-            a zcash wallet for terminals, scripts and servers. every command can answer in json, and a daemon keeps the wallet at the chain tip.
+            a zcash wallet for the command line, on linux and macos. it is built for scripts and servers: every command can print json, and a background daemon keeps the wallet in sync.
           </p>
           <div class="mt-8 flex flex-wrap gap-3">
             <a href={ZCLI_RELEASES_URL} class="btn-primary">latest release</a>
             <a href={ZCLI_GITHUB_URL} class="btn-outline">source</a>
           </div>
-          <p class="mt-5 text-xs text-muted">MIT licensed · verifies what the server sends before believing it</p>
+          <p class="mt-5 text-xs text-muted">free · open source · MIT licensed</p>
         </div>
         <CodeBlock code={QUICKSTART} caption="sync, check the balance, and prove a send without broadcasting it." />
       </section>
@@ -74,7 +74,7 @@ export default function Zcli() {
         <CodeBlock code={DAEMON} caption="the tcp listener is off unless you ask for it, and then needs a bearer token." />
       </SubSection>
 
-      <SubSection id="backend" title="backend" lede="zcli syncs from zidecar at zcash.rotko.net, which serves compact blocks with proofs, and cross-checks against independent lightwalletd nodes. trial decryption stays on your machine." />
+      <SubSection id="backend" title="backend" lede="zcli syncs from zcash.rotko.net, a zidecar server, and checks what it receives against independent lightwalletd or zaino servers that you can choose. finding your payments happens on your machine, so no server learns which transactions are yours. the main server must be a zidecar for now, because plain lightwalletd has no way to serve the proofs zcli checks." />
     </Page>
   );
 }

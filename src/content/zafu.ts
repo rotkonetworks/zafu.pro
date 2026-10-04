@@ -123,16 +123,16 @@ export const zafuSecurity: PageContent = {
                 "Memo and note fetches mix real buckets with random decoy buckets (2× in private mode, 5× in paranoid), shuffled together - the server cannot distinguish which requests are yours.",
             },
             {
-              title: "Ligerito proofs",
-              value: "opt-in",
+              title: "Header proof",
+              value: "zidecar server",
               description:
-                "Succinct proofs over server responses: Merkle paths for nullifiers and commitments are verified locally, bound to the batch root and the request set.",
+                "A short proof covering the whole chain of block headers, from a starting block built into zafu up to the current tip. Zafu checks it instead of downloading every header, and takes the note tree and spent-coin list it checks against from it.",
             },
             {
-              title: "NOMT verification",
-              value: "opt-in",
+              title: "Checks your notes",
+              value: "zidecar server",
               description:
-                "Local state verification against NOMT (Nearly Optimal Merkle Trie) proofs, surfaced live in the sync status.",
+                "After each sync, zafu asks the server to prove two things: that every payment you received is really in the chain's note tree, and that the coins shown as unspent really have not been spent. A server that invents a payment or hides a spend fails the check. A coin is only checked once the server's index has caught up to it; until then zafu relies on what it saw while scanning. A plain lightwalletd server cannot give these proofs, so zafu skips the checks there.",
             },
             {
               title: "Cross-endpoint verify",
@@ -556,9 +556,19 @@ export const zafuDocs: PageContent = {
     },
     {
       id: "get-zec",
-      title: "get zec / cash out",
+      title: "swap, buy and sell",
       lede: RAMPS_NOTE,
-      blocks: [{ kind: "links", links: RAMP_LINKS }],
+      blocks: [
+        { kind: "links", links: RAMP_LINKS },
+        {
+          kind: "specs",
+          cols: 2,
+          entries: [
+            { title: "swap zec", value: "near intents · thorchain", description: "open swap, pick a coin and an amount, and confirm. zec swaps to and from btc, eth, usdc, sol and more go through near intents or thorchain, outside services zafu does not run. they may delay or hold funds for their own checks, and zafu cannot recover them. zafu charges no fee of its own during the beta; every fee is shown before you confirm." },
+            { title: "swap on penumbra", value: "penumbra dex", description: "swaps between penumbra assets run on penumbra's own exchange. your trades stay private, and no outside service is involved." },
+          ],
+        },
+      ],
     },
     {
       id: "cold-signing-flow",
@@ -630,11 +640,3 @@ export const zafuDocs: PageContent = {
   ],
 };
 
-
-/*
- * TODO(founder review): the "finishing for 1.0" group below is the working
- * list as of 2026-09-30 and needs founder sign-off before it is treated as a
- * commitment. Note that multisig group chat (offline queueing) already shipped
- * in 28.0.0; "groups" here means bringing multisig, chat and async approvals
- * together. Shipped items are taken from the zafu CHANGELOG (26.0.0 to 28.3.x).
- */

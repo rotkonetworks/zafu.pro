@@ -5,9 +5,9 @@ import { ZignerAnswer, ZignerHome, ZignerReview, ZignerScan } from "../component
 import { ZIGNER_FDROID_URL, ZIGNER_RELEASES_URL } from "../content/links";
 
 const LOOP = [
-  ["scan", "zafu shows the request as an animated qr code. zigner reads it with the camera."],
-  ["review", "zigner decodes it against your own keys and shows what you are signing, in full."],
-  ["answer", "hold to sign. the signature comes back as a qr code for zafu to read and send."],
+  ["scan", "zafu shows the transaction as a qr code, and zigner scans it with the camera."],
+  ["review", "zigner shows what you are about to sign: the amount, the recipient and the fee."],
+  ["sign", "hold the button to sign. zigner shows the signature as a qr code, and zafu scans it and sends the transaction."],
 ] as const;
 
 export default function Zigner() {
@@ -17,9 +17,8 @@ export default function Zigner() {
         <Watermark sumi="/media/art/castle-sumi.webp" washi="/media/art/castle-washi.webp" class="-right-16 -top-6 h-[600px] w-[440px]" />
         <ProductHead
           name="zigner"
-          line="keys that never go online. an air-gapped signer for a spare android phone, for zcash and penumbra."
+          line="an offline signer for zcash and penumbra. install it on a spare android phone, keep that phone offline, and use it to approve transactions from zafu."
           base="/zigner"
-          note="the screens on this page are the 1.0 design, which arrives in q4 2026."
         >
           <a href={ZIGNER_FDROID_URL} class="btn-primary">f-droid repository</a>
           <a href={ZIGNER_RELEASES_URL} class="btn-outline">signed apk</a>
@@ -30,9 +29,9 @@ export default function Zigner() {
       </section>
 
       <section class="border-t border-border py-14">
-        <h2 class="text-3xl">scan, review, answer</h2>
+        <h2 class="text-3xl">how signing works</h2>
         <p class="mt-3 max-w-xl text-muted">
-          the camera and the screen are the only way in or out. no usb, no bluetooth, no network. each qr code carries one network, so a zcash request is never read as a penumbra one.
+          zigner only talks to the outside world through its camera and screen. it uses no network, usb or bluetooth connection, so your keys never leave the phone.
         </p>
         <div class="mt-10 grid justify-items-center gap-8 lg:grid-cols-3">
           <For each={[ZignerScan, ZignerReview, ZignerAnswer]}>
@@ -48,15 +47,15 @@ export default function Zigner() {
         </div>
       </section>
 
-      <Feature id="networks" title="two networks, kept apart" body="zcash and penumbra, nothing else, so the review screen can describe every field it signs.">
+      <Feature id="networks" title="zcash and penumbra" body="zigner supports these two networks and nothing else, so it can show you every detail of what you sign.">
         <div class="grid w-full max-w-xl gap-4 sm:grid-cols-2">
           <div class="card">
             <span class="text-text">zcash</span>
-            <p class="mt-2 text-sm text-muted">shielded ironwood sends as PCZT, and a seat in a FROST group.</p>
+            <p class="mt-2 text-sm text-muted">shielded sends, and acting as one of the signers in a shared wallet.</p>
           </div>
           <div class="card">
             <span class="text-text">penumbra</span>
-            <p class="mt-2 text-sm text-muted">transfers, swaps, staking, voting and IBC, from the same phone.</p>
+            <p class="mt-2 text-sm text-muted">transfers, swaps, staking, voting and IBC transfers.</p>
           </div>
         </div>
       </Feature>
@@ -64,9 +63,9 @@ export default function Zigner() {
       <section class="border-t border-border py-14">
         <h2 class="text-3xl">works with</h2>
         <div class="mt-8 grid gap-4 sm:grid-cols-3">
-          <Card href="/zafu" title="zafu" tag="extension" body="the first companion. a watch-only zafu wallet with zigner signing is the setup we suggest." />
-          <Card href="https://vizor.cash/" title="vizor" tag="desktop" body="an independent shielded zec desktop wallet. zigner can stand in for a keystone there." />
-          <Card href="https://zodl.com" title="zodl" tag="mobile" body="an independent zcash wallet, tested with zigner for viewing-key import and qr signing." />
+          <Card href="/zafu" title="zafu" tag="extension" body="the setup we recommend: zafu holds a watch-only copy of your wallet, and zigner signs." />
+          <Card href="https://vizor.cash/" title="vizor" tag="desktop" body="an independent zcash desktop wallet. zigner works there in place of a keystone." />
+          <Card href="https://zodl.com" title="zodl" tag="mobile" body="an independent zcash mobile wallet. tested with zigner for importing a viewing key and signing by qr." />
         </div>
       </section>
     </Page>

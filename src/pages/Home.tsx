@@ -9,25 +9,37 @@ import { CHROME_STORE_URL, ZAFU_RELEASES_URL, ZK_POKER_URL } from "../content/li
 const WAYS = [
   {
     n: "01",
-    where: "in the browser",
+    where: "browser extension",
     name: "zafu",
     href: "/zafu",
-    body: "the extension keeps your keys encrypted with your password and builds every proof on your computer.",
+    body: "the wallet. send, receive and shield zec, and use penumbra for transfers, swaps and staking.",
   },
   {
     n: "02",
-    where: "on an offline phone",
+    where: "offline phone",
     name: "zigner",
     href: "/zigner",
-    body: "keys stay on an android phone that never goes online. zafu shows a qr code, zigner signs, zafu reads the answer.",
+    body: "turns a spare android phone into a signer that never goes online. it approves transactions from zafu by qr code.",
   },
   {
     n: "03",
-    where: "on your own machine",
+    where: "command line",
     name: "zcli",
     href: "/zcli",
-    body: "a command-line wallet and daemon for terminals, scripts and servers. it can run watch-only and leave signing to you.",
+    body: "a zcash wallet for linux and macos, for scripts and servers. it can run with a viewing key only.",
   },
+] as const;
+
+const FEATURES = [
+  ["shielded by default", "your zec is kept in the shielded pool. coins that arrive at a transparent address are marked as public, and you can shield them in one step."],
+  ["a new address every time", "zafu gives you a fresh address each time you show or copy one, so the people who pay you can't link their payments to each other."],
+  ["swap", "swap zec for btc, eth, usdc, sol and other coins without leaving the wallet, with no zafu fee during the beta. on penumbra, trade and stake on penumbra's private exchange."],
+  ["buy and cash out", "buy zec with revolut, wise, zelle or monzo through peer, right in zafu. to cash out, swap zec to usdc and sell it on peer for money in the same apps."],
+  ["hardware signing", "keep your keys off the computer with zigner or a keystone. a ledger works for transparent zec."],
+  ["shared wallets", "a wallet that needs approval from several people, such as 2 of 3. each group has a private chat, and people join with a short code."],
+  ["contacts and messages", "save contacts and send them encrypted messages from the wallet."],
+  ["sign in to apps", "apps can ask you to sign in with zafu. each site gets a different identity, so sites can't tell they are dealing with the same person."],
+  ["watch-only wallets", "add a wallet with only its viewing key to follow the balance and history, and sign elsewhere."],
 ] as const;
 
 export default function Home() {
@@ -43,7 +55,7 @@ export default function Home() {
             seen by no one.
           </h1>
           <p class="mt-6 max-w-lg text-lg text-muted">
-            a wallet for zcash, and penumbra too. private by default, and the keys stay with you.
+            zafu is a wallet for zcash and penumbra. it runs in your browser, keeps your keys on your device, and uses shielded transactions by default.
           </p>
           <div class="mt-9 flex flex-wrap gap-3">
             <a href={CHROME_STORE_URL} class="btn-primary">add to chrome</a>
@@ -58,7 +70,21 @@ export default function Home() {
       </section>
 
       <section class="mt-24">
-        <h2 class="text-3xl">three ways to hold your keys</h2>
+        <h2 class="text-3xl">what zafu does</h2>
+        <dl class="mt-8 grid gap-x-10 gap-y-6 md:grid-cols-2">
+          <For each={FEATURES}>
+            {([t, d]) => (
+              <div>
+                <dt class="text-text">{t}</dt>
+                <dd class="m-0 mt-1 text-sm leading-relaxed text-muted">{d}</dd>
+              </div>
+            )}
+          </For>
+        </dl>
+      </section>
+
+      <section class="mt-24">
+        <h2 class="text-3xl">zafu, zigner and zcli</h2>
         <div class="mt-8 grid gap-4 md:grid-cols-3">
           <For each={WAYS}>
             {(w) => (
@@ -71,29 +97,21 @@ export default function Home() {
             )}
           </For>
         </div>
-        <p class="mt-5 text-sm text-muted">
-          planned: zcli as an always-on agent that we run for you.{" "}
-          <A href="/cloud" class="accent-link">the cloud agent</A>
-        </p>
       </section>
 
-      <section class="mt-24 grid gap-4 md:grid-cols-2">
-        <A href="/buy" class="card hover:border-border-strong">
-          <span class="font-display text-2xl text-text">get zec, or cash out</span>
-          <span class="mt-2 block text-sm text-muted">buy and sell through peer, an outside service.</span>
-        </A>
-        <A href="/roadmap" class="card hover:border-border-strong">
-          <span class="font-display text-2xl text-text">road to 1.0</span>
-          <span class="mt-2 block text-sm text-muted">the wallet is complete in q4 2026. what shipped and what is left.</span>
+      <section class="mt-24">
+        <A href="/zafu/docs#install" class="card block hover:border-border-strong">
+          <span class="font-display text-2xl text-text">get started</span>
+          <span class="mt-2 block text-sm text-muted">add zafu to chrome, create a wallet and write down the recovery phrase. the install guide covers each step, and how to buy zec.</span>
         </A>
       </section>
 
       <section class="mt-24">
         <h2 class="text-3xl">around zafu</h2>
         <div class="mt-8 grid gap-4 sm:grid-cols-3">
-          <Card href={ZK_POKER_URL} title="zk.poker" tag="beta" body="heads-up hold'em for zec or free play, with pots in a 2 of 3 FROST escrow." />
-          <Card href="https://penumbra.fi" title="penumbra dex" tag="live" body="penumbra: shielded batch swaps, staking and IBC, used straight from zafu." />
-          <Card href="https://z.cash" title="zcash" tag="ironwood" body="encrypted money. ironwood is the active shielded pool." />
+          <Card href={ZK_POKER_URL} title="zk.poker" tag="beta" body="heads-up hold'em for zec or for free. sign in with zafu." />
+          <Card href="https://penumbra.fi" title="penumbra dex" tag="live" body="the penumbra exchange. swap and stake from zafu." />
+          <Card href="https://z.cash" title="zcash" tag="ironwood" body="the private currency zafu is built for." />
         </div>
       </section>
     </Page>

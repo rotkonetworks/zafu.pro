@@ -3,6 +3,7 @@ import Page from "../components/Page";
 import { Feature, ProductHead, Watermark } from "../components/PageKit";
 import { ZafuGroup, ZafuHome, ZafuProving, ZafuReceive, ZafuSend, ZafuSignIn, ZafuWelcome } from "../components/Screens";
 import { CHROME_STORE_URL, ZAFU_RELEASES_URL } from "../content/links";
+import { PEER_REFERRAL_URL } from "../content/ramps";
 
 export default function Zafu() {
   return (
@@ -11,9 +12,8 @@ export default function Zafu() {
         <Watermark sumi="/media/art/bamboo-sumi.webp" washi="/media/art/enso-washi.webp" class="-right-10 -top-8 h-[560px] w-[300px]" />
         <ProductHead
           name="zafu"
-          line="the browser extension. a shielded wallet for zcash and penumbra that builds every proof on your own computer."
+          line="a wallet for zcash and penumbra that runs as a chrome extension. your keys stay on your computer, encrypted with your password."
           base="/zafu"
-          note="the screens on this page are the 1.0 design, which arrives in q4 2026. today's release looks different, and features still being finished are marked."
         >
           <a href={CHROME_STORE_URL} class="btn-primary">add to chrome</a>
           <a href={ZAFU_RELEASES_URL} class="btn-outline">latest release</a>
@@ -24,20 +24,36 @@ export default function Zafu() {
         </div>
       </section>
 
-      <Feature id="home" title="home" body="one balance, shielded first. coins in a transparent address are marked public, with a way to shield them.">
+      <Feature id="home" title="home" body="your balance, with shielded funds first. coins sitting in a transparent address are marked as public, and you can shield them in one step.">
         <ZafuHome />
       </Feature>
-      <Feature id="send" flip title="send" body="a form, then a review. the proof is made on this computer, and zafu shows each step while it works. you may close the window; it carries on.">
+      <Feature id="send" flip title="send" body="enter the address and amount, then check the summary before you send. zafu prepares the transaction on your computer, which takes a few seconds. you can close the window while it finishes.">
         <ZafuSend />
         <ZafuProving />
       </Feature>
-      <Feature id="receive" title="receive" body="a fresh shielded address each time you show or copy one, so separate payments are not linked by address.">
+      <Feature id="receive" title="receive" body="zafu gives you a new shielded address each time you show or copy one, so the people who pay you can't link their payments to each other.">
         <ZafuReceive />
       </Feature>
-      <Feature id="groups" flip title="groups" body="a FROST multisig with its own sealed chat. co-signers join with a short room code. payments that wait for the other seals are being finished for 1.0.">
+      <Feature id="swap" flip title="swap, buy and sell" body="trade between zec and other coins from the swap screen. to get zec in the first place, or turn it back into money, use peer.">
+        <div class="grid w-full max-w-xl gap-4">
+          <div class="card">
+            <span class="text-text">zec to other coins</span>
+            <p class="mt-2 text-sm text-muted">swap zec to or from btc, eth, usdc, sol and more, through near intents or thorchain. both are outside services that zafu does not run. zafu charges no fee of its own during the beta.</p>
+          </div>
+          <div class="card">
+            <span class="text-text">on penumbra</span>
+            <p class="mt-2 text-sm text-muted">swaps run on penumbra's own exchange, which keeps your trades private. no outside service is involved.</p>
+          </div>
+          <a href={PEER_REFERRAL_URL} class="card block hover:border-border-strong">
+            <span class="text-text">buy and sell with peer</span>
+            <p class="mt-2 text-sm text-muted">buy: pay a seller with revolut, wise, zelle or monzo and the zec arrives in zafu. cash out: swap zec to usdc and sell it on peer to receive money in the same apps. peer is an outside service.</p>
+          </a>
+        </div>
+      </Feature>
+      <Feature id="groups" title="groups" body="a shared wallet that needs approval from several people, such as 2 of 3. each group has its own private chat, and people join with a short code.">
         <ZafuGroup />
       </Feature>
-      <Feature id="apps" title="apps and identity" body="apps such as zk.poker ask zafu to sign in. each site gets its own identity key, so sites cannot link you to one another.">
+      <Feature id="apps" flip title="sign in to apps" body="sites like zk.poker can ask you to sign in with zafu. each site sees a different identity, so sites can't tell they are dealing with the same person.">
         <ZafuSignIn />
       </Feature>
     </Page>

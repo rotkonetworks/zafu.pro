@@ -19,12 +19,12 @@ export const RAMP_LINKS: LinkEntry[] = [
     title: "buy",
     value: "peer",
     href: PEER_REFERRAL_URL,
-    description: `peer matches you with a seller. you pay them in an app you already use, such as revolut, wise or venmo, and usdc is released to you. swap it for zec and shield it in zafu. referral code ${PEER_REFERRAL_CODE}.`,
+    description: "open buy in zafu, pick an amount and pay a seller in an app you already use, such as revolut, wise, zelle or monzo. peer releases usdc and zafu swaps it to zec in your wallet.",
   },
   {
     title: "cash out",
     value: "peer",
     href: PEER_REFERRAL_URL,
-    description: "swap zec into usdc in zafu, then sell the usdc on peer and receive the money in revolut, wise and other payment apps.",
+    description: `swap zec into usdc on base in zafu, then list it on peer with your payment details. buyers pay you in revolut, wise and other apps as they take it. referral code ${PEER_REFERRAL_CODE}.`,
   },
 ];

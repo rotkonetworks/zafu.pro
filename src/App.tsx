@@ -3,8 +3,6 @@ import { Navigate, Route, Router } from "@solidjs/router";
 import Layout from "./components/Layout";
 
 const Home = lazy(() => import("./pages/Home"));
-const Buy = lazy(() => import("./pages/Buy"));
-const Roadmap = lazy(() => import("./pages/Roadmap"));
 
 // Products
 const Zafu = lazy(() => import("./pages/Zafu"));
@@ -39,8 +37,8 @@ export default function App() {
   return (
     <Router root={Layout}>
       <Route path="/" component={Home} />
-      <Route path="/buy" component={Buy} />
-      <Route path="/roadmap" component={Roadmap} />
+      <Route path="/buy" component={() => <Navigate href="/zafu/docs#get-zec" />} />
+      <Route path="/roadmap" component={() => <Navigate href="/" />} />
       <Route path="/zcli" component={Zcli} />
       <Route path="/cloud" component={Cloud} />
 
@@ -49,7 +47,7 @@ export default function App() {
         <Route path="/security" component={ZafuSecurity} />
         <Route path="/specs" component={ZafuSpecs} />
         <Route path="/docs" component={ZafuDocs} />
-        <Route path="/roadmap" component={() => <Navigate href="/roadmap" />} />
+        <Route path="/roadmap" component={() => <Navigate href="/" />} />
       </Route>
 
       <Route path="/zigner">
@@ -57,7 +55,7 @@ export default function App() {
         <Route path="/security" component={ZignerSecurity} />
         <Route path="/specs" component={ZignerSpecs} />
         <Route path="/docs" component={ZignerDocs} />
-        <Route path="/roadmap" component={() => <Navigate href="/roadmap" />} />
+        <Route path="/roadmap" component={() => <Navigate href="/" />} />
       </Route>
 
       <Route path="/blog" component={Blog} />
