@@ -3,7 +3,7 @@ import Page from "../components/Page";
 import { Feature, ProductHead, Watermark } from "../components/PageKit";
 import { ZafuGroup, ZafuHome, ZafuProving, ZafuReceive, ZafuSend, ZafuSignIn, ZafuWelcome } from "../components/Screens";
 import { CHROME_STORE_URL, ZAFU_RELEASES_URL } from "../content/links";
-import { PEER_BUY_URL, PEER_SELL_URL } from "../content/ramps";
+import { PEER_SELL_URL } from "../content/ramps";
 
 export default function Zafu() {
   return (
@@ -46,9 +46,8 @@ export default function Zafu() {
           </div>
           <div class="card">
             <span class="text-text">buy and sell with peer</span>
-            <p class="mt-2 text-sm text-muted">buy: pay a seller with revolut, wise, zelle or monzo and the zec arrives in zafu. cash out: swap zec to usdc and sell it on peer to receive money in the same apps. peer is an outside service.</p>
+            <p class="mt-2 text-sm text-muted">buy in zafu: pay a seller with revolut, wise, zelle or monzo, and zafu turns the usdc peer releases into zec in your wallet. cash out: swap zec to usdc and sell it on peer to receive money in the same apps. peer is an outside service.</p>
             <p class="mt-3 flex gap-4 text-sm">
-              <a href={PEER_BUY_URL} class="accent-link">buy on peer</a>
               <a href={PEER_SELL_URL} class="accent-link">cash out on peer</a>
             </p>
           </div>
