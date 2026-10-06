@@ -74,7 +74,7 @@ export default function Dashboard() {
     <Page
       title="Dashboard"
       heading="Dashboard"
-      lede="End-to-end encrypted. Login is a ZID signature — no email, no password, no KYC. The server only ever sees your public key and ciphertext."
+      lede="End-to-end encrypted. Login is a ZID signature - no email, no password, no KYC. The server only ever sees your public key and ciphertext."
     >
       <Show
         when={supported()}
@@ -94,7 +94,7 @@ export default function Dashboard() {
               <p class="mt-2 text-sm leading-relaxed text-[var(--color-text-muted)]">
                 {existing()
                   ? "A ZID exists on this device. Signing a server challenge with it logs you in."
-                  : "An ed25519 keypair is generated on this device. Its public key is your account — nothing else is collected."}
+                  : "An ed25519 keypair is generated on this device. Its public key is your account - nothing else is collected."}
               </p>
               <button
                 class="mt-4 border border-[var(--color-accent)] px-4 py-2 font-mono text-sm text-[var(--color-accent)] transition-colors hover:bg-[var(--color-accent)] hover:text-[var(--color-bg)]"

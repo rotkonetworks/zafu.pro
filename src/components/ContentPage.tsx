@@ -72,7 +72,6 @@ export default function ContentPage(props: { content: PageContent; toc?: boolean
       title={props.content.title}
       heading={props.content.heading}
       lede={props.content.lede}
-      stamp={props.content.stamp}
     >
       <Show
         when={props.toc}

@@ -1,6 +1,6 @@
 import { For, Show, createMemo, createSignal, onMount } from "solid-js";
 import Page from "../components/Page";
-import { StaticQR } from "../components/AnimatedQR";
+import { StaticQR } from "../components/QR";
 import {
   ed25519Supported,
   loadOrCreateIdentity,
@@ -103,7 +103,7 @@ export default function Release() {
     if (!p || !pay) return null;
     return pay.length === p.payloadLen
       ? null
-      : `payload is ${pay.length} bytes but the signed manifest commits to ${p.payloadLen} — these files are from different runs`;
+      : `payload is ${pay.length} bytes but the signed manifest commits to ${p.payloadLen} - these files are from different runs`;
   });
 
   const ready = createMemo(() => prefix() !== null && payloadBytes() !== null && !lengthMismatch());
@@ -152,7 +152,7 @@ export default function Release() {
             <div class="max-w-md border border-[var(--color-border)] bg-[var(--color-bg-elevated)] p-6">
               <p class="mb-4 text-sm text-[var(--color-text-muted)]">
                 Sign in with your ZID to use the coordinator. This controls who can
-                drive the page — it is not what authorises a release. Two of three
+                drive the page - it is not what authorises a release. Two of three
                 device signatures are.
               </p>
               <button class="border border-[var(--color-border)] px-4 py-2 text-sm" onClick={connect}>
@@ -165,7 +165,7 @@ export default function Release() {
           }
         >
           <div class="flex flex-col gap-8">
-            {/* 1 — inputs */}
+            {/* 1 - inputs */}
             <section>
               <h2 class="mb-2 text-sm font-semibold">1 · Load what modpack produced</h2>
               <p class="mb-4 max-w-2xl text-sm text-[var(--color-text-muted)]">
@@ -191,7 +191,7 @@ export default function Release() {
               </Show>
             </section>
 
-            {/* 2 — what is being signed */}
+            {/* 2 - what is being signed */}
             <Show when={prefix()}>
               {(p) => (
                 <section>
@@ -220,7 +220,7 @@ export default function Release() {
                     </p>
                     <p class="mt-2 text-xs text-[var(--color-text-muted)]">
                       Each device will show this. Compare it against{" "}
-                      <code>sha256sum</code> of the module you built — not against this
+                      <code>sha256sum</code> of the module you built - not against this
                       page, which could be lying to you as easily as it could be right.
                     </p>
 
@@ -233,13 +233,13 @@ export default function Release() {
               )}
             </Show>
 
-            {/* 3 — the QR the holders scan */}
+            {/* 3 - the QR the holders scan */}
             <Show when={ready()}>
               <section>
                 <h2 class="mb-2 text-sm font-semibold">3 · Have two holders scan this</h2>
                 <p class="mb-4 max-w-2xl text-sm text-[var(--color-text-muted)]">
                   Two of three, each on a different device. A holder elsewhere can scan
-                  this off a screen share and send back the 128-character signature —
+                  this off a screen share and send back the 128-character signature  - 
                   nothing secret crosses the wire.
                 </p>
                 <div class="inline-block border border-[var(--color-border)] bg-white p-4">
@@ -247,7 +247,7 @@ export default function Release() {
                 </div>
               </section>
 
-              {/* 4 — collect */}
+              {/* 4 - collect */}
               <section>
                 <h2 class="mb-2 text-sm font-semibold">4 · Paste the signatures</h2>
                 <p class="mb-4 text-sm text-[var(--color-text-muted)]">
@@ -287,7 +287,7 @@ export default function Release() {
               </section>
             </Show>
 
-            {/* 5 — result */}
+            {/* 5 - result */}
             <Show when={built()}>
               {(b) => (
                 <section>

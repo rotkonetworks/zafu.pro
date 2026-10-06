@@ -17,6 +17,10 @@
   "devDependencies": {
     "@unocss/preset-icons": "^66.1.1",
     "@unocss/reset": "^66.1.1",
+    "front-matter": "^4.0.2",
+    "remark": "^15.0.1",
+    "remark-gfm": "^4.0.1",
+    "remark-html": "^16.0.1",
     "typescript": "^5.7.3",
     "unocss": "^66.1.1",
     "vite": "npm:rolldown-vite@7.3.1",

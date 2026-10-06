@@ -2,7 +2,7 @@
 <!--
   Public content pages only. /dashboard, /release and /ceremony are tools,
   not documents; listing them would invite indexing of app surfaces.
-  Every url here was confirmed to return 200 before being listed.
+  Every url here should return 200 once deployed.
 -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://zafu.pro/</loc></url>
@@ -10,12 +10,13 @@
   <url><loc>https://zafu.pro/zafu/security</loc></url>
   <url><loc>https://zafu.pro/zafu/specs</loc></url>
   <url><loc>https://zafu.pro/zafu/docs</loc></url>
-  <url><loc>https://zafu.pro/zafu/roadmap</loc></url>
   <url><loc>https://zafu.pro/zigner</loc></url>
   <url><loc>https://zafu.pro/zigner/security</loc></url>
   <url><loc>https://zafu.pro/zigner/specs</loc></url>
   <url><loc>https://zafu.pro/zigner/docs</loc></url>
-  <url><loc>https://zafu.pro/zigner/roadmap</loc></url>
+  <url><loc>https://zafu.pro/zcli</loc></url>
+  <url><loc>https://zafu.pro/cloud</loc></url>
+  <url><loc>https://zafu.pro/blog</loc></url>
   <url><loc>https://zafu.pro/brand</loc></url>
   <url><loc>https://zafu.pro/zapps</loc></url>
 </urlset>

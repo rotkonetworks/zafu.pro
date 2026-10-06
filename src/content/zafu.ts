@@ -1,15 +1,16 @@
 import type { PageContent } from "./types";
 import { SUPPORT_CHANNELS } from "./support";
+import { RAMP_LINKS, RAMPS_NOTE } from "./ramps";
 
 export const zafuSecurity: PageContent = {
   title: "Zafu Security",
-  heading: "Security",
-  lede: "Zafu is built around a hot/cold key split: the wallet holds viewing keys and builds transactions; spending keys stay on an air-gapped signer. All zero-knowledge proving happens client-side.",
+  heading: "security",
+  lede: "a hot/cold key split. with a cold signer, zafu holds viewing keys and builds transactions; spending keys stay on the signer. zero-knowledge proving runs on your device.",
   sections: [
     {
       id: "cold-signing",
-      title: "Cold Signing",
-      lede: "Zafu pairs with Zigner over a camera-only channel. The wallet constructs an unsigned transaction, streams it as animated QR codes, and the signer returns signatures the same way. No USB, Bluetooth, or network path exists between the two devices.",
+      title: "cold signing",
+      lede: "zafu pairs with zigner or keystone over a camera-only channel: the unsigned transaction goes out as animated QR codes and the signatures come back the same way. no USB, bluetooth or network path joins the two devices. ledger connects over USB and signs transparent zec only.",
       blocks: [
         {
           kind: "specs",
@@ -24,13 +25,13 @@ export const zafuSecurity: PageContent = {
               title: "QR transport",
               value: "RaptorQ + UR",
               description:
-                "Fountain coding lets the receiver reconstruct the payload from any sufficient subset of frames — no frame ordering, no retransmission back-channel.",
+                "Fountain coding lets the receiver reconstruct the payload from any sufficient subset of frames - no frame ordering, no retransmission back-channel.",
             },
             {
               title: "Key separation",
               value: "viewing / spending",
               description:
-                "Zafu holds viewing keys only. Compromise of the online wallet exposes transaction-history visibility, never spend authority.",
+                "With a cold signer, zafu holds viewing keys only: a compromised online wallet exposes your history, never spend authority. A watch-only wallet can also be added by pasting a viewing key.",
             },
           ],
         },
@@ -38,7 +39,7 @@ export const zafuSecurity: PageContent = {
     },
     {
       id: "frost",
-      title: "FROST Threshold Signing",
+      title: "FROST threshold signing",
       lede: "With FROST, a single spending key never needs to exist on any one device. Key generation is distributed and signing requires a threshold of participants.",
       blocks: [
         {
@@ -68,7 +69,7 @@ export const zafuSecurity: PageContent = {
     },
     {
       id: "key-storage",
-      title: "Key Storage & Client-Side Proving",
+      title: "keys, proving and encryption",
       blocks: [
         {
           kind: "specs",
@@ -83,13 +84,25 @@ export const zafuSecurity: PageContent = {
               title: "Server trust",
               value: "minimized",
               description:
-                "Remote infrastructure only ever sees fully-formed shielded transactions for broadcast. Query-side trust in Zidecar/lightwalletd is actively minimized — see below.",
+                "Remote infrastructure only ever sees fully-formed shielded transactions for broadcast. Query-side trust in Zidecar/lightwalletd is minimized - see below.",
             },
             {
               title: "ZID identity keys",
               value: "ed25519",
               description:
-                "Per-site and per-contact key derivation prevents cross-context linkability. Payloads are encrypted with AES-256-GCM.",
+                "Per-site and per-contact key derivation prevents cross-context linkability. Identity and signatures stay classical.",
+            },
+            {
+              title: "Post-quantum encryption",
+              value: "X25519 + ML-KEM-768",
+              description:
+                "Direct messages between ZIDs (hybrid Noise IK) and the app-facing sealed box (zafu_encrypt, X-Wing) are hybrid post-quantum, so traffic recorded today stays confidential. The multisig group chat is not post-quantum.",
+            },
+            {
+              title: "Outbound requests",
+              value: "one gate",
+              description:
+                "Every request passes one gate in the wallet. Your own device, shipped endpoints for networks you enabled and endpoints you typed pass silently; any other host asks you once.",
             },
           ],
         },
@@ -97,29 +110,23 @@ export const zafuSecurity: PageContent = {
     },
     {
       id: "backend-trust",
-      title: "Backend Trust Minimization",
-      lede: "The query backend (Zidecar / lightwalletd) is treated as an adversary for metadata. Opt-in verification and decoy traffic shrink what a provider can learn or lie about — or run your own.",
+      title: "backend trust",
+      lede: "the server (zidecar or lightwalletd) is treated as an adversary for metadata. zafu tells it nothing about which notes are yours, and checks what it can on your device. or run your own.",
       blocks: [
         {
           kind: "specs",
           entries: [
             {
+              title: "Scanning on your device",
+              value: "every block",
+              description:
+                "zafu downloads every block since your wallet's birthday and finds your payments and spends on this device: notes by trial decryption, spends by matching each block's nullifiers against your own notes. The server is never told which notes are yours, and every wallet downloads the same blocks.",
+            },
+            {
               title: "Decoy fetching",
               value: "bucket + decoy",
               description:
-                "Memo and note fetches mix real buckets with random decoy buckets (2× in private mode, 5× in paranoid), shuffled together — the server cannot distinguish which requests are yours.",
-            },
-            {
-              title: "Ligerito proofs",
-              value: "opt-in",
-              description:
-                "Succinct proofs over server responses: Merkle paths for nullifiers and commitments are verified locally, bound to the batch root and the request set.",
-            },
-            {
-              title: "NOMT verification",
-              value: "opt-in",
-              description:
-                "Local state verification against NOMT (Nearly Optimal Merkle Trie) proofs, surfaced live in the sync status.",
+                "Memo fetches mix real buckets with random decoy buckets (2× in private mode, 5× in paranoid), shuffled together - the server cannot distinguish which requests are yours.",
             },
             {
               title: "Cross-endpoint verify",
@@ -129,9 +136,9 @@ export const zafuSecurity: PageContent = {
             },
             {
               title: "Honest limits",
-              value: "partial, not trustless",
+              value: "the chain is trusted",
               description:
-                "The Ligerito header proof has no constraint system yet: the roots it proves are values the prover chose and absorbed into its own transcript, so nothing ties them to what consensus committed. That part is ours to fix. Block and action omission is separate and harder — a server can serve a valid header chain and still withhold data, and no amount of client-side verification detects it. Cross-endpoint comparison is wired as an advisory mitigation, not a proof. Hence partial.",
+                "zafu does not yet prove the chain it is shown: it takes the server's blocks, cross-checked against independent servers. A dishonest server cannot learn which notes are yours, but it can hide a payment or a spend from you until you switch servers. Checking the chain against Zcash's own proof of work (FlyClient over the ZIP-221 history tree) is in progress.",
             },
             {
               title: "Self-hosting",
@@ -148,12 +155,12 @@ export const zafuSecurity: PageContent = {
 
 export const zafuSpecs: PageContent = {
   title: "Zafu Specs",
-  heading: "Specifications",
-  lede: "Protocol support, cryptography, and identity system details.",
+  heading: "specs",
+  lede: "protocol support, cryptography and identity.",
   sections: [
     {
       id: "architecture",
-      title: "Architecture",
+      title: "architecture",
       blocks: [
         {
           kind: "specs",
@@ -168,13 +175,13 @@ export const zafuSpecs: PageContent = {
               title: "Local-first",
               value: "on-device",
               description:
-                "All actions — encryption, proof generation, and balance sync — are handled by your local device.",
+                "Encryption, proof generation and balance sync run on your own device.",
             },
             {
               title: "Custody",
               value: "non-custodial",
               description:
-                "You are the only one who holds your keys; in the recommended setup, spending keys live on an air-gapped Zigner.",
+                "You are the only one who holds your keys; in the recommended setup, spending keys live on an air-gapped signer.",
             },
           ],
         },
@@ -182,7 +189,7 @@ export const zafuSpecs: PageContent = {
     },
     {
       id: "zcash",
-      title: "Zcash Protocol",
+      title: "zcash",
       blocks: [
         {
           kind: "specs",
@@ -191,7 +198,7 @@ export const zafuSpecs: PageContent = {
               title: "Pools",
               value: "Ironwood / Orchard / Transparent",
               description:
-                "Ironwood is the active shielded pool. Orchard is legacy — migrate-only through the NU6.3 one-way turnstile. Transparent funds can be shielded on receipt.",
+                "Ironwood is the active shielded pool. Orchard is legacy: migrate-only through the NU6.3 one-way turnstile. Transparent funds can be shielded on receipt.",
             },
             {
               title: "Spend authorization",
@@ -210,13 +217,30 @@ export const zafuSpecs: PageContent = {
               description:
                 "Proofs for shielded actions are generated in the browser; no external proving service is used.",
             },
+            {
+              title: "Receive addresses",
+              value: "single-use",
+              description:
+                "Every time you open, copy or share your shielded address it rotates to a fresh random diversifier, so no address is handed to two senders.",
+            },
+            {
+              title: "Fees",
+              value: "ZIP-317",
+              description:
+                "One flat standard fee. Zcash has no fee auction, so paying more would only link your transactions.",
+            },
+            {
+              title: "Payment requests",
+              value: "ZIP 321",
+              description: "Payment requests as zcash: links, switchable in privacy settings.",
+            },
           ],
         },
       ],
     },
     {
       id: "penumbra",
-      title: "Penumbra",
+      title: "penumbra",
       blocks: [
         {
           kind: "specs",
@@ -244,7 +268,14 @@ export const zafuSpecs: PageContent = {
             {
               title: "IBC",
               value: "transfers",
-              description: "Deposit and withdraw assets to and from IBC-connected chains.",
+              description:
+                "Deposit and withdraw over the IBC channels your Penumbra node reports as live: noble, cosmos hub, injective, osmosis.",
+            },
+            {
+              title: "USDC ramp",
+              value: "injective",
+              description:
+                "Receive Circle-native USDC on Injective and shield it into Penumbra, or withdraw it back to an exchange. Noble USDC is being wound down by Circle.",
             },
           ],
         },
@@ -252,7 +283,7 @@ export const zafuSpecs: PageContent = {
     },
     {
       id: "frost",
-      title: "FROST Multisig",
+      title: "FROST multisig",
       blocks: [
         {
           kind: "specs",
@@ -266,7 +297,19 @@ export const zafuSpecs: PageContent = {
               title: "Key generation",
               value: "3-round DKG",
               description:
-                "Dealerless; participants exchange rounds over the QR channel and each holds only a key share.",
+                "Dealerless; each participant holds only a key share. Rounds run over a frostd relay, sealed end to end.",
+            },
+            {
+              title: "Room codes",
+              value: "number + two words",
+              description:
+                "Co-signers join a key-generation or signing session with a short code instead of scanning each other's QR codes.",
+            },
+            {
+              title: "Group chat",
+              value: "per multisig",
+              description:
+                "Each multisig gets a sealed coordination thread in the inbox; messages wait for an offline co-signer. Not post-quantum, no forward secrecy.",
             },
             {
               title: "Signing",
@@ -286,8 +329,8 @@ export const zafuSpecs: PageContent = {
     },
     {
       id: "zid",
-      title: "ZID Identity",
-      lede: "Off-chain identity. Build your own social graph — no KYC, no registry, no linkable global identifier.",
+      title: "ZID identity",
+      lede: "off-chain identity. your own social graph: no KYC, no registry, no linkable global identifier.",
       blocks: [
         {
           kind: "specs",
@@ -307,12 +350,25 @@ export const zafuSpecs: PageContent = {
               title: "Social graph",
               value: "self-sovereign",
               description:
-                "Contacts are pairwise keys you exchange directly. Your graph lives with you, encrypted — not on a server, not on a chain.",
+                "Contacts are anchored to ZIDs, not just addresses. Your graph lives with you, encrypted - not on a server, not on a chain.",
+            },
+            {
+              title: "Contact discovery",
+              value: "blind relay",
+              description:
+                "Two people who already know each other find each other through per-epoch rendezvous tags. Whole-bucket reads and padded publishes keep who you look up, and how many friends you have, off the relay.",
             },
             {
               title: "Encryption",
-              value: "AES-256-GCM",
-              description: "Authenticated encryption for ZID payloads.",
+              value: "hybrid post-quantum",
+              description:
+                "Direct messages use hybrid X25519 + ML-KEM-768 (Noise IK). Apps can seal to a ZID with zafu_encrypt (X-Wing) when the recipient advertises a post-quantum key.",
+            },
+            {
+              title: "zcash.me directory",
+              value: "opt-in, off by default",
+              description:
+                "Look up and pay a /username. Live lookups can be covered by decoy names; an address is only ever labelled from a verified profile.",
             },
           ],
         },
@@ -323,13 +379,13 @@ export const zafuSpecs: PageContent = {
 
 export const zafuDocs: PageContent = {
   title: "Zafu Docs",
-  heading: "Documentation",
-  lede: "Zafu runs in the browser with all key operations and proving performed locally. This guide covers wallet setup, transaction types, and the cold-signing and FROST workflows.",
+  heading: "docs",
+  lede: "install, set up, get zec, sign cold, run a multisig.",
   sections: [
     {
       id: "install",
-      title: "Installing",
-      lede: "Two routes to the same wallet, easiest first. Zafu is in beta and store releases wait on review, so when one is pending the newest build is on GitHub - some apps (like zk.poker) need it.",
+      title: "install",
+      lede: "two routes to the same wallet, easiest first. store releases wait on review, so while one is pending the newest build is on github.",
       blocks: [
         {
           kind: "tabs",
@@ -398,22 +454,26 @@ export const zafuDocs: PageContent = {
     },
     {
       id: "setup",
-      title: "Wallet Setup",
+      title: "set up",
       blocks: [
         {
           kind: "steps",
           steps: [
             {
-              title: "Open Zafu",
-              body: "Zafu is a web wallet; no installation is required. All cryptographic operations, including proof generation, run client-side.",
+              title: "Open zafu",
+              body: "Click the zafu icon in the toolbar. You can also keep it in Chrome's side panel.",
             },
             {
               title: "Create or restore",
-              body: "Generate a new seed phrase, or restore from an existing one. For restores, provide the wallet birthday (block height) to bound the initial scan.",
+              body: "Generate a new recovery phrase, or restore one. A restore asks for the wallet birthday so the first scan starts in the right place; an unknown birthday falls back to Orchard activation.",
+            },
+            {
+              title: "Zcash first",
+              body: "A new wallet starts with Zcash only. Turn on Penumbra and the transparent chains later in Settings > Networks.",
             },
             {
               title: "Choose a security posture",
-              body: "Hot wallet: keys stay in the browser. Recommended: watch-only mode — import viewing keys from Zigner so Zafu can scan and build transactions while spending keys remain air-gapped.",
+              body: "Hot wallet: keys stay in the browser. Recommended: pair a cold signer (Zigner or Keystone) so zafu holds viewing keys only. Ledger can be added for transparent zec (experimental). A watch-only wallet can be added from a viewing key.",
             },
             {
               title: "Sync",
@@ -425,7 +485,7 @@ export const zafuDocs: PageContent = {
     },
     {
       id: "zcash-transactions",
-      title: "Zcash Transactions",
+      title: "zcash transactions",
       blocks: [
         {
           kind: "specs",
@@ -459,7 +519,7 @@ export const zafuDocs: PageContent = {
     },
     {
       id: "penumbra-transactions",
-      title: "Penumbra Transactions",
+      title: "penumbra transactions",
       blocks: [
         {
           kind: "specs",
@@ -489,9 +549,25 @@ export const zafuDocs: PageContent = {
       ],
     },
     {
+      id: "get-zec",
+      title: "swap, buy and sell",
+      lede: RAMPS_NOTE,
+      blocks: [
+        { kind: "links", links: RAMP_LINKS },
+        {
+          kind: "specs",
+          cols: 2,
+          entries: [
+            { title: "swap zec", value: "near intents · thorchain", description: "open swap, pick a coin and an amount, and confirm. zec swaps to and from btc, eth, usdc, sol and more go through near intents or thorchain, outside services zafu does not run. they may delay or hold funds for their own checks, and zafu cannot recover them. zafu charges no fee of its own during the beta; every fee is shown before you confirm." },
+            { title: "swap on penumbra", value: "penumbra dex", description: "swaps between penumbra assets run on penumbra's own exchange. your trades stay private, and no outside service is involved." },
+          ],
+        },
+      ],
+    },
+    {
       id: "cold-signing-flow",
-      title: "Signing with Zigner",
-      lede: "In watch-only mode, every spend is a two-device round trip over QR codes.",
+      title: "sign with zigner",
+      lede: "with a cold signer, every spend is a two-device round trip over QR codes.",
       blocks: [
         {
           kind: "steps",
@@ -518,7 +594,8 @@ export const zafuDocs: PageContent = {
     },
     {
       id: "frost-setup",
-      title: "FROST Multisig Setup",
+      title: "FROST multisig",
+      lede: "co-signers meet in a room named by a short code: a number and two words. rounds travel over a frostd relay, sealed end to end.",
       blocks: [
         {
           kind: "steps",
@@ -529,7 +606,7 @@ export const zafuDocs: PageContent = {
             },
             {
               title: "Run DKG",
-              body: "All n participants complete the 3-round distributed key generation, exchanging rounds via QR. Each device ends with a key share; the full key never exists anywhere.",
+              body: "One participant opens a room and shares its code; the others join with it. The distributed key generation runs over the relay, and each device ends with a key share. The full key never exists anywhere.",
             },
             {
               title: "Verify",
@@ -537,7 +614,7 @@ export const zafuDocs: PageContent = {
             },
             {
               title: "Sign",
-              body: "Any t participants run the 2-round signing protocol over the same QR channel. Nonce commitments are fingerprinted and checked to prevent reuse.",
+              body: "Any t participants join a signing room by code and run the 2-round protocol. Each co-signer signs only the transaction it reviewed.",
             },
           ],
         },
@@ -545,8 +622,8 @@ export const zafuDocs: PageContent = {
     },
     {
       id: "support",
-      title: "Support & Community",
-      lede: "Zafu bugs and feature requests belong on our issue tracker — that is the channel we watch — and we post progress in our Zcash forum development thread. The Zcash and Penumbra Discords are upstream protocol communities: the right place for questions about the chains themselves, not about the wallet.",
+      title: "support",
+      lede: "zafu bugs and feature requests go to our issue tracker - that is the channel we watch - and we post progress in our zcash forum thread. the zcash and penumbra discords are upstream protocol communities: ask there about the chains, not the wallet.",
       blocks: [
         {
           kind: "links",
@@ -557,68 +634,3 @@ export const zafuDocs: PageContent = {
   ],
 };
 
-export const zafuRoadmap: PageContent = {
-  title: "Zafu Roadmap",
-  heading: "Roadmap",
-  lede: "Where Zafu is headed. Priorities can shift with network upgrades; the latest state is always the GitHub milestones.",
-  sections: [
-    {
-      id: "high-priority",
-      title: "High Priority",
-      blocks: [
-        {
-          kind: "specs",
-          entries: [
-            {
-              title: "Post-quantum encryption",
-              value: "PQ migration",
-              description:
-                "Move wallet-layer encryption (vault, ZID payloads, QR channel) to post-quantum schemes so captured ciphertext today cannot be harvested and decrypted later.",
-            },
-            {
-              title: "OTA updates over QR",
-              value: "no reinstalls",
-              description:
-                "Ship wallet logic updates over the animated QR channel so network upgrades like NU7 do not force an extension reinstall — the store review cycle stops gating consensus changes.",
-            },
-          ],
-        },
-      ],
-    },
-    {
-      id: "next",
-      title: "Next",
-      blocks: [
-        {
-          kind: "specs",
-          entries: [
-            {
-              title: "Constrained header proofs",
-              value: "prover-chosen → committed",
-              description:
-                "Give the Ligerito header proof a constraint system, so the roots it proves are the ones block headers already commit to rather than values the prover picked. Per-pool pinned roots are the precondition: a proof cannot bind to a root the server cannot name at a given height.",
-            },
-            {
-              title: "Block omission",
-              value: "needs consensus-layer DA",
-              description:
-                "A server can serve a valid header chain and still withhold blocks or actions. Detecting that needs data-availability commitments from block producers — a network change, not a wallet one. Listed here because it bounds how trustless a light client can honestly claim to be.",
-            },
-            {
-              title: "Ledger shielded signing",
-              value: "flag-off today",
-              description:
-                "Shielded (Ironwood/Orchard) signing on Ledger hardware — not just transparent. Ships disabled until Ledger's app-zcash recognises the current branch id and frame shape; re-enabled once upstream releases land.",
-            },
-            {
-              title: "PIR voting",
-              value: "Zcash + Penumbra",
-              description:
-                "Governance voting over private information retrieval on both chains: the query backend cannot see which proposals you fetch or correlate reads with votes.",
-            },
-          ],
-        },
-      ],
-    },
-  ],
-};

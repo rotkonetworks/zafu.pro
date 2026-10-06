@@ -1,5 +1,4 @@
 import { createEffect, onMount, type ParentComponent } from "solid-js";
-import Hanko from "./Hanko";
 
 interface PageProps {
   /** Browser tab title; suffixed with the site name. */
@@ -8,8 +7,6 @@ interface PageProps {
   heading?: string;
   /** Optional short lede under the heading. */
   lede?: string;
-  /** Kanji for the header seal stamp; pass "" to hide. Default 座蒲 (zafu). */
-  stamp?: string;
 }
 
 /**
@@ -19,7 +16,7 @@ interface PageProps {
  */
 const Page: ParentComponent<PageProps> = (props) => {
   createEffect(() => {
-    document.title = `${props.title} — zafu.pro`;
+    document.title = `${props.title} · zafu.pro`;
   });
 
   // Lazy routes mount their content after navigation resolves, so the browser
@@ -34,14 +31,11 @@ const Page: ParentComponent<PageProps> = (props) => {
   });
 
   return (
-    <div class="page-in max-w-5xl mx-auto px-6 py-16">
+    <div class="page-in mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
       {props.heading && (
-        <header class="mb-10 flex items-start justify-between gap-6">
-          <div>
-            <h1 class="text-3xl font-bold text-text">{props.heading}</h1>
-            {props.lede && <p class="text-muted mt-3 max-w-2xl">{props.lede}</p>}
-          </div>
-          {props.stamp !== "" && <Hanko text={props.stamp} />}
+        <header class="mb-12">
+          <h1 class="text-4xl sm:text-5xl">{props.heading}</h1>
+          {props.lede && <p class="mt-4 max-w-2xl text-muted">{props.lede}</p>}
         </header>
       )}
       {props.children}

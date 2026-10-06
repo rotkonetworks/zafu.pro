@@ -79,7 +79,7 @@ export const SpecGrid: ParentComponent<{ cols?: 1 | 2 | 3 }> = (props) => {
       : props.cols === 3
         ? "sm:grid-cols-2 lg:grid-cols-3"
         : "sm:grid-cols-2";
-  return <div class={`grid gap-4 ${cols()}`}>{props.children}</div>;
+  return <div class={`grid grid-cols-1 gap-4 ${cols()}`}>{props.children}</div>;
 };
 
 /** Numbered step list for procedural docs. */
@@ -123,9 +123,12 @@ export function Steps(props: {
 
 export function LinkList(props: {
   items: { title: string; href: string; value?: string; description?: string }[];
+  cols?: 2 | 3;
 }) {
   return (
-    <ul class="m-0 grid list-none gap-3 p-0 sm:grid-cols-2">
+    <ul
+      class={`m-0 grid list-none gap-3 p-0 sm:grid-cols-2 ${props.cols === 3 ? "lg:grid-cols-3" : ""}`}
+    >
       <For each={props.items}>
         {(item) => (
           <li class="m-0">
@@ -219,3 +222,83 @@ export function Tabs(props: {
     </div>
   );
 }
+
+/**
+ * A product screen beside its one or two lines of copy. `screens` holds one
+ * or two Screens; the copy column stays narrow so the screen does the work.
+ */
+export const Feature: ParentComponent<{ id?: string; title: string; body: string; flip?: boolean }> = (props) => (
+  <section
+    id={props.id}
+    class={`grid scroll-mt-24 grid-cols-1 items-center gap-8 border-t border-border py-14 md:gap-14 ${
+      props.flip ? "md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]" : "md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]"
+    }`}
+  >
+    <div classList={{ "md:order-2": props.flip }}>
+      <h2 class="text-3xl">{props.title}</h2>
+      <p class="mt-3 max-w-md text-muted">{props.body}</p>
+    </div>
+    <div class="screens">{props.children}</div>
+  </section>
+);
+
+/**
+ * Quiet sumi art for a corner of a section: one image per theme, low
+ * opacity, never under text (callers place it beside or behind a screen).
+ */
+export function Watermark(props: { sumi: string; washi: string; class: string }) {
+  return (
+    <div aria-hidden="true" class={`pointer-events-none absolute hidden select-none lg:block ${props.class}`}>
+      <img src={props.sumi} alt="" class="art-sumi h-full w-full object-contain" />
+      <img src={props.washi} alt="" class="art-washi h-full w-full object-contain" />
+    </div>
+  );
+}
+
+/** Linked card: title, a small tag, one line of copy. External links open in a new tab. */
+export function Card(props: { href: string; title: string; tag?: string; body: string }) {
+  const external = () => /^https?:/.test(props.href);
+  return (
+    <a
+      href={props.href}
+      target={external() ? "_blank" : undefined}
+      rel={external() ? "noopener noreferrer" : undefined}
+      class="card flex flex-col hover:border-border-strong"
+    >
+      <span class="flex items-baseline justify-between gap-3">
+        <span class="text-base text-text">{props.title}</span>
+        <Show when={props.tag}>
+          <span class="shrink-0 border border-border px-1.5 text-xs text-muted">{props.tag}</span>
+        </Show>
+      </span>
+      <span class="mt-2 text-sm leading-relaxed text-muted">{props.body}</span>
+      <span class="mt-auto pt-3 text-xs text-accent">{external() ? props.href.replace(/^https:\/\//, "").replace(/\/$/, "") : `zafu.pro${props.href}`}</span>
+    </a>
+  );
+}
+
+/** Product page header: name, one line, the install actions and the reference pages. */
+export const ProductHead: ParentComponent<{
+  name: string;
+  line: string;
+  base: string;
+  note?: string;
+}> = (props) => (
+  <div>
+    <h1 class="text-5xl sm:text-6xl">{props.name}</h1>
+    <p class="mt-5 max-w-lg text-lg text-muted">{props.line}</p>
+    <div class="mt-8 flex flex-wrap gap-3">{props.children}</div>
+    <p class="mt-6 flex flex-wrap gap-x-5 gap-y-1 text-sm">
+      <For each={["security", "specs", "docs"]}>
+        {(p) => (
+          <a href={`${props.base}/${p}`} class="text-muted hover:text-text">
+            {p}
+          </a>
+        )}
+      </For>
+    </p>
+    <Show when={props.note}>
+      <p class="mt-6 max-w-lg text-xs text-muted">{props.note}</p>
+    </Show>
+  </div>
+);

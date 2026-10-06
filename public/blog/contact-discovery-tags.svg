@@ -1,0 +1,42 @@
+<svg viewBox="0 0 720 360" width="1440" height="720" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Alice and Bob each derive the same rendezvous tags from their own contact card and publish to a relay under their own tag; nothing passes between them.">
+  <rect width="720" height="360" fill="#0a0a0a"/>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+    <rect x="6" y="30" width="300" height="236" rx="4" fill="#121212" stroke="#262626"/>
+    <rect x="414" y="30" width="300" height="236" rx="4" fill="#121212" stroke="#262626"/>
+    <text x="20" y="22" font-size="12.5" fill="#f4b728">alice</text>
+    <text x="428" y="22" font-size="12.5" fill="#f4b728">bob</text>
+    <rect x="20" y="44" width="272" height="34" rx="3" fill="#0a0a0a" stroke="#3a3a3a"/>
+    <text x="34" y="65" font-size="11.5" fill="#e8e8e8">bob's contact card</text>
+    <rect x="20" y="90" width="272" height="52" rx="3" fill="#0a0a0a" stroke="#3a3a3a"/>
+    <text x="34" y="111" font-size="11.5" fill="#e8e8e8">root secret</text>
+    <text x="34" y="129" font-size="10" fill="#9a9a9a">X25519(my priv, their pub)</text>
+    <rect x="20" y="154" width="272" height="52" rx="3" fill="#0a0a0a" stroke="#3a3a3a"/>
+    <text x="34" y="175" font-size="11.5" fill="#e8e8e8">rendezvous tag</text>
+    <text x="34" y="193" font-size="10" fill="#9a9a9a">HKDF-SHA256(secret, app, epoch, pubkey)</text>
+    <rect x="20" y="218" width="272" height="34" rx="3" fill="#0a0a0a" stroke="#f4b728"/>
+    <text x="34" y="239" font-size="11.5" fill="#f4b728">both tags, computed offline</text>
+    <rect x="428" y="44" width="272" height="34" rx="3" fill="#0a0a0a" stroke="#3a3a3a"/>
+    <text x="442" y="65" font-size="11.5" fill="#e8e8e8">alice's contact card</text>
+    <rect x="428" y="90" width="272" height="52" rx="3" fill="#0a0a0a" stroke="#3a3a3a"/>
+    <text x="442" y="111" font-size="11.5" fill="#e8e8e8">root secret</text>
+    <text x="442" y="129" font-size="10" fill="#9a9a9a">X25519(my priv, their pub)</text>
+    <rect x="428" y="154" width="272" height="52" rx="3" fill="#0a0a0a" stroke="#3a3a3a"/>
+    <text x="442" y="175" font-size="11.5" fill="#e8e8e8">rendezvous tag</text>
+    <text x="442" y="193" font-size="10" fill="#9a9a9a">HKDF-SHA256(secret, app, epoch, pubkey)</text>
+    <rect x="428" y="218" width="272" height="34" rx="3" fill="#0a0a0a" stroke="#f4b728"/>
+    <text x="442" y="239" font-size="11.5" fill="#f4b728">both tags, computed offline</text>
+    <path d="M156,252 V280 H276 V292" fill="none" stroke="#3a3a3a"/>
+    <polygon points="276,296 271,286 281,286" fill="#3a3a3a"/>
+    <text x="162" y="272" font-size="9.5" fill="#6a6a6a">publish</text>
+    <path d="M564,252 V280 H444 V292" fill="none" stroke="#3a3a3a"/>
+    <polygon points="444,296 439,286 449,286" fill="#3a3a3a"/>
+    <text x="570" y="272" font-size="9.5" fill="#6a6a6a">publish</text>
+    <line x1="306" y1="160" x2="414" y2="160" stroke="#3a3a3a" stroke-dasharray="3 3"/>
+    <line x1="352" y1="152" x2="368" y2="168" stroke="#f4b728"/>
+    <line x1="352" y1="168" x2="368" y2="152" stroke="#f4b728"/>
+    <text x="360" y="142" font-size="10" text-anchor="middle" fill="#9a9a9a">nothing on the wire</text>
+    <rect x="180" y="296" width="360" height="52" rx="4" fill="#121212" stroke="#3a3a3a"/>
+    <text x="196" y="318" font-size="12" fill="#e8e8e8">dumb relay</text>
+    <text x="196" y="336" font-size="10" fill="#9a9a9a">tag → 64-byte AEAD blob, one bucket per app scope</text>
+  </g>
+</svg>

@@ -1,98 +1,142 @@
-import { For } from "solid-js";
+import { createEffect, createSignal, For, onCleanup, Show } from "solid-js";
 import { A, useLocation } from "@solidjs/router";
 import { useTheme } from "./ThemeProvider";
+import { Lockup } from "./Seal";
 
-const SECTIONS = [
-  { label: "security", path: "security" },
-  { label: "specs", path: "specs" },
-  { label: "docs", path: "docs" },
-  { label: "roadmap", path: "roadmap" },
-] as const;
+type NavLink = { label: string; href: string; note?: string };
+type NavItem = NavLink & { sub?: readonly NavLink[] };
 
-export default function Nav() {
+/** The products, each with its own pages in a dropdown, then the docs and the blog. */
+export const NAV: readonly NavItem[] = [
+  {
+    label: "zafu",
+    href: "/zafu",
+    sub: [
+      { label: "overview", href: "/zafu" },
+      { label: "docs", href: "/zafu/docs" },
+      { label: "security", href: "/zafu/security" },
+      { label: "specs", href: "/zafu/specs" },
+    ],
+  },
+  {
+    label: "zigner",
+    href: "/zigner",
+    sub: [
+      { label: "overview", href: "/zigner" },
+      { label: "docs", href: "/zigner/docs" },
+      { label: "security", href: "/zigner/security" },
+      { label: "specs", href: "/zigner/specs" },
+    ],
+  },
+  {
+    label: "zcli",
+    href: "/zcli",
+    sub: [
+      { label: "overview", href: "/zcli" },
+      { label: "cloud agent", href: "/cloud", note: "planned" },
+    ],
+  },
+  {
+    label: "docs",
+    href: "/zafu/docs",
+    sub: [
+      { label: "zafu", href: "/zafu/docs" },
+      { label: "zigner", href: "/zigner/docs" },
+    ],
+  },
+  { label: "blog", href: "/blog" },
+];
+
+/** Flat list for the footer: the top-level entries only. */
+export const NAV_LINKS: readonly NavLink[] = NAV.map(({ label, href }) => ({ label, href }));
+
+function Menu(props: { item: NavItem }) {
   const location = useLocation();
-  const { theme, cycleTheme } = useTheme();
+  const [open, setOpen] = createSignal(false);
+  let el!: HTMLLIElement;
 
-  const product = () =>
-    location.pathname === "/zigner" || location.pathname.startsWith("/zigner/")
-      ? "zigner"
-      : "zafu";
+  // close on navigation, and on a click or tap anywhere else
+  createEffect(() => { location.pathname; location.hash; setOpen(false); });
+  const away = (e: PointerEvent) => { if (!el.contains(e.target as Node)) setOpen(false); };
+  document.addEventListener("pointerdown", away);
+  onCleanup(() => document.removeEventListener("pointerdown", away));
 
-  const base = () => `/${product()}`;
+  const active = () => (props.item.sub ?? [props.item]).some((s) => location.pathname === s.href || location.pathname.startsWith(`${s.href}/`));
 
   return (
-    <nav class="border-b border-border sticky top-0 z-50 bg-bg/90 backdrop-blur">
-      <div class="max-w-5xl mx-auto px-6 flex items-center justify-between py-4 gap-4">
-        <div class="flex items-center gap-6">
-          <A
-            href="/"
-            class="font-mono text-lg font-semibold text-text hover:text-accent transition-colors"
-            aria-label="zafu.pro home"
-          >
-            zafu<span class="text-accent">.</span>pro
-          </A>
-          {/* Product switcher */}
-          <div class="flex border border-border text-xs font-mono">
-            <A
-              href="/zafu"
-              class="px-3 py-1 transition-colors"
-              classList={{
-                "bg-accent text-accent-contrast": product() === "zafu",
-                "text-muted hover:text-text": product() !== "zafu",
-              }}
-            >
-              zafu
-            </A>
-            <A
-              href="/zigner"
-              class="px-3 py-1 transition-colors border-l border-border"
-              classList={{
-                "bg-accent text-accent-contrast": product() === "zigner",
-                "text-muted hover:text-text": product() !== "zigner",
-              }}
-            >
-              zigner
-            </A>
-          </div>
-        </div>
-
-        <ul class="flex items-center gap-5 list-none">
-          <For each={SECTIONS}>
-            {(section) => (
+    <li
+      ref={el}
+      class="relative"
+      onKeyDown={(e) => { if (e.key === "Escape") setOpen(false); }}
+    >
+      <button
+        type="button"
+        aria-expanded={open()}
+        aria-haspopup="true"
+        onClick={() => setOpen(!open())}
+        class={`flex cursor-pointer items-center gap-1 border-0 bg-transparent p-0 font-[inherit] text-sm ${active() ? "text-accent" : "text-muted hover:text-text"}`}
+      >
+        {props.item.label}
+        <span aria-hidden="true" class={`text-[10px] transition-transform ${open() ? "rotate-180" : ""}`}>▾</span>
+      </button>
+      <Show when={open()}>
+        <ul class="absolute left-0 top-full z-50 m-0 min-w-40 list-none border border-border bg-surface p-0 py-1 shadow-lg">
+          <For each={props.item.sub}>
+            {(s) => (
               <li>
                 <A
-                  href={`${base()}/${section.path}`}
-                  class="text-sm transition-colors"
+                  href={s.href}
+                  end
                   activeClass="text-accent"
                   inactiveClass="text-muted hover:text-text"
+                  class="flex items-baseline justify-between gap-4 px-3 py-1.5 hover:bg-surface-2"
                 >
-                  {section.label}
+                  {s.label}
+                  <Show when={s.note}>
+                    <span class="text-[10px] text-dim2">{s.note}</span>
+                  </Show>
                 </A>
               </li>
             )}
           </For>
-          <li>
-            <a
-              href="https://github.com/rotkonetworks/zafu"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="text-sm text-muted hover:text-text transition-colors"
-            >
-              github
-            </a>
-          </li>
-          <li>
-            <button
-              type="button"
-              onClick={cycleTheme}
-              title={`Theme: ${theme()} (click to cycle)`}
-              aria-label={`Switch theme, current: ${theme()}`}
-              class="text-xs font-mono text-muted hover:text-accent transition-colors border border-border px-2 py-1 bg-transparent cursor-pointer"
-            >
-              {theme()}
-            </button>
-          </li>
         </ul>
+      </Show>
+    </li>
+  );
+}
+
+export default function Nav() {
+  const { theme, toggleTheme } = useTheme();
+
+  return (
+    <nav class="sticky top-0 z-50 border-b border-border bg-bg">
+      <div class="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-2 px-4 py-3 sm:px-6">
+        <A href="/" aria-label="zafu.pro home">
+          <Lockup />
+        </A>
+        <ul class="order-last flex w-full list-none flex-wrap gap-x-5 gap-y-1 p-0 text-sm md:order-none md:ml-auto md:w-auto">
+          <For each={NAV}>
+            {(item) =>
+              item.sub ? (
+                <Menu item={item} />
+              ) : (
+                <li>
+                  <A href={item.href} activeClass="text-accent" inactiveClass="text-muted hover:text-text">
+                    {item.label}
+                  </A>
+                </li>
+              )
+            }
+          </For>
+        </ul>
+        <button
+          type="button"
+          onClick={toggleTheme}
+          aria-label={`switch to ${theme() === "sumi" ? "washi (light)" : "sumi (dark)"}`}
+          class="ml-auto h-8 cursor-pointer border border-border bg-transparent px-2.5 text-xs text-muted hover:text-text md:ml-0"
+        >
+          {theme() === "sumi" ? "washi" : "sumi"}
+        </button>
       </div>
     </nav>
   );

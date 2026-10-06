@@ -52,7 +52,7 @@ const ZAPPS: Zapp[] = [
       "Share a secret with a ZID contact, optionally on a delay. Encrypted to the recipient, so the host holds ciphertext and nothing else.",
     status: "planned",
     gap:
-      "Two unsolved pieces. Contact discovery: ZID is ed25519, so encrypting to someone needs an X25519 conversion and a way to look their key up. Time-release: releasing on a schedule means either a party trusted to hold the key until then — which gives away the point — or a threshold beacon like drand. Worth costing before promising the feature.",
+      "Contact discovery now exists in the SDK (@zafu/zid): a pairwise root secret from the contact card, per-epoch rendezvous tags, and a blind relay that pads every write, so a lookup never hands the relay your contact list. What is missing is the relay endpoint and the wallet-side wiring. Time-release is still unsolved: releasing on a schedule means either a party trusted to hold the key until then (which gives away the point) or a threshold beacon like drand. Worth costing before promising the feature.",
   },
   {
     name: "ZID messaging",
@@ -77,7 +77,7 @@ export default function Zapps() {
     <Page
       title="ZAPPs"
       heading="ZAPPs"
-      lede="Small tools. No accounts, no email, no KYC — where a login is needed, you sign in with a ZID key you already hold."
+      lede="Small tools. No accounts, no email, no KYC - where a login is needed, you sign in with a ZID key you already hold."
     >
       <div class="flex flex-col gap-10">
         <section class="flex flex-col gap-4">
@@ -112,7 +112,7 @@ export default function Zapps() {
         <section class="max-w-2xl border border-[var(--color-border)] p-5">
           <h2 class="mb-2 text-sm font-semibold">Suggest one</h2>
           <p class="mb-4 text-sm text-[var(--color-text-muted)]">
-            Ideas go in the issue tracker rather than a form here — that way the
+            Ideas go in the issue tracker rather than a form here - that way the
             discussion is public, versioned, and does not need a backend to exist.
           </p>
           <a
@@ -130,7 +130,7 @@ export default function Zapps() {
             What makes something a good ZAPP here: it should hold no secrets it does
             not have to, work without trusting this site, and be small enough that
             you could read it. The release tools qualify because the keys live on
-            devices and the signatures are checked somewhere else — the page being
+            devices and the signatures are checked somewhere else - the page being
             wrong is an inconvenience, not a compromise.
           </p>
         </section>

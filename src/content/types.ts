@@ -10,7 +10,7 @@ export interface SpecEntry {
   /** Short mono value shown right of the title (e.g. "PCZT v2"). */
   value?: string;
   description?: string;
-  /** Not yet supported: rendered grayed out with an "upcoming" tag. */
+  /** Not yet supported: rendered dimmed with a "planned" tag. */
   upcoming?: boolean;
 }
 
@@ -36,7 +36,7 @@ export type SectionBlock =
   | { kind: "links"; links: LinkEntry[] }
   | { kind: "code"; code: string; caption?: string }
   /**
-   * Alternative routes to the same outcome — e.g. three ways to install.
+   * Alternative routes to the same outcome - e.g. three ways to install.
    * Order them easiest-first: the first tab is the one shown by default, and
    * most readers never open the others.
    */
@@ -61,7 +61,5 @@ export interface PageContent {
   title: string;
   heading: string;
   lede?: string;
-  /** Kanji for the header hanko stamp (e.g. 座蒲 for Zafu, 印 for Zigner). */
-  stamp?: string;
   sections: SectionContent[];
 }

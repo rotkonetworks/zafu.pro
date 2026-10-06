@@ -75,7 +75,7 @@ export default function Ceremony() {
       const prev = seen.get(k.hex);
       if (prev !== undefined) {
         problems.push(
-          `keys #${prev + 1} and #${i + 1} are the SAME key — that is fewer than 3 ` +
+          `keys #${prev + 1} and #${i + 1} are the SAME key - that is fewer than 3 ` +
             `distinct keys, so it is not really 2-of-3. Two devices sharing a seed, ` +
             `or one key read twice.`,
         );
@@ -83,7 +83,7 @@ export default function Ceremony() {
       seen.set(k.hex, i);
       if (/^0+$/.test(k.hex)) {
         problems.push(
-          `key #${i + 1} is all zero — the kernel refuses placeholder keys individually, ` +
+          `key #${i + 1} is all zero - the kernel refuses placeholder keys individually, ` +
             `because an all-zero encoding decodes to a valid small-order point whose ` +
             `signatures are forgeable.`,
         );
@@ -110,13 +110,13 @@ export default function Ceremony() {
               <p class="mb-3 text-[var(--color-text-muted)]">
                 Three keys, 2-of-3: one <strong>GitHub/CI</strong> software key and
                 <strong> two zigner devices</strong> (each a different seed). A release needs
-                any two — normally one zigner plus CI, or the two zigners fully offline.
+                any two - normally one zigner plus CI, or the two zigners fully offline.
                 Order does not matter; the app checks a release against all three.
               </p>
               <ul class="flex list-disc flex-col gap-2 pl-5 text-[var(--color-text-muted)]">
                 <li>
                   The two device keys are <em>derived</em> from each zigner's existing seed
-                  (domain <code>zigner-release</code>) — nothing is stored on the device,
+                  (domain <code>zigner-release</code>) - nothing is stored on the device,
                   and a release signature can never move funds. Two <em>different</em> seeds,
                   or it is 1-of-2, not 2-of-3.
                 </li>
@@ -139,7 +139,7 @@ export default function Ceremony() {
             <section class="max-w-2xl">
               <h2 class="mb-2 text-sm font-semibold">Get the tool</h2>
               <p class="mb-3 text-sm text-[var(--color-text-muted)]">
-                <code>modpack</code> is not published — build it from the same zigner source
+                <code>modpack</code> is not published - build it from the same zigner source
                 revision you are pinning, so the binary minting the key is one you can audit.
                 Run it offline.
               </p>
@@ -159,7 +159,7 @@ cargo install --path modpack        # puts modpack on PATH
               </pre>
               <p class="text-sm text-[var(--color-text-muted)]">
                 The two device keys need no tooling: each zigner derives its own from its seed
-                (domain <code>zigner-release</code>) and shows it as a QR/hex — scan or paste all
+                (domain <code>zigner-release</code>) and shows it as a QR/hex - scan or paste all
                 three below. The output constant is deterministic, so anyone can rebuild it from
                 the same three keys and check it matches what shipped.
               </p>
@@ -247,7 +247,7 @@ cargo install --path modpack        # puts modpack on PATH
                   <p class="mb-2">
                     <strong>Module updates do not work until this ships in an APK.</strong>{" "}
                     The keys live in the kernel, so a build carrying them has to be
-                    installed the ordinary way first — USB, store or F-Droid. The first
+                    installed the ordinary way first - USB, store or F-Droid. The first
                     APK with real keys cannot arrive by module update, by design: a module
                     must never be able to grant itself new trust anchors.
                   </p>

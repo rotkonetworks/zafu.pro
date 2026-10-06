@@ -17,36 +17,36 @@ import type { LinkEntry } from "./types";
  */
 
 const ZAFU_ISSUES: LinkEntry = {
-  title: "Zafu issue tracker",
+  title: "issue tracker",
   value: "github",
   href: "https://github.com/rotkonetworks/zafu/issues",
   description:
-    "Bugs, feature requests and questions about Zafu or Zigner. This is the channel we watch — start here.",
+    "bugs, requests and questions about zafu, zigner or zcli. this is the place we watch most closely, so please start here.",
 };
 
 /** Our own thread in the forum's General category, not the forum root. */
 const ZAFU_FORUM_THREAD: LinkEntry = {
-  title: "Zafu development thread",
+  title: "development thread",
   value: "forum",
   href: "https://forum.zcashcommunity.com/t/zafu-client-development/54933",
   description:
-    "Development in the open on the Zcash Community Forum: light-client work, Ligerito, Zigner and release notes.",
+    "development in the open on the zcash community forum: light-client work, ligerito, zigner and release notes.",
 };
 
 const ZCASH_DISCORD: LinkEntry = {
-  title: "Zcash Discord",
+  title: "zcash discord",
   value: "protocol",
   href: "https://discord.com/invite/zcash",
   description:
-    "Upstream Zcash community: shielded pools, addresses, and network questions. Not Zafu support.",
+    "the upstream zcash community, for questions about the network itself. not zafu support.",
 };
 
 const PENUMBRA_DISCORD: LinkEntry = {
-  title: "Penumbra Discord",
+  title: "penumbra discord",
   value: "protocol",
   href: "https://discord.gg/hKvkrqa3zC",
   description:
-    "Upstream Penumbra community: shielded swaps, staking, governance and IBC. Not Zafu support.",
+    "the upstream penumbra community, for questions about the chain itself. not zafu support.",
 };
 
 /** Ours first, then upstream protocol communities. */
@@ -56,5 +56,3 @@ export const SUPPORT_CHANNELS: LinkEntry[] = [
   ZCASH_DISCORD,
   PENUMBRA_DISCORD,
 ];
-
-export const FOOTER_CHANNELS: LinkEntry[] = SUPPORT_CHANNELS;
