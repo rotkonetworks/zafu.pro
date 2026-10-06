@@ -111,7 +111,7 @@ export const zafuSecurity: PageContent = {
     {
       id: "backend-trust",
       title: "backend trust",
-      lede: "the server (zidecar or lightwalletd) is treated as an adversary for metadata. zafu tells it nothing about which notes are yours, and checks what it can on your device. or run your own.",
+      lede: "the server (zidecar, lightwalletd or pd) is not trusted with your notes. zafu scans on your device and tells the server as little as it can. it still trusts the server for the chain itself. or run your own.",
       blocks: [
         {
           kind: "specs",
@@ -120,31 +120,37 @@ export const zafuSecurity: PageContent = {
               title: "Scanning on your device",
               value: "every block",
               description:
-                "zafu downloads every block since your wallet's birthday and finds your payments and spends on this device: notes by trial decryption, spends by matching each block's nullifiers against your own notes. The server is never told which notes are yours, and every wallet downloads the same blocks.",
+                "zafu downloads every compact block since your wallet's birthday and finds your orchard and ironwood notes on this device: payments by trial decryption, spends by matching each block's nullifiers against your own notes. The server only sees which blocks you download, the same blocks every wallet downloads.",
             },
             {
-              title: "Decoy fetching",
+              title: "What the server still learns",
+              value: "transparent and history",
+              description:
+                "Transparent addresses are public by design: to show their balance, zafu asks your node for the coins of your account's t-addresses while the zcash home is open, and again when you shield, swap or add liquidity. Transaction history, off by default, asks for their history too. On penumbra, zafu fetches the full transactions of the blocks where it found your activity, which shows those heights to the node. Shielded funds leave nothing to ask about.",
+            },
+            {
+              title: "Memo fetching",
               value: "bucket + decoy",
               description:
-                "Memo fetches mix real buckets with random decoy buckets (2× in private mode, 5× in paranoid), shuffled together - the server cannot distinguish which requests are yours.",
+                "On zidecar, memos are fetched block by block in buckets, with twice as many random decoy buckets mixed in and shuffled, so the server cannot tell which blocks hold your notes. A lightwalletd node is asked for your transactions by id instead, so zidecar is the private choice.",
             },
             {
-              title: "Cross-endpoint verify",
-              value: "chain tips",
+              title: "Tree checks",
+              value: "roots must match",
               description:
-                "Chain tips are compared across independent endpoints, catching a server that reports a state no one else agrees with.",
+                "zafu builds its own note commitment tree from the blocks and checks its root, and each spend's anchor, against the node. A mismatch that holds is treated as a reorg: the wallet rewinds and scans again.",
             },
             {
               title: "Honest limits",
               value: "the chain is trusted",
               description:
-                "zafu does not yet prove the chain it is shown: it takes the server's blocks, cross-checked against independent servers. A dishonest server cannot learn which notes are yours, but it can hide a payment or a spend from you until you switch servers. Checking the chain against Zcash's own proof of work (FlyClient over the ZIP-221 history tree) is in progress.",
+                "zafu does not yet prove the chain it is shown: there is no proof-of-work or header check, so the node is trusted for what is on chain. A dishonest node cannot learn which notes are yours, but it can hide a payment or a spend until you switch nodes. An optional tip check compares heights with a second operator's node. Checking the chain against Zcash's own proof of work (FlyClient over the ZIP-221 history tree) is in progress.",
             },
             {
               title: "Self-hosting",
-              value: "Zidecar / pd",
+              value: "your own node",
               description:
-                "All RPC endpoints are configurable; run your own query backend to remove provider metadata exposure entirely.",
+                "Every endpoint is a setting: point zafu at your own zidecar, lightwalletd (grpc-web) or pd, and no provider sees even which blocks you download. zafu tells which kind of node it is talking to on its own.",
             },
           ],
         },
