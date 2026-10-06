@@ -38,6 +38,15 @@ function zafuPostsPlugin(): Plugin {
   const RESOLVED = "\0" + VIRT;
   const postsDir = path.resolve(__dirname, "src/posts");
 
+  // A line that is only `![alt](figures/name.svg)` is replaced by that SVG's
+  // markup, so diagrams live in their own files but are still inlined: an
+  // <img> could not read the page's theme variables. The files carry
+  // fallbacks for those variables, so they also render standalone.
+  const inlineFigures = (body: string): string =>
+    body.replace(/^!\[[^\]]*\]\(figures\/([\w-]+\.svg)\)$/gm, (_, name: string) =>
+      readFileSync(path.join(postsDir, "figures", name), "utf8").trim(),
+    );
+
   const build = (): BuiltPost[] => {
     let files: string[] = [];
     try {
@@ -56,7 +65,10 @@ function zafuPostsPlugin(): Plugin {
         tags?: string[];
       }>(raw);
       const html = String(
-        remark().use(remarkGfm).use(remarkHtml, { sanitize: false }).processSync(body),
+        remark()
+          .use(remarkGfm)
+          .use(remarkHtml, { sanitize: false })
+          .processSync(inlineFigures(body)),
       );
       const base = file.replace(/\.md$/, "");
       const slug = attributes.slug ?? base.replace(/^\d{4}-\d{2}-\d{2}-/, "");
@@ -87,7 +99,7 @@ function zafuPostsPlugin(): Plugin {
       return `export const posts = ${JSON.stringify(cache)};\n`;
     },
     handleHotUpdate(ctx) {
-      if (!ctx.file.endsWith(".md") || !ctx.file.includes("/posts/")) return;
+      if (!/\.(md|svg)$/.test(ctx.file) || !ctx.file.includes("/posts/")) return;
       cache = null; // rebuild on next load
       const mod = ctx.server.moduleGraph.getModuleById(RESOLVED);
       return mod ? [mod] : undefined;
