@@ -32,6 +32,8 @@ const BlogPost = lazy(() => import("./pages/BlogPost"));
 const Release = lazy(() => import("./pages/Release"));
 const Ceremony = lazy(() => import("./pages/Ceremony"));
 const Zapps = lazy(() => import("./pages/Zapps"));
+// zafu.pro/c#<card> and /j#<code>: shared from zafu, read in the browser only
+const SharedLink = lazy(() => import("./pages/SharedLink"));
 
 export default function App() {
   return (
@@ -66,6 +68,8 @@ export default function App() {
       <Route path="/release" component={Release} />
       <Route path="/ceremony" component={Ceremony} />
       <Route path="/zapps" component={Zapps} />
+      <Route path="/c" component={() => <SharedLink kind="c" />} />
+      <Route path="/j" component={() => <SharedLink kind="j" />} />
 
       <Route path="*404" component={NotFound} />
     </Router>
