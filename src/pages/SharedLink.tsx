@@ -1,6 +1,6 @@
 import { Show, createSignal, onCleanup } from "solid-js";
 import Page from "../components/Page";
-import { ZAFU_STORE_URL } from "../content/links";
+import { CHROME_STORE_URL } from "../content/links";
 
 /**
  * zafu.pro/c#<card> and zafu.pro/j#<code>: links people share from zafu.
@@ -54,7 +54,7 @@ export default function SharedLink(props: { kind: keyof typeof KINDS }) {
               </a>
               <p class="m-0 text-sm text-muted">
                 don't have zafu yet?{" "}
-                <a href={ZAFU_STORE_URL} rel="noreferrer" class="accent-link">
+                <a href={CHROME_STORE_URL} rel="noreferrer" class="accent-link">
                   get it
                 </a>
                 , then open this link again

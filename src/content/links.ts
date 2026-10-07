@@ -1,9 +1,6 @@
 /** Install and source destinations, shared by every page that links them. */
 export const CHROME_STORE_URL =
   "https://chromewebstore.google.com/detail/zafu-wallet-beta/bhlogefpcebekhjpomlodifcelldoimn";
-/** the stable listing, for people a zafu link was shared with */
-export const ZAFU_STORE_URL =
-  "https://chromewebstore.google.com/detail/bfdfeleokgpdladfmipfmffgpjfjibbe";
 export const ZAFU_RELEASES_URL = "https://github.com/rotkonetworks/zafu/releases/latest";
 export const ZAFU_GITHUB_URL = "https://github.com/rotkonetworks/zafu";
 export const ZIGNER_FDROID_URL = "https://foss.rotko.net";
