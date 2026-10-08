@@ -77,6 +77,15 @@ invite turns a stranger into a counterparty, and presence, once the discovery
 relay is wired, says who is online. With those, an escrow is a flow rather than
 a protocol project, and the signing still happens on the cold device.
 
+Client-side compute only wins if it is effortless. If encrypting takes a design
+decision, a key ceremony, or a second server to run, developers ship the
+plaintext version and users never learn there was a choice - so the default
+path has to be the encrypted one, with the SDK doing the part that used to be
+its own project. That is also where payments come from: apps with their own
+users are where value changes hands, and a wallet already holding the keys is
+the obvious place to settle it. The economy follows the adoption, not the other
+way round.
+
 Key custody is hard, it fails silently, and nobody whose business depends on
 reading the data has an incentive to make it easier. The pressure is going to
 increase: open models are approaching the point where they find and exploit
