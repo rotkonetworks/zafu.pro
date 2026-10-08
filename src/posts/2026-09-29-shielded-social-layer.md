@@ -91,6 +91,4 @@ reading the data has an incentive to make it easier. The pressure is going to
 increase: open models are approaching the point where they find and exploit
 software flaws on their own, so cloud services will be compromised at a much
 higher rate and the data will spill. So we need client-side encryption
-everywhere. Your data should never sit on someone else's server in plaintext:
-it is encrypted on your device, by default, before it leaves, so when a server
-spills, what spills is unreadable.
+everywhere.
