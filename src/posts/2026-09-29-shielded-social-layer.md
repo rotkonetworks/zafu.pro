@@ -81,10 +81,7 @@ Key custody is hard, it fails silently, and nobody whose business depends on
 reading the data has an incentive to make it easier. The pressure is going to
 increase: open models are approaching the point where they find and exploit
 software flaws on their own, so cloud services will be compromised at a much
-higher rate and the data will spill. The all-time leaderboard on
-[ipv4.games](http://ipv4.games/) tops out at 50,587,056 addresses claimed by one
-name: about a fifth of the IPv4 space that answers a ping (ANT/ISI census). It is
-unlikely to be a pixel on a busy landing page: the next three claimants are proxy
-services, which suggests zombies: machines that send requests for whoever
-pays, without their owners knowing. The best you can do is keep your own data
-encrypted, so when it spills, it is unreadable.
+higher rate and the data will spill. So we need client-side encryption
+everywhere. Your data should never sit on someone else's server in plaintext:
+it is encrypted on your device, by default, before it leaves, so when a server
+spills, what spills is unreadable.
