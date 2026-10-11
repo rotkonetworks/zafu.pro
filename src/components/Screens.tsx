@@ -244,7 +244,7 @@ export function ZafuWelcome() {
           </span>
         </span>
         <h1 class="mincho" style={{ "font-size": "28px", "line-height": 1.25 }}>shielded signing.</h1>
-        <span class="app-label">zcash · penumbra · private by default</span>
+        <span class="app-label">private by default</span>
       </div>
       <div style={{ padding: "18px 20px", display: "flex", "flex-direction": "column", gap: "10px" }}>
         <span class="app-btn pri" style={{ flex: "none", height: "48px" }}>create wallet</span>
