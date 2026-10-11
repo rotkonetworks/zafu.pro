@@ -44,16 +44,12 @@ const FEATURES = [
 
 export default function Home() {
   return (
-    <Page title="held in your own hands, seen by no one">
+    <Page title="shielded signing">
       <section class="relative grid grid-cols-1 items-center overflow-hidden gap-12 lg:grid-cols-[minmax(0,1fr)_400px]">
         <Watermark sumi="/media/art/bamboo-sumi.webp" washi="/media/art/enso-washi.webp" class="-right-10 -top-8 h-[560px] w-[300px]" />
         <div>
-          <Lockup size={34} slogan />
-          <h1 class="mt-8 text-5xl leading-tight sm:text-6xl">
-            held in your own hands,
-            <br />
-            seen by no one.
-          </h1>
+          <Lockup size={34} />
+          <h1 class="mt-8 text-5xl leading-tight sm:text-6xl">shielded signing.</h1>
           <p class="mt-6 max-w-lg text-lg text-muted">
             zafu is a wallet for zcash and penumbra. it runs in your browser, keeps your keys on your device, and uses shielded transactions by default.
           </p>

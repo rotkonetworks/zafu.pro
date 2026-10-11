@@ -36,15 +36,12 @@ export function Mono(props: { size?: number; content?: "glyph" | "wordmark" }) {
   );
 }
 
-export function Lockup(props: { size?: number; slogan?: boolean }) {
+export function Lockup(props: { size?: number }) {
   const size = () => props.size ?? 26;
   return (
-    <span class="inline-flex flex-col gap-1">
-      <span class="inline-flex items-center gap-2.5">
-        <Seal size={size()} />
-        <Mono size={size()} content="wordmark" />
-      </span>
-      {props.slogan && <span class="text-xs text-muted">shielded signing</span>}
+    <span class="inline-flex items-center gap-2.5">
+      <Seal size={size()} />
+      <Mono size={size()} content="wordmark" />
     </span>
   );
 }

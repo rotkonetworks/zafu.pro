@@ -23,7 +23,7 @@ export const zignerSecurity: PageContent = {
               title: "Other devices",
               value: "TEE keystore",
               description:
-                "Devices without StrongBox fall back to keys held in the Trusted Execution Environment.",
+                "Devices without StrongBox fall back to keys kept in the Trusted Execution Environment.",
             },
             {
               title: "Data at rest",
@@ -173,7 +173,7 @@ export const zignerSpecs: PageContent = {
               title: "Key wrapping",
               value: "AES-256-GCM",
               description:
-                "Master key held in StrongBox (Titan M2 on Pixel 8+) or TEE-backed Android Keystore.",
+                "Master key stored in StrongBox (Titan M2 on Pixel 8+) or TEE-backed Android Keystore.",
             },
             {
               title: "Preferences",
